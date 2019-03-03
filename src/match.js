@@ -71,6 +71,38 @@ class Match {
     return this.gameState.offBoard.piecesOwnedByPlayer(2);
   }
 
+  movePossible(fromId, user) {
+    return this.gameState.movePossible(fromId, user);  
+  }
+
+  moveValid(fromId, toId, moveList, user) {
+    return this.gameState.moveValid(fromId, toId, moveList, user);
+  }
+
+  moveComplete(fromId, toId, moveList, user) {
+    return this.gameState.moveComplete(fromId, toId, moveList, user);
+  }
+
+  moveDieNumber(fromId, toId, user) {
+    return this.gameState.moveDieNumber(fromId, toId, user);
+  }
+
+  moveDetails(fromId, toId) {
+    return this.gameState.moveDetails(fromId, toId);
+  }
+
+  moveAllPiecesOffBoard(moveList, user) {
+    return this.gameState.moveAllPiecesOffBoard(moveList, user);
+  }
+
+  moveCompleteMoveList(fromId, toId, moveList) {
+    return this.gameState.moveCompleteMoveList(fromId, toId, moveList);
+  }
+
+  moveErrorMessage(fromId, user) {
+    return this.gameState.moveErrorMessage(fromId, user);
+  }
+
   passable(playerNumber) { 
     let playersTurn = this.playersTurn(playerNumber);
     let movePhase = this.movePhase();

@@ -330,4 +330,172 @@ describe('Match', () => {
       });
     });
   });
+
+  describe('movePossible', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 } 
+          ]
+        }
+      });
+      let fromId = 1;
+      let user = { playerNumber: 1 };
+
+      expect(match.movePossible(fromId, user)).toBe(true);
+    }); 
+  });
+
+  describe('moveValid', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ]
+        }
+      });
+      let fromId = 1;
+      let toId = 2;
+      let moveList = [];
+      let user = { playerNumber: 1 };
+
+      expect(match.moveValid(fromId, toId, moveList, user)).toBe(true);
+    });
+  });
+
+  describe('moveComplete', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ]
+        }
+      });
+      let fromId = 1;
+      let toId = 2;
+      let moveList = [{from: 1, to: 2}];
+      let user = { playerNumber: 1 };
+
+      expect(match.moveComplete(fromId, toId, moveList, user)).toBe(true);
+    });
+  });
+
+  describe('moveDieNumber', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ]
+        }
+      });
+      let fromId = 1;
+      let toId = 2;
+      let user = { playerNumber: 1 };
+      
+      expect(match.moveDieNumber(fromId, toId, user)).toEqual(1);
+    });
+  });
+
+  describe('moveDetails', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ]
+        }
+      });
+      let fromId = 1;
+      let toId = 2;
+
+      expect(match.moveDetails(fromId, toId)).toEqual({from: 1, to: 2});
+    });
+  });
+
+  describe('moveAllPiecesOffBoard', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ],
+          off_board: { 
+            pieces: [
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 },
+              { owner: 1 }
+            ]
+          }, 
+          points: [
+            { number: 1, pieces: [ { onwer: 1 } ] }
+          ]
+        }
+      });
+      let moveList = [ { from: 1, to: 2 } ] 
+      let user = { playerNumber: 1 }; 
+
+      expect(match.moveAllPiecesOffBoard(moveList, user)).toBe(true);
+    });
+  });
+
+  describe('moveCompleteMoveList', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', { 
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ]
+        }
+      });
+      let fromId = 1;
+      let toId = 2;
+      let moveList = [{ from: 1, to: 2 }];
+      expect(match.moveCompleteMoveList(fromId, toId, moveList)).toEqual([{from: 1, to: 2}, {from: 1, to: 2}]);
+    });
+  });
+
+  describe('moveErrorMessage', () => {
+    it('must return the result from move', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 1 }
+          ]
+        }
+      });
+      let fromId = 2;
+      let user = { playerNumber: 1 };
+      expect(match.moveErrorMessage(fromId, user)).toEqual('That point is empty.');
+    });
+  });
 });

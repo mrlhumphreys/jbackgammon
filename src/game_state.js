@@ -3,6 +3,7 @@ import DiceSet from './dice_set'
 import Bar from './bar'
 import PointSet from './point_set'
 import OffBoard from './off_board'
+import Move from './move'
 
 class GameState {
   constructor(args) { 
@@ -98,6 +99,61 @@ class GameState {
 
   movePhase() {
     return this.currentPhase == 'move';
+  }
+
+  // move functions
+
+  movePossible(fromId, user) {
+    let from = this.findPoint(fromId);
+    let move = new Move({from: from, user: user, gameState: this});
+    return move.possible();
+  }
+
+  moveValid(fromId, toId, moveList, user) {
+    let from = this.findPoint(fromId);
+    let to = this.findPoint(toId);
+    let move = new Move({from: from, to: to, moveList: moveList, user: user, gameState: this}); 
+    return move.valid();
+  }
+
+  moveComplete(fromId, toId, moveList, user) {
+    let from = this.findPoint(fromId);
+    let to = this.findPoint(toId);
+    let move = new Move({from: from, to: to, moveList: moveList, user: user, gameState: this});
+    return move.complete();
+  }
+
+  moveDieNumber(fromId, toId, user) {
+    let from = this.findPoint(fromId);
+    let to = this.findPoint(toId);
+    let move = new Move({from: from, to: to, user: user, gameState: this});
+    return move.dieNumber();
+  }
+
+  moveDetails(fromId, toId) {
+    let from = this.findPoint(fromId);
+    let to = this.findPoint(toId);
+    let move = new Move({from: from, to: to, gameState: this});
+    return move.details();
+  }
+
+  moveAllPiecesOffBoard(moveList, user) {
+    let move = new Move({moveList: moveList, user: user, gameState: this});
+    return move.allPiecesOffBoard();
+  }
+
+  moveCompleteMoveList(fromId, toId, moveList) {
+    let from = this.findPoint(fromId);
+    let to = this.findPoint(toId);
+    let move = new Move({from: from, to: to, moveList: moveList});
+    return move.completeMoveList();
+  }
+
+  moveErrorMessage(fromId, user) {
+    let from = this.findPoint(fromId);
+    let move = new Move({from: from, user: user});
+    move.possible();
+    return move.error.message;
   }
 };
 
