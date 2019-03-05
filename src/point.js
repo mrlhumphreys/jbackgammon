@@ -1,4 +1,5 @@
 import Piece from './piece'
+import exists from './exists'
 
 class Point {
   constructor(args) { 
@@ -6,16 +7,6 @@ class Point {
     this.number = args.number;
     this.pieces = args.pieces.map(function(p) { return new Piece(p); });
     this.selected = args.selected ? true : false;
-  }
-
-  // modifiers
-
-  select() {
-    this.selected = true;
-  }
-
-  deselect() {
-    this.selected = false;
   }
 
   // queries
@@ -64,6 +55,34 @@ class Point {
       default: 
         null
     }
+  }
+
+  owner() {
+    let piece = this.pieces[0];
+    if (exists(piece)) {
+      return piece.owner;
+    } else {
+      return null;
+    }
+  }
+
+  // actions
+
+  select() {
+    this.selected = true;
+  }
+
+  deselect() {
+    this.selected = false;
+  }
+
+  pop(_playerNumber) {
+    let piece = this.pieces.pop();
+    return piece;
+  }
+
+  push(piece) {
+    this.pieces.push(piece);
   }
 };
 

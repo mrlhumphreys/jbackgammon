@@ -1,4 +1,5 @@
 import OffBoard from '../src/off_board'
+import Piece from '../src/piece'
 
 describe('OffBoard', () => {
   describe('initalising a off', () => {
@@ -15,6 +16,15 @@ describe('OffBoard', () => {
 
       expect(pieces.length).toEqual(1);
       expect(pieces[0].owner).toEqual(1);
+    });
+  });
+
+  describe('push', () => {
+    it('must push the piece onto it', () => {
+      let offBoard = new OffBoard({pieces: []});
+      let piece = new Piece({owner: 1});
+      offBoard.push(piece);
+      expect(offBoard.pieces[0]).toEqual(piece);
     });
   });
 });

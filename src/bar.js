@@ -31,6 +31,20 @@ class Bar {
   deselect() { 
     this.selected = false;
   }
+
+  pop(playerNumber) {
+    let piece = this.pieces.find(function(p) { return p.owner === playerNumber; });
+    let pieceIndex = this.pieces.findIndex(function(p) { return p.owner === playerNumber; });
+
+    if (pieceIndex !== -1) {
+      this.pieces.splice(pieceIndex, 1);
+    }
+    return piece;
+  }
+
+  push(piece) {
+    this.pieces.push(piece);
+  }
 };
 
 export default Bar

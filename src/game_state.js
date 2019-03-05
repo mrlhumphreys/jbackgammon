@@ -58,35 +58,9 @@ class GameState {
 
   // modifiers
 
-  move(fromNumber, toNumber) { 
-    let from = this.findPoint(fromNumber);
-    let to = this.findPoint(toNumber);
-    let notToOffBoard = to.constructorName != 'OffBoard';
-    let toEnemyBlot = to.enemyBlot(this.currentPlayerNumber);
-    let blot = undefined;
-
-    if (notToOffBoard && toEnemyBlot) {
-      blot = to.pieces.pop();
-    }
-
-    to.pieces.push(from.pieces.pop());
-
-    if (exists(blot)) {
-      this.bar.pieces.push(blot);
-    }
-  }
-
   deselect() {
     this.points.deselect();
     this.bar.deselect();
-  }
-
-  useDie(number) {
-    if (this.dice.unused().findByNumber(number)) {
-      this.dice.use(number);
-    } else { 
-      this.dice.use(this.dice.highestUnused());
-    }
   }
 
   playersTurn(playerNumber) { 
@@ -155,6 +129,53 @@ class GameState {
     move.possible();
     return move.error.message;
   }
+
+  // actions
+
+  selectBar() {
+    this.bar.select();
+  }
+
+  selectPoint(pointNumber) {
+    let point = this.findPoint(pointNumber); 
+    if (exists(point)) {
+      point.select();
+    }
+  }
+
+  deselect() {
+    let point = this.selectedPoint();
+    if (exists(point)) {
+      point.deselect();
+    }
+    this.bar.deselect();
+  }
+
+  move(fromNumber, toNumber, playerNumber) {
+    let from = this.findPoint(fromNumber);
+    let to = this.findPoint(toNumber);
+
+    let blot = undefined;
+    if ((toNumber !== 'off_board') && to.enemyBlot(playerNumber)) {
+      blot = to.pop(); 
+    } 
+
+    let movingPiece = from.pop(playerNumber);
+    to.push(movingPiece);
+
+    if (exists(blot)) {
+      this.bar.push(blot);
+    }
+  }
+
+  useDie(number) {
+    if (this.dice.unused().findByNumber(number)) {
+      this.dice.use(number);
+    } else { 
+      this.dice.use(this.dice.highestUnused());
+    }
+  }
+
 };
 
 export default GameState

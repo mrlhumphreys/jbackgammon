@@ -17,6 +17,12 @@ class OffBoard {
   enemyBlot(playerNumber) {
     return false;
   }
+
+  // actions
+
+  push(piece) {
+    this.pieces.push(piece);
+  }
 };
 
 export default OffBoard

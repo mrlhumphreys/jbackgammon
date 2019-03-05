@@ -498,4 +498,139 @@ describe('Match', () => {
       expect(match.moveErrorMessage(fromId, user)).toEqual('That point is empty.');
     });
   });
+
+  describe('selectBar', () => {
+    it('must select the bar', () => {
+      let match = fixtures('match');
+      match.selectBar();
+      expect(match.gameState.bar.selected).toBe(true);
+    });
+  });
+
+  describe('selectPoint', () => {
+    it('must select the point', () => {
+      let match = fixtures('match');
+      match.selectPoint(1);
+      let point = match.findPoint(1);
+      expect(point.selected).toBe(true); 
+    });
+  });
+
+  describe('select', () => {
+    describe('bar', () => {
+      it('must select the bar', () => {
+        let match = fixtures('match');
+        match.select('bar');
+        expect(match.gameState.bar.selected).toBe(true);
+      });
+    });
+
+    describe('point', () => {
+      it('must select the point', () => {
+        let match = fixtures('match');
+        match.select(1);
+        let point = match.findPoint(1);
+        expect(point.selected).toBe(true); 
+      });
+    });
+  });
+
+  describe('deselect', () => {
+    it('must deselect points', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          points: [
+            { number: 1, pieces: [{owner: 1}], selected: true }
+          ]
+        }
+      }); 
+      match.deselect();
+      expect(match.selectedPoint()).toBe(null);
+    });
+  });
+
+  describe('move', () => {
+    it('must move the piece', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 2 }
+          ],
+          points: [
+            { number: 1, pieces: [{owner: 1}, {owner: 1}] },
+            { number: 2, pieces: [ ] },
+          ]
+        }
+      });
+      let fromId = 1;
+      let toId = 2;
+      let playerNumber = 1;
+
+      match.move(fromId, toId, playerNumber);
+
+      let from = match.findPoint(fromId);
+      let to = match.findPoint(toId);
+
+      expect(from.pieces.length).toBe(1);
+      expect(to.pieces.length).toBe(1);
+    });
+  });
+
+  describe('useDie', () => {
+    it('must use a die', () => {
+      let match = fixtures('match', {
+        game_state: {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 2 } 
+          ]
+        }
+      });
+
+      match.useDie(2);
+      let die = match.gameState.dice.findByNumber(2);
+      expect(die.used).toBe(true);
+    });
+  });
+
+  describe('addMoveToList', () => {
+    it('must add move to list', () => {
+      let match = fixtures('match', {
+        current_phase: 'move',
+        dice: [
+          { number: 1 },
+          { number: 2 }
+        ]
+      });
+
+      let move = { from: 1, to: 2 };
+
+      match.addMoveToList(move);
+
+      expect(match.moveList[0]).toEqual(move);  
+    });
+  });
+
+  describe('clearMoveList', () => {
+    it('must clear the move list', () => {
+      let match = fixtures('match', {
+        current_phase: 'move',
+        dice: [
+          { number: 1 },
+          { number: 2 }
+        ],
+        moveList: [
+          { from: 1, to: 2 }          
+        ]
+      });
+
+      match.clearMoveList();
+     
+      expect(match.moveList).toEqual([]); 
+    });
+  });
 });

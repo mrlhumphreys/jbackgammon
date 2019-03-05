@@ -7,6 +7,7 @@ class Match {
     this.gameState = new GameState(args.game_state);
     this.players = args.players;
     this.winner = args.winner;
+    this.moveList = args.moveList ? args.moveList : [];
     this.error = null;
   }
 
@@ -110,6 +111,47 @@ class Match {
     let unusedDice = this.gameState.dice.unused().length() > 0;
     return playersTurn && movePhase && noMoves && unusedDice;
   }
+
+  // actions
+
+  select(pointName) {
+    switch (pointName) {
+      case 'bar':
+        this.selectBar();
+        break;
+      default:
+        this.selectPoint(pointName);
+    } 
+  }
+
+  selectBar() {
+    this.gameState.selectBar();
+  }
+
+  selectPoint(pointNumber) {
+    this.gameState.selectPoint(pointNumber);
+  }
+
+  deselect() {
+    this.gameState.deselect();
+  }
+
+  move(fromNumber, toNumber, playerNumber) {
+    this.gameState.move(fromNumber, toNumber, playerNumber);
+  }
+
+  useDie(number) {
+    this.gameState.useDie(number);
+  }
+
+  addMoveToList(move) {
+    this.moveList.push(move);    
+  }
+
+  clearMoveList() {
+    this.moveList = [];
+  }
+  
 }
 
 export default Match

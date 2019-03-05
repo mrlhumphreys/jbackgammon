@@ -42,7 +42,7 @@ class DiceSet {
     return Math.max.apply(null, this.dice.map(function(d) { return !d.used && d.number; }));
   }
 
-  // modifiers
+  // actions
 
   use(number) { 
     this.dice.filter(function(d) { return !d.used && (d.number == number); })[0].use();

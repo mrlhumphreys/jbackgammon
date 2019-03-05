@@ -1,4 +1,5 @@
 import Point from '../src/point'
+import Piece from '../src/piece'
 
 describe('Point', () => {
   describe('initalising a point', () => {
@@ -44,22 +45,6 @@ describe('Point', () => {
     it('must have a distance from point 0', () => {
       let point = new Point({pieces: [], number: 3});
       expect(point.distanceFromOffBoard(2)).toEqual(3);
-    });
-  });
-
-  describe('select', () => {
-    it('must select the point', () => {
-      let point = new Point({pieces: [], number: 3, selected: false});
-      point.select();
-      expect(point.selected).toBe(true);
-    });
-  });
-
-  describe('deselect', () => {
-    it('must deselect the point', () => {
-      let point = new Point({pieces: [], number: 3, selected: true});
-      point.deselect();
-      expect(point.selected).toBe(false);
     });
   });
 
@@ -119,6 +104,45 @@ describe('Point', () => {
         let point = new Point({pieces: [{owner: 2}, {owner: 2}], number: 3});
         expect(point.enemyBlot(1)).toBe(false);
       });
+    });
+  });
+
+  describe('select', () => {
+    it('must select the point', () => {
+      let point = new Point({pieces: [], number: 3, selected: false});
+      point.select();
+      expect(point.selected).toBe(true);
+    });
+  });
+
+  describe('deselect', () => {
+    it('must deselect the point', () => {
+      let point = new Point({pieces: [], number: 3, selected: true});
+      point.deselect();
+      expect(point.selected).toBe(false);
+    });
+  });
+
+  describe('pop', () => {
+    it('must remove a piece', () => {
+      let point = new Point({number: 1, pieces: [{owner: 1}, {owner: 1}]});
+      point.pop(); 
+      expect(point.pieces.length).toEqual(1);
+    });
+
+    it('must return a piece', () => {
+      let point = new Point({number: 1, pieces: [{owner: 1}, {owner: 1}]});
+      let piece = point.pop();
+      expect(piece.owner).toEqual(1);
+    });
+  });
+
+  describe('push', () => {
+    it('must add a piece', () => {
+      let point = new Point({number: 1, pieces: [{owner: 1}]});
+      let piece = new Piece({owner: 1});
+      point.push(piece);
+      expect(point.pieces.length).toEqual(2);
     });
   });
 });

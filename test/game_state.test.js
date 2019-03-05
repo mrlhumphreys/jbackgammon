@@ -66,24 +66,6 @@ describe('Game State', () => {
     });
   });
 
-  describe('useDie', () => {
-    describe('when there is a die with that number', () => {
-      it('must use the specified die', () => {
-        let gameState = fixtures('pointSelectedGameState');
-        gameState.useDie(1);
-        expect(gameState.dice.findByNumber(1).used).toBe(true);
-      });
-    });
-
-    describe('when there is no die with that number', () => {
-      it('must use the highest die', () => {
-        let gameState = fixtures('pointSelectedGameState');
-        gameState.useDie(3);
-        expect(gameState.dice.findByNumber(6).used).toBe(true);
-      });
-    });
-  });
-
   describe('a game where the player is blocked', () => {
     it('must have no moves', () => {
       let gameState = fixtures('blockedGameState');
@@ -254,6 +236,215 @@ describe('Game State', () => {
       let fromId = 2;
       let user = { playerNumber: 1 };
       expect(gameState.moveErrorMessage(fromId, user)).toEqual('That point is empty.');
+    });
+  });
+
+  describe('selectBar', () => {
+    it('must mark the bar as selected', () => {
+      let gameState = fixtures('gameState');
+      gameState.selectBar(); 
+      expect(gameState.bar.selected).toBe(true);
+    });
+  });
+
+  describe('selectPoint', () => {
+    describe('with a point that exists', () => {
+      it('must select the point', () => {
+        let gameState = fixtures('gameState');
+        gameState.selectPoint(1);
+        let point = gameState.findPoint(1);
+        expect(gameState.selectedPoint()).toEqual(point);
+      });
+    });
+
+    describe('with a point that does not exist', () => {
+      it('must not do anything', () => {
+        let gameState = fixtures('gameState');
+        gameState.selectPoint(27);
+        expect(gameState.selectedPoint()).toBe(null);
+      });
+    });
+  });
+
+  describe('deselect', () => {
+    describe('with point selected', () => {
+      it('must deselect point', () => {
+        let gameState = fixtures('pointSelectedGameState');
+        gameState.deselect();
+        expect(gameState.selectedPoint()).toBe(null);
+      });
+    });
+
+    describe('with bar selected', () => {
+      it('must deselect bar', () => {
+        let gameState = fixtures('gameState', {
+          bar: {
+            selected: true
+          }
+        });
+        gameState.deselect();
+        expect(gameState.bar.selected).toBe(false);
+      });
+    });
+  });
+
+  describe('move', () => {
+    describe('from point to point', () => {
+      it('must move the piece', () => {
+        let gameState = fixtures('gameState', {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 2 }
+          ],
+          points: [
+            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
+            { number: 2, pieces: [ ] },
+            { number: 3, pieces: [ ] }
+          ]
+        });
+        let fromId = 1;
+        let toId = 2;
+        let playerNumber = 1;
+
+        gameState.move(fromId, toId, playerNumber);
+
+        let from = gameState.findPoint(fromId);
+        let to = gameState.findPoint(toId);
+
+        expect(from.pieces.length).toEqual(1);      
+        expect(to.pieces.length).toEqual(1);      
+      });
+    });
+
+    describe('from bar to point', () => {
+      it('must move the piece', () => {
+        let gameState = fixtures('gameState', {
+          current_phase: 'move',
+          bar: {
+            pieces: [{owner: 1}]
+          },
+          dice: [
+            { number: 1 },
+            { number: 2 }
+          ],
+          points: [
+            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
+            { number: 2, pieces: [ ] },
+            { number: 3, pieces: [ ] }
+          ]
+        });
+        let fromId = 'bar';
+        let toId = 1;
+        let playerNumber = 1;
+
+        gameState.move(fromId, toId, playerNumber);
+
+        let from = gameState.findPoint(fromId);
+        let to = gameState.findPoint(toId);
+
+        expect(from.pieces.length).toEqual(0);      
+        expect(to.pieces.length).toEqual(3);      
+      });
+    });
+
+    describe('from point to off board', () => {
+      it('must move the piece', () => {
+        let gameState = fixtures('gameState', {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 2 }
+          ],
+          points: [
+            { number: 22, pieces: [ ] },
+            { number: 23, pieces: [ ] },
+            { number: 24, pieces: [ {owner: 1}, {owner: 1} ] }
+          ]
+        });
+        let fromId = 24;
+        let toId = 'off_board';
+        let playerNumber = 1;
+
+        gameState.move(fromId, toId, playerNumber);
+
+        let from = gameState.findPoint(fromId);
+        let to = gameState.findPoint(toId);
+
+        expect(from.pieces.length).toEqual(1);      
+        expect(to.pieces.length).toEqual(1);      
+      });
+    });
+
+    describe('to an enemy blot', () => {
+      it('must move the piece', () => {
+        let gameState = fixtures('gameState', {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 2 }
+          ],
+          points: [
+            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
+            { number: 2, pieces: [ {owner: 2} ] },
+            { number: 3, pieces: [ ] }
+          ]
+        });
+        let fromId = 1;
+        let toId = 2;
+        let playerNumber = 1;
+
+        gameState.move(fromId, toId, playerNumber);
+
+        let from = gameState.findPoint(fromId);
+        let to = gameState.findPoint(toId);
+
+        expect(from.pieces.length).toEqual(1);      
+        expect(to.pieces.length).toEqual(1);      
+      });
+
+      it('must move the blot to bar', () => {
+        let gameState = fixtures('gameState', {
+          current_phase: 'move',
+          dice: [
+            { number: 1 },
+            { number: 2 }
+          ],
+          points: [
+            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
+            { number: 2, pieces: [ {owner: 2} ] },
+            { number: 3, pieces: [ ] }
+          ]
+        });
+        let fromId = 1;
+        let toId = 2;
+        let playerNumber = 1;
+
+        gameState.move(fromId, toId, playerNumber);
+
+        let from = gameState.findPoint(fromId);
+        let to = gameState.findPoint(toId);
+        
+        expect(gameState.bar.pieces.length).toEqual(1);      
+      });
+    });
+  });
+
+  describe('useDie', () => {
+    describe('when there is a die with that number', () => {
+      it('must use the specified die', () => {
+        let gameState = fixtures('pointSelectedGameState');
+        gameState.useDie(1);
+        expect(gameState.dice.findByNumber(1).used).toBe(true);
+      });
+    });
+
+    describe('when there is no die with that number', () => {
+      it('must use the highest die', () => {
+        let gameState = fixtures('pointSelectedGameState');
+        gameState.useDie(3);
+        expect(gameState.dice.findByNumber(6).used).toBe(true);
+      });
     });
   });
 });
