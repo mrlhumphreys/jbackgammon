@@ -310,6 +310,358 @@ const fixtureDefinitions = {
       winner: null
     } 
   },
+  rollMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "roll",
+        "dice": [
+          { "number": null },
+          { "number": null }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
+  moveMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: false },
+          { "number": 2, used: false }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
+  selectedMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: false },
+          { "number": 2, used: false }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, selected: true, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
+  completedMoveMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: true },
+          { "number": 2, used: false }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, selected: true, "pieces": [ { "owner": 1 } ] },
+          { "number": 2, "pieces": [ { "owner": 1 } ] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      move_list: [
+        { from: 1, to: 2 }
+      ],
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
+  allPiecesOffBoardMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: false },
+          { "number": 2, used: false }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { "number": 2, "pieces": [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { "number": 3, "pieces": [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { "number": 4, "pieces": [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { "number": 5, "pieces": [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { "number": 6, "pieces": [] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [] },
+          { "number": 13, "pieces": [] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, selected: true, "pieces": [ { owner: 1 } ] }
+        ],
+        "off_board": { 
+          "pieces": [ 
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 }
+          ] 
+        }
+      },
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
+  noMovesMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: false },
+          { "number": 2, used: false }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [ { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 3, "pieces": [ { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [] },
+          { "number": 13, "pieces": [] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
+  singleMoveMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: false },
+          { "number": 2, used: true }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [ { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 3, "pieces": [ { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { owner: 1 } ] },
+          { "number": 7, "pieces": [ { owner: 2 }, { owner: 2 } ] },
+          { "number": 8, "pieces": [] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [] },
+          { "number": 13, "pieces": [] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      move_list: [
+        { from: 4, to: 6 }
+      ],
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
   move: {
     klass: Move,
     args: {
@@ -343,9 +695,23 @@ const deepMerge = function(aObject, bObject) {
   let keys = [...new Set([...Object.keys(aObject), ...Object.keys(bObject)])];
 
   keys.forEach(function(k) {
-    let aValue = aObject[k];
-    let bValue = bObject[k];
+    let aValue = undefined;
+    let bValue = undefined;
     let cValue = undefined;
+
+    // if (exists(aObject[k]) && aObject[k].constructor === Array) {  
+    //  aValue = aObject[k].map(function(e) { return e; });
+    // } else {
+    //   aValue = aObject[k];
+    // }
+    aValue = aObject[k];
+
+    // if (exists(bObject[k]) && bObject[k].constructor === Array) {  
+    //   bValue = bObject[k].map(function(e) { return e; });
+    // } else {
+    //   bValue = bObject[k];
+    // }
+    bValue = bObject[k];
 
     if (exists(bValue)) {
       if (bValue.constructor === Object) {

@@ -1,5 +1,6 @@
 import exists from './exists'
 import GameState from './game_state'
+import Move from './move'
 
 class Match {
   constructor(args) { 
@@ -7,8 +8,8 @@ class Match {
     this.gameState = new GameState(args.game_state);
     this.players = args.players;
     this.winner = args.winner;
-    this.moveList = args.moveList ? args.moveList : [];
-    this.error = null;
+    this.moveList = exists(args.move_list) ? args.move_list : [];
+    this.lastAction = {};
   }
 
   playersTurn(playerNumber) { 
@@ -151,7 +152,91 @@ class Match {
   clearMoveList() {
     this.moveList = [];
   }
-  
+
+  notify(message) {
+    this.lastAction = { kind: 'notification', data: { message: message } };
+  }
+
+  addRollToLastAction() {
+    this.lastAction = { kind: 'roll', data: {} };
+  }
+
+  addMoveToLastAction(moveList) {
+    this.lastAction = { kind: 'move', data: { moveList: moveList } };
+  }
+
+  // user actions
+
+  touchDice(playerNumber) {
+    if (exists(this.winner)) {
+      this.notify('Game is over.'); 
+    } else if (!this.playersTurn(playerNumber)) {
+      this.notify('It is not your turn.');
+    } else if (this.movePhase()) {
+      this.notify('Dice have already been rolled.');
+    } else if (this.rollPhase()) {
+      this.addRollToLastAction();
+    }
+  }
+
+  touchPoint(pointNumber, playerNumber) {
+    if (exists(this.winner)) {
+      this.notify('Game is over.'); 
+    } else if (!this.playersTurn(playerNumber)) {
+      this.notify('It is not your turn.');
+    } else if (this.rollPhase()) {
+      this.notify('Pieces cannot move until the dice are rolled.');
+    } else if (this.movePhase()) {
+      let selectedPoint = this.selectedPoint();
+      let point = this.findPoint(pointNumber);
+
+      if (exists(selectedPoint)) {
+        let move = new Move({
+          from: selectedPoint, 
+          to: point, 
+          moveList: this.moveList, 
+          user: { playerNumber: playerNumber }, 
+          gameState: this.gameState
+        });
+
+        if (move.valid()) {
+          if (move.complete() || move.allPiecesOffBoard()) {
+            this.deselect();
+            this.move(selectedPoint.number, pointNumber);
+            this.useDie(move.dieNumber());
+            this.addMoveToLastAction(move.completeMoveList());
+            this.clearMoveList();
+          } else {
+            this.deselect();
+            this.move(selectedPoint.number, pointNumber);
+            this.useDie(move.dieNumber());
+            this.addMoveToList(move.details());
+          }
+        } else {
+          this.deselect();
+        }
+      } else {
+        let move = new Move({
+          from: point, 
+          user: { playerNumber: playerNumber },
+          gameState: this.gameState
+        });
+
+        if (move.possible()) {
+          this.select(pointNumber);
+        } else {
+          this.notify(move.error.message);
+        }
+      }
+    }
+  }
+
+  touchPass(playerNumber) {
+    if (this.passable(playerNumber)) {
+      this.addMoveToLastAction(this.moveList);
+      this.clearMoveList();
+    }
+  }
 }
 
 export default Match

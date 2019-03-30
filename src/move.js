@@ -4,7 +4,7 @@ class Move {
   constructor(args) { 
     this.from = args.from;
     this.to = args.to;
-    this.moveList = args.moveList;
+    this.moveList = exists(args.moveList) ? args.moveList.map(function(e) { return e; }) : [];
     this.user = args.user;
     this.gameState = args.gameState;
     this.error = null;
@@ -183,6 +183,7 @@ class Move {
   }
 
   _numberOfMoves() {
+    // add one to count for the proposed move (from, to)
     return this.moveList.length + 1;
   }
 
