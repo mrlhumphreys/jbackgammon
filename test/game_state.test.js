@@ -2,6 +2,54 @@ import GameState from '../src/game_state'
 import fixtures from './fixtures'
 
 describe('Game State', () => {
+  describe('asJson', () => {
+    it('must serialize game state as json', () => {
+      let gameState = fixtures('gameState');
+      expect(gameState.asJson()).toEqual({
+        current_player_number: 1,
+        current_phase: 'move',
+        dice: [
+          { number: null, used: false },
+          { number: null, used: false }
+        ],
+        bar: { 
+          pieces: [],
+          selected: false 
+        },
+        points: [
+          { number: 1, selected: false, pieces: [ { owner: 1 }, { owner: 1 } ] },
+          { number: 2, selected: false, pieces: [] },
+          { number: 3, selected: false, pieces: [] },
+          { number: 4, selected: false, pieces: [] },
+          { number: 5, selected: false, pieces: [] },
+          { number: 6, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { number: 7, selected: false, pieces: [] },
+          { number: 8, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { number: 9, selected: false, pieces: [] },
+          { number: 10, selected: false, pieces: [] },
+          { number: 11, selected: false, pieces: [] },
+          { number: 12, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+          { number: 13, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { number: 14, selected: false, pieces: [] },
+          { number: 15, selected: false, pieces: [] },
+          { number: 16, selected: false, pieces: [] },
+          { number: 17, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+          { number: 18, selected: false, pieces: [ ] },
+          { number: 19, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+          { number: 20, selected: false, pieces: [] },
+          { number: 21, selected: false, pieces: [] },
+          { number: 22, selected: false, pieces: [] },
+          { number: 23, selected: false, pieces: [] },
+          { number: 24, selected: false, pieces: [ { owner: 2 }, { owner: 2 } ] },
+        ],
+        off_board: {
+          pieces: [],
+          selected: false
+        } 
+      });
+    });
+  });
+
   describe('with a point selected', () => {
     it('must be selected', () => {
       let gameState = fixtures('pointSelectedGameState');

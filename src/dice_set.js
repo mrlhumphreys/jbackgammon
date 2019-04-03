@@ -6,6 +6,10 @@ class DiceSet {
     this.dice = dice.map(function(d) { return new Die(d); });
   }
 
+  asJson() {
+    return this.dice.map(function(d) { return d.asJson() });
+  }
+
   // enumerable
 
   length() { 

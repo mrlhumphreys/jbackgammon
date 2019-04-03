@@ -15,6 +15,17 @@ class GameState {
     this.offBoard = new OffBoard(args.off_board);
   }
 
+  asJson() {
+    return {
+      current_player_number: this.currentPlayerNumber,
+      current_phase: this.currentPhase,
+      dice: this.dice.asJson(),
+      bar: this.bar.asJson(),
+      points: this.points.asJson(),
+      off_board: this.offBoard.asJson()
+    }
+  }
+
   // queries
 
   selectedPoint() { 

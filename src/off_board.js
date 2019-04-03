@@ -1,3 +1,4 @@
+import exists from './exists'
 import Piece from './piece'
 
 class OffBoard {
@@ -5,7 +6,14 @@ class OffBoard {
     this.constructorName = 'OffBoard';
     this.number = 'off_board';
     this.pieces = args.pieces.map(function(p) { return new Piece(p) });
-    this.selected = args.selected ? args.selected : false
+    this.selected = exists(args.selected) ? args.selected : false
+  }
+
+  asJson() {
+    return {
+      pieces: this.pieces.map(function(p) { return p.asJson() }),
+      selected: this.selected
+    };
   }
 
   // queries

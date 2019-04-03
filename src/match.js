@@ -9,7 +9,18 @@ class Match {
     this.players = args.players;
     this.winner = args.winner;
     this.moveList = exists(args.move_list) ? args.move_list : [];
-    this.lastAction = {};
+    this.lastAction = exists(args.last_action) ? args.last_action : {};
+  }
+
+  asJson() {
+    return {
+      id: this.id,
+      game_state: this.gameState.asJson(),
+      players: this.players,
+      winner: this.winner,
+      move_list: this.moveList,
+      last_action: this.lastAction
+    };
   }
 
   playersTurn(playerNumber) { 

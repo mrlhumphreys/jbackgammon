@@ -2,6 +2,64 @@ import fixtures from './fixtures'
 import Match from '../src/match'
 
 describe('Match', () => {
+  describe('asJson', () => {
+    it('must return the match serialized as json', () => {
+      let match = fixtures('match');
+      expect(match.asJson()).toEqual({
+        id: 1,
+        game_state: {
+          current_player_number: 1,
+          current_phase: 'move',
+          dice: [
+            { number: null, used: false },
+            { number: null, used: false }
+          ],
+          bar: { 
+            pieces: [],
+            selected: false 
+          },
+          points: [
+            { number: 1, selected: false, pieces: [ { owner: 1 }, { owner: 1 } ] },
+            { number: 2, selected: false, pieces: [] },
+            { number: 3, selected: false, pieces: [] },
+            { number: 4, selected: false, pieces: [] },
+            { number: 5, selected: false, pieces: [] },
+            { number: 6, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+            { number: 7, selected: false, pieces: [] },
+            { number: 8, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+            { number: 9, selected: false, pieces: [] },
+            { number: 10, selected: false, pieces: [] },
+            { number: 11, selected: false, pieces: [] },
+            { number: 12, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+            { number: 13, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+            { number: 14, selected: false, pieces: [] },
+            { number: 15, selected: false, pieces: [] },
+            { number: 16, selected: false, pieces: [] },
+            { number: 17, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+            { number: 18, selected: false, pieces: [ ] },
+            { number: 19, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+            { number: 20, selected: false, pieces: [] },
+            { number: 21, selected: false, pieces: [] },
+            { number: 22, selected: false, pieces: [] },
+            { number: 23, selected: false, pieces: [] },
+            { number: 24, selected: false, pieces: [ { owner: 2 }, { owner: 2 } ] },
+          ],
+          off_board: {
+            pieces: [],
+            selected: false
+          } 
+        },
+        players: [
+          { name: 'aaa', number: 1 },
+          { name: 'bbb', number: 2 }
+        ],
+        winner: null,
+        move_list: [],
+        last_action: {}
+      });
+    });
+  });
+
   describe('playersTurn', () => {
     it('must return the result of game state players turn', () => {
       let match = fixtures('match');

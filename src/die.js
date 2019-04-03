@@ -1,7 +1,16 @@
+import exists from './exists'
+
 class Die {
   constructor(args) {
     this.number = args.number;
-    this.used = args.used ? true : false;
+    this.used = exists(args.used) ? args.used : false;
+  }
+
+  asJson() {
+    return {
+      number: this.number,
+      used: this.used
+    };
   }
 
   use() {

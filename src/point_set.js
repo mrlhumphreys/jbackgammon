@@ -6,6 +6,10 @@ class PointSet {
     this.points = points.map(function(p) { return new Point(p); });
   }
 
+  asJson() {
+    return this.points.map(function(p) { return p.asJson() });
+  }
+
   // enumerable functions
 
   every(callback) { 

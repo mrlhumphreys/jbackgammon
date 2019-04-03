@@ -9,6 +9,14 @@ class Point {
     this.selected = args.selected ? true : false;
   }
 
+  asJson() {
+    return {
+      number: this.number,
+      pieces: this.pieces.map(function(p) { return p.asJson(); }),
+      selected: this.selected
+    };
+  }
+
   // queries
 
   blocked() {

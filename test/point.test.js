@@ -10,6 +10,13 @@ describe('Point', () => {
     });
   });
 
+  describe('asJson', () => {
+    it('must return the point as json', () => {
+      let point = new Point({ pieces: [ { owner: 1 } ], number: 1 });
+      expect(point.asJson()).toEqual({ pieces: [ { owner: 1 } ], number: 1, selected: false });
+    });
+  });
+
   describe('a point between 19 and 24', () => {
     it('must be home for player 1', () => {
       let point = new Point({pieces: [], number: 21});

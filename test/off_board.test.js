@@ -9,6 +9,18 @@ describe('OffBoard', () => {
     });
   });
 
+  describe('asJson', () => {
+    it('must return off board as json', () => {
+      let offBoard = new OffBoard({ pieces: [ { owner: 1 } ] });
+      expect(offBoard.asJson()).toEqual({
+        pieces: [
+          { owner: 1 }
+        ],
+        selected: false
+      });
+    });
+  });
+
   describe('piecesOwnedBy', () => {
     it('must return all pieces owned by the player', () => {
       let offBoard = new OffBoard({pieces: [{owner: 1}, {owner: 2}]});

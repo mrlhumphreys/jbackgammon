@@ -1,3 +1,4 @@
+import fixtures from './fixtures'
 import Die from '../src/die'
 import DiceSet from '../src/dice_set'
 import Point from '../src/point'
@@ -11,6 +12,38 @@ describe('PointSet', () => {
 
       let pointSet = new PointSet([pointOne]);
       expect(pointSet.points).not.toBe(undefined);
+    });
+  });
+
+  describe('asJson', () => {
+    it('must return the point set as json', () => {
+      let pointSet = fixtures('pointSet'); 
+      expect(pointSet.asJson()).toEqual([
+        { number: 1, selected: false, pieces: [ { owner: 1 }, { owner: 1 } ] },
+        { number: 2, selected: false, pieces: [ ] },
+        { number: 3, selected: false, pieces: [ ] },
+        { number: 4, selected: false, pieces: [ ] },
+        { number: 5, selected: false, pieces: [ ] },
+        { number: 6, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+        { number: 7, selected: false, pieces: [ ] },
+        { number: 8, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+        { number: 9, selected: false, pieces: [ ] },
+        { number: 10, selected: false, pieces: [ ] },
+        { number: 11, selected: false, pieces: [ ] },
+        { number: 12, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+        { number: 13, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+        { number: 14, selected: false, pieces: [ ] },
+        { number: 15, selected: false, pieces: [ ] },
+        { number: 16, selected: false, pieces: [ ] },
+        { number: 17, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+        { number: 18, selected: false, pieces: [ ] },
+        { number: 19, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+        { number: 20, selected: false, pieces: [ ] },
+        { number: 21, selected: false, pieces: [ ] },
+        { number: 22, selected: false, pieces: [ ] },
+        { number: 23, selected: false, pieces: [ ] },
+        { number: 24, selected: false, pieces: [ { owner: 2 }, { owner: 2 } ] },
+      ]);
     });
   });
 

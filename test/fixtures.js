@@ -3,6 +3,7 @@ import Move from '../src/move'
 import Bar from '../src/bar'
 import OffBoard from '../src/off_board'
 import Point from '../src/point'
+import PointSet from '../src/point_set'
 import GameState from '../src/game_state'
 import Match from '../src/match'
 
@@ -686,8 +687,38 @@ const fixtureDefinitions = {
         { owner: 1 }
       ]
     }
-  }
+  },
+  pointSet: {
+    klass: PointSet,
+    args: [ 
+      { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+      { "number": 2, "pieces": [] },
+      { "number": 3, "pieces": [] },
+      { "number": 4, "pieces": [] },
+      { "number": 5, "pieces": [] },
+      { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+      { "number": 7, "pieces": [] },
+      { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+      { "number": 9, "pieces": [] },
+      { "number": 10, "pieces": [] },
+      { "number": 11, "pieces": [] },
+      { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+      { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+      { "number": 14, "pieces": [] },
+      { "number": 15, "pieces": [] },
+      { "number": 16, "pieces": [] },
+      { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+      { "number": 18, "pieces": [] },
+      { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+      { "number": 20, "pieces": [] },
+      { "number": 21, "pieces": [] },
+      { "number": 22, "pieces": [] },
+      { "number": 23, "pieces": [] },
+      { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+    ]
+  } 
 };
+
 
 const deepMerge = function(aObject, bObject) {
   let cObject = {};
@@ -699,18 +730,7 @@ const deepMerge = function(aObject, bObject) {
     let bValue = undefined;
     let cValue = undefined;
 
-    // if (exists(aObject[k]) && aObject[k].constructor === Array) {  
-    //  aValue = aObject[k].map(function(e) { return e; });
-    // } else {
-    //   aValue = aObject[k];
-    // }
     aValue = aObject[k];
-
-    // if (exists(bObject[k]) && bObject[k].constructor === Array) {  
-    //   bValue = bObject[k].map(function(e) { return e; });
-    // } else {
-    //   bValue = bObject[k];
-    // }
     bValue = bObject[k];
 
     if (exists(bValue)) {
@@ -730,12 +750,22 @@ const deepMerge = function(aObject, bObject) {
 
 const fixtures = function(name, customArgs) {
   let definition = fixtureDefinitions[name];
-  let args = {};
-  if (exists(customArgs)) {
-    args = deepMerge(definition.args, customArgs);
+  let args = undefined;
+
+  if (definition.args.constructor === Array) {
+    if (exists(customArgs)) {
+      args = customArgs;
+    } else {
+      args = definition.args;
+    }
   } else {
-    args = Object.assign({}, definition.args);
+    if (exists(customArgs)) {
+      args = deepMerge(definition.args, customArgs);
+    } else {
+      args = Object.assign({}, definition.args);
+    }
   }
+
   return new definition.klass(args);
 };
 

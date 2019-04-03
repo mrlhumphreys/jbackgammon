@@ -1,6 +1,13 @@
 import DiceSet from '../src/dice_set'
 
 describe('DiceSet', () => {
+  describe('asJson', () => {
+    it('must return the dice set as json', () => {
+      let diceSet = new DiceSet([ { number: 1 }, { number: 2 } ]);
+      expect(diceSet.asJson()).toEqual([ { number: 1, used: false }, { number: 2, used: false } ]);
+    });
+  });
+
   describe('length', () => { 
     it('must return the number of dice in the set', () => {
       let diceSet = new DiceSet([{ "number": null }, { "number": null }]);
