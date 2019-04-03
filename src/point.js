@@ -24,15 +24,15 @@ class Point {
   }
 
   blot() {
-    return this.pieces.length == 1;
+    return this.pieces.length === 1;
   }
 
   empty() {
-    return this.pieces.length == 0;
+    return this.pieces.length === 0;
   }
 
   ownedBy(playerNumber) {
-    return this.pieces.some(function(p) { return p.owner == playerNumber; });
+    return this.pieces.some(function(p) { return p.owner === playerNumber; });
   }
 
   ownedByOpponent(playerNumber) {

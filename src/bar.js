@@ -19,11 +19,11 @@ class Bar {
   // queries
 
   piecesOwnedByPlayer(playerNumber) { 
-    return this.pieces.filter(function(p) { return p.owner == playerNumber });
+    return this.pieces.filter(function(p) { return p.owner === playerNumber });
   }
 
   hasPiecesOwnedByPlayer(playerNumber) { 
-    return this.pieces.some(function(p) { return p.owner == playerNumber });
+    return this.pieces.some(function(p) { return p.owner === playerNumber });
   }
 
   noPiecesOwnedByPlayer(playerNumber) { 

@@ -25,7 +25,7 @@ class PointSet {
   }
 
   none() {
-    return this.points.length == 0;
+    return this.points.length === 0;
   }
 
   sort() {
@@ -50,7 +50,7 @@ class PointSet {
   }
 
   includes(point) {
-    return this.some(function(p) { return p.number == point.number; });
+    return this.some(function(p) { return p.number === point.number; });
   }
 
   // scopes
@@ -76,7 +76,7 @@ class PointSet {
   // queries
 
   findByNumber(number) { 
-    return this.points.filter(function(p) { return p.number == number; })[0];
+    return this.points.filter(function(p) { return p.number === number; })[0];
   }
 
   destination(from, die, playerNumber) { 
@@ -84,10 +84,10 @@ class PointSet {
 
     switch (playerNumber) {
       case 1:
-        fromNumber = (from.constructorName == 'Bar') ? 0 : from.number;
+        fromNumber = (from.constructorName === 'Bar') ? 0 : from.number;
         return this.findByNumber(fromNumber + die.number);
       case 2:
-        fromNumber = (from.constructorName == 'Bar') ? 25 : from.number;
+        fromNumber = (from.constructorName === 'Bar') ? 25 : from.number;
         return this.findByNumber(fromNumber - die.number);
       default: 
         return null;
@@ -111,13 +111,13 @@ class PointSet {
 
   cannotBearOff(playerNumber, dice) { 
     return this.ownedByPlayer(playerNumber).every((p) => {
-      if (this.backPointForPlayer(playerNumber).number == p.number) {
+      if (this.backPointForPlayer(playerNumber).number === p.number) {
         return dice.unused().filter((d) => { 
           return p.distanceFromOffBoard(playerNumber) <= d.number;
         }).none();
       } else {
         return dice.unused().filter((d) => {
-          return p.distanceFromOffBoard(playerNumber) == d.number;
+          return p.distanceFromOffBoard(playerNumber) === d.number;
         }).none();
       }
     });

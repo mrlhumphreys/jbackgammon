@@ -19,7 +19,7 @@ class OffBoard {
   // queries
 
   piecesOwnedByPlayer(playerNumber) { 
-    return this.pieces.filter(function(p) { return p.owner == playerNumber; });
+    return this.pieces.filter(function(p) { return p.owner === playerNumber; });
   }
 
   enemyBlot(playerNumber) {

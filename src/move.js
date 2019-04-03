@@ -11,7 +11,7 @@ class Move {
   }
 
   possible() {
-    if (this.from.constructorName == 'Bar') { 
+    if (this.from.constructorName === 'Bar') { 
       if (this._noPiecesOwnedByPlayer()) {
         this.error = { name: 'NoPiecesError', message: 'There are no pieces on the bar.'};
       } else if (this._noDestinations()) {
@@ -33,11 +33,11 @@ class Move {
       }
     }
 
-    return this.error == null;
+    return this.error === null;
   }
 
   valid() {
-    if (this.to.constructorName == 'OffBoard') {
+    if (this.to.constructorName === 'OffBoard') {
       if (this._somePiecesAreNotHome()) {
         this.error = { name: 'PiecesNotHomeError', message: 'Cannot bear off while pieces are not home.' };
       } else if (this._diceRollMismatch()) {
@@ -57,7 +57,7 @@ class Move {
       }
     }
 
-    return this.error == null;
+    return this.error === null;
   }
 
   dieNumber() {
@@ -73,11 +73,11 @@ class Move {
   }
 
   complete() {
-    return exists(this.from) && exists(this.to) && (this._numberOfMoves() == this.gameState.dice.length());
+    return exists(this.from) && exists(this.to) && (this._numberOfMoves() === this.gameState.dice.length());
   }
 
   allPiecesOffBoard() {
-    return this._numberOfMoves() == this._numberOfPiecesOnBoard();
+    return this._numberOfMoves() === this._numberOfPiecesOnBoard();
   }
 
   completeMoveList() { 
@@ -101,7 +101,7 @@ class Move {
   }
 
   _barHasPieces() {
-    return this.gameState.bar.pieces.some((p) => { return p.owner == this.user.playerNumber; });
+    return this.gameState.bar.pieces.some((p) => { return p.owner === this.user.playerNumber; });
   }
 
   _noDestinations() {
@@ -115,13 +115,13 @@ class Move {
   _cannotBearOff() {
     let backPointNumber = this.gameState.points.backPointForPlayer(this.user.playerNumber).number;
 
-    if (backPointNumber == this.from.number) {
+    if (backPointNumber === this.from.number) {
       return this.gameState.dice.unused().filter((d) => {
         return this.from.distanceFromOffBoard(this.user.playerNumber) <= d.number;
       }).none();
     } else {
       return this.gameState.dice.unused().filter((d) => {
-        return this.from.distanceFromOffBoard(this.user.playerNumber) == d.number;
+        return this.from.distanceFromOffBoard(this.user.playerNumber) === d.number;
       }).none()
     }
   }
@@ -131,13 +131,13 @@ class Move {
       if (this._bearOff()) {
         return d.number >= this._distance();
       } else {
-        return d.number == this._distance();
+        return d.number === this._distance();
       }
     });
   }
 
   _bearOff() {
-    return this.to.constructorName == 'OffBoard';
+    return this.to.constructorName === 'OffBoard';
   }
 
   _toBlocked() { 
@@ -163,9 +163,9 @@ class Move {
   _fromNumber() {
     switch (this.user.playerNumber) {
       case 1:
-        return this.from.constructorName == 'Bar' ? 0 : this.from.number;
+        return this.from.constructorName === 'Bar' ? 0 : this.from.number;
       case 2:
-        return this.from.constructorName == 'Bar' ? 25 : this.from.number;
+        return this.from.constructorName === 'Bar' ? 25 : this.from.number;
       default: 
         return null;
     }
@@ -174,9 +174,9 @@ class Move {
   _toNumber() {
     switch (this.user.playerNumber) {
       case 1:
-        return this.to.constructorName == 'OffBoard' ? 25 : this.to.number;
+        return this.to.constructorName === 'OffBoard' ? 25 : this.to.number;
       case 2:
-        return this.to.constructorName == 'OffBoard' ? 0 : this.to.number;
+        return this.to.constructorName === 'OffBoard' ? 0 : this.to.number;
       default: 
         return null;
     }

@@ -64,7 +64,7 @@ class GameState {
   }
 
   allPiecesOffBoard() {
-    return this.offBoard.piecesOwnedByPlayer(this.currentPlayerNumber).length == 15;
+    return this.offBoard.piecesOwnedByPlayer(this.currentPlayerNumber).length === 15;
   }
 
   // modifiers
@@ -75,15 +75,15 @@ class GameState {
   }
 
   playersTurn(playerNumber) { 
-    return this.currentPlayerNumber == playerNumber;
+    return this.currentPlayerNumber === playerNumber;
   }
 
   rollPhase() {
-    return this.currentPhase == 'roll';
+    return this.currentPhase === 'roll';
   }
 
   movePhase() {
-    return this.currentPhase == 'move';
+    return this.currentPhase === 'move';
   }
 
   // move functions

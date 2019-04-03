@@ -28,7 +28,7 @@ class DiceSet {
     if (exists(callback)) {
       return this.filter(callback).none();
     } else {
-      return this.dice.length == 0;
+      return this.dice.length === 0;
     }
   }
 
@@ -39,7 +39,7 @@ class DiceSet {
   }
 
   findByNumber(number) { 
-    return this.dice.filter(function(d) { return d.number == number; })[0];
+    return this.dice.filter(function(d) { return d.number === number; })[0];
   }
 
   highestUnused(number) { 
@@ -49,7 +49,7 @@ class DiceSet {
   // actions
 
   use(number) { 
-    this.dice.filter(function(d) { return !d.used && (d.number == number); })[0].use();
+    this.dice.filter(function(d) { return !d.used && (d.number === number); })[0].use();
   }
 };
 
