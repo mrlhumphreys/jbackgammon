@@ -16,7 +16,8 @@
   },
   "scripts": {
     "build": "./node_modules/.bin/babel -s inline -d lib src",
-    "test": "./node_modules/.bin/jest"
+    "test": "./node_modules/.bin/jest",
+    "release": "./scripts/release.sh"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
