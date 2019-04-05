@@ -213,7 +213,7 @@ class Match {
         if (move.valid()) {
           if (move.complete() || move.allPiecesOffBoard()) {
             this.deselect();
-            this.move(selectedPoint.number, pointNumber);
+            this.move(selectedPoint.number, pointNumber, playerNumber);
             this.useDie(move.dieNumber());
             this.addMoveToLastAction(move.completeMoveList());
             this.clearMoveList();
