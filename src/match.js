@@ -219,7 +219,7 @@ class Match {
             this.clearMoveList();
           } else {
             this.deselect();
-            this.move(selectedPoint.number, pointNumber);
+            this.move(selectedPoint.number, pointNumber, playerNumber);
             this.useDie(move.dieNumber());
             this.addMoveToList(move.details());
           }
