@@ -467,7 +467,7 @@ describe('Move', () => {
         let move = fixtures('move', { 
           from: from, 
           to: to, 
-          user: { playerNumber: 1 },
+          playerNumber: 1,
           moveList: [ { from: 23, to: 'off_board' } ],
           gameState: gameState 
         });
@@ -508,7 +508,7 @@ describe('Move', () => {
         let move = fixtures('move', { 
           from: from, 
           to: to, 
-          user: { playerNumber: 1 },
+          playerNumber: 1,
           moveList: [ ],
           gameState: gameState 
         });

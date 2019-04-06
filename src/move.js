@@ -6,6 +6,7 @@ class Move {
     this.to = args.to;
     this.moveList = exists(args.moveList) ? args.moveList.map(function(e) { return e; }) : [];
     this.user = args.user;
+    this.playerNumber = args.playerNumber;
     this.gameState = args.gameState;
     this.error = null;
   }
@@ -85,11 +86,11 @@ class Move {
   }
 
   _noPiecesOwnedByPlayer() {
-    return this.from.noPiecesOwnedByPlayer(this.user.playerNumber);
+    return this.from.noPiecesOwnedByPlayer(this.playerNumber);
   }
 
   _noDestinations() {
-    return this.gameState.points.destinations(this.from, this.gameState.dice, this.user.playerNumber).none();
+    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none();
   }
 
   _emptyPoint() {
@@ -97,31 +98,31 @@ class Move {
   }
 
   _ownedByOpponent() {
-    return this.from.ownedByOpponent(this.user.playerNumber);
+    return this.from.ownedByOpponent(this.playerNumber);
   }
 
   _barHasPieces() {
-    return this.gameState.bar.pieces.some((p) => { return p.owner === this.user.playerNumber; });
+    return this.gameState.bar.pieces.some((p) => { return p.owner === this.playerNumber; });
   }
 
   _noDestinations() {
-    return this.gameState.points.destinations(this.from, this.gameState.dice, this.user.playerNumber).none();
+    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none();
   }
 
   _somePiecesAreNotHome() {
-    return this.gameState.points.somePiecesNotHome(this.user.playerNumber);
+    return this.gameState.points.somePiecesNotHome(this.playerNumber);
   }
 
   _cannotBearOff() {
-    let backPointNumber = this.gameState.points.backPointForPlayer(this.user.playerNumber).number;
+    let backPointNumber = this.gameState.points.backPointForPlayer(this.playerNumber).number;
 
     if (backPointNumber === this.from.number) {
       return this.gameState.dice.unused().filter((d) => {
-        return this.from.distanceFromOffBoard(this.user.playerNumber) <= d.number;
+        return this.from.distanceFromOffBoard(this.playerNumber) <= d.number;
       }).none();
     } else {
       return this.gameState.dice.unused().filter((d) => {
-        return this.from.distanceFromOffBoard(this.user.playerNumber) === d.number;
+        return this.from.distanceFromOffBoard(this.playerNumber) === d.number;
       }).none()
     }
   }
@@ -141,12 +142,12 @@ class Move {
   }
 
   _toBlocked() { 
-    return this.to.ownedByOpponent(this.user.playerNumber) && this.to.blocked();
+    return this.to.ownedByOpponent(this.playerNumber) && this.to.blocked();
   }
 
   _wrongDirection() {
     let vectorDistance = this.to.number - this.from.number;
-    switch (this.user.playerNumber) {
+    switch (this.playerNumber) {
       case 1:
         return (vectorDistance < 0);
       case 2:
@@ -161,7 +162,7 @@ class Move {
   }
 
   _fromNumber() {
-    switch (this.user.playerNumber) {
+    switch (this.playerNumber) {
       case 1:
         return this.from.constructorName === 'Bar' ? 0 : this.from.number;
       case 2:
@@ -172,7 +173,7 @@ class Move {
   }
 
   _toNumber() {
-    switch (this.user.playerNumber) {
+    switch (this.playerNumber) {
       case 1:
         return this.to.constructorName === 'OffBoard' ? 25 : this.to.number;
       case 2:
@@ -188,7 +189,7 @@ class Move {
   }
 
   _numberOfPiecesOnBoard() {
-    return 15 - this.gameState.offBoard.piecesOwnedByPlayer(this.user.playerNumber).length;
+    return 15 - this.gameState.offBoard.piecesOwnedByPlayer(this.playerNumber).length;
   }
 };
 

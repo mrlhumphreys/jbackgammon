@@ -89,7 +89,7 @@ class Match {
           from: selectedPoint, 
           to: point, 
           moveList: this.moveList, 
-          user: { playerNumber: playerNumber }, 
+          playerNumber: playerNumber,
           gameState: this.gameState
         });
 
@@ -112,7 +112,7 @@ class Match {
       } else {
         let move = new Move({
           from: point, 
-          user: { playerNumber: playerNumber },
+          playerNumber: playerNumber,
           gameState: this.gameState
         });
 

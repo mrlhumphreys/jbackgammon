@@ -88,30 +88,30 @@ class GameState {
 
   // move functions
 
-  movePossible(fromId, user) {
+  movePossible(fromId, playerNumber) {
     let from = this.findPoint(fromId);
-    let move = new Move({from: from, user: user, gameState: this});
+    let move = new Move({from: from, playerNumber: playerNumber, gameState: this});
     return move.possible();
   }
 
-  moveValid(fromId, toId, moveList, user) {
+  moveValid(fromId, toId, moveList, playerNumber) {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
-    let move = new Move({from: from, to: to, moveList: moveList, user: user, gameState: this}); 
+    let move = new Move({from: from, to: to, moveList: moveList, playerNumber: playerNumber, gameState: this}); 
     return move.valid();
   }
 
-  moveComplete(fromId, toId, moveList, user) {
+  moveComplete(fromId, toId, moveList, playerNumber) {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
-    let move = new Move({from: from, to: to, moveList: moveList, user: user, gameState: this});
+    let move = new Move({from: from, to: to, moveList: moveList, playerNumber: playerNumber, gameState: this});
     return move.complete();
   }
 
-  moveDieNumber(fromId, toId, user) {
+  moveDieNumber(fromId, toId, playerNumber) {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
-    let move = new Move({from: from, to: to, user: user, gameState: this});
+    let move = new Move({from: from, to: to, playerNumber: playerNumber, gameState: this});
     return move.dieNumber();
   }
 
@@ -122,8 +122,8 @@ class GameState {
     return move.details();
   }
 
-  moveAllPiecesOffBoard(moveList, user) {
-    let move = new Move({moveList: moveList, user: user, gameState: this});
+  moveAllPiecesOffBoard(moveList, playerNumber) {
+    let move = new Move({moveList: moveList, playerNumber: playerNumber, gameState: this});
     return move.allPiecesOffBoard();
   }
 

@@ -669,7 +669,7 @@ const fixtureDefinitions = {
       from: null,
       to: null,
       moveList: [],
-      user: { playerNumber: 1 },
+      playerNumber: 1,
       gameState: {},
     }
   },

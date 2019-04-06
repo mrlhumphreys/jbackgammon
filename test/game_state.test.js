@@ -145,9 +145,9 @@ describe('Game State', () => {
         ]
       });
       let fromId = 1;
-      let user = { playerNumber: 1 };
+      let playerNumber = 1;
 
-      expect(gameState.movePossible(fromId, user)).toBe(true);
+      expect(gameState.movePossible(fromId, playerNumber)).toBe(true);
     }); 
   });
 
@@ -163,9 +163,9 @@ describe('Game State', () => {
       let fromId = 1;
       let toId = 2;
       let moveList = [];
-      let user = { playerNumber: 1 };
+      let playerNumber = 1;
 
-      expect(gameState.moveValid(fromId, toId, moveList, user)).toBe(true);
+      expect(gameState.moveValid(fromId, toId, moveList, playerNumber)).toBe(true);
     });
   });
 
@@ -181,9 +181,9 @@ describe('Game State', () => {
       let fromId = 1;
       let toId = 2;
       let moveList = [{from: 1, to: 2}];
-      let user = { playerNumber: 1 };
+      let playerNumber = 1;
 
-      expect(gameState.moveComplete(fromId, toId, moveList, user)).toBe(true);
+      expect(gameState.moveComplete(fromId, toId, moveList, playerNumber)).toBe(true);
     });
   });
 
@@ -198,9 +198,9 @@ describe('Game State', () => {
       });
       let fromId = 1;
       let toId = 2;
-      let user = { playerNumber: 1 };
+      let playerNumber = 1;
       
-      expect(gameState.moveDieNumber(fromId, toId, user)).toEqual(1);
+      expect(gameState.moveDieNumber(fromId, toId, playerNumber)).toEqual(1);
     });
   });
 
@@ -250,9 +250,9 @@ describe('Game State', () => {
         ]
       });
       let moveList = [ { from: 1, to: 2 } ] 
-      let user = { playerNumber: 1 }; 
+      let playerNumber = 1; 
 
-      expect(gameState.moveAllPiecesOffBoard(moveList, user)).toBe(true);
+      expect(gameState.moveAllPiecesOffBoard(moveList, playerNumber)).toBe(true);
     });
   });
 
