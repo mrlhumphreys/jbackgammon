@@ -23,39 +23,6 @@ class Match {
     };
   }
 
-  playersTurn(playerNumber) { 
-    return this.gameState.playersTurn(playerNumber);
-  }
-
-  playersName(number) { 
-    let index = number - 1;
-    return this.players[index].name;
-  }
-
-  currentPlayerName() {
-    return this.playersName(this.gameState.currentPlayerNumber);
-  }
-
-  winnerName() {
-    if (exists(this.winner)) {
-      return this.playersName(this.winner);
-    } else {
-      return null;
-    }
-  } 
-
-  selectedPoint() {
-    return this.gameState.selectedPoint();
-  }
-
-  rollPhase() {
-    return this.gameState.rollPhase();
-  }
-
-  movePhase() {
-    return this.gameState.movePhase();
-  }
-
   findPoint(pointNumber) {
     return this.gameState.findPoint(pointNumber);
   }
@@ -84,121 +51,37 @@ class Match {
     return this.gameState.offBoard.piecesOwnedByPlayer(2);
   }
 
-  movePossible(fromId, user) {
-    return this.gameState.movePossible(fromId, user);  
-  }
-
-  moveValid(fromId, toId, moveList, user) {
-    return this.gameState.moveValid(fromId, toId, moveList, user);
-  }
-
-  moveComplete(fromId, toId, moveList, user) {
-    return this.gameState.moveComplete(fromId, toId, moveList, user);
-  }
-
-  moveDieNumber(fromId, toId, user) {
-    return this.gameState.moveDieNumber(fromId, toId, user);
-  }
-
-  moveDetails(fromId, toId) {
-    return this.gameState.moveDetails(fromId, toId);
-  }
-
-  moveAllPiecesOffBoard(moveList, user) {
-    return this.gameState.moveAllPiecesOffBoard(moveList, user);
-  }
-
-  moveCompleteMoveList(fromId, toId, moveList) {
-    return this.gameState.moveCompleteMoveList(fromId, toId, moveList);
-  }
-
-  moveErrorMessage(fromId, user) {
-    return this.gameState.moveErrorMessage(fromId, user);
-  }
-
   passable(playerNumber) { 
-    let playersTurn = this.playersTurn(playerNumber);
-    let movePhase = this.movePhase();
+    let playersTurn = this.gameState.playersTurn(playerNumber);
+    let movePhase = this.gameState.movePhase();
     let noMoves = this.gameState.noMovesForPlayer(playerNumber);
     let unusedDice = this.gameState.dice.unused().length() > 0;
     return playersTurn && movePhase && noMoves && unusedDice;
-  }
-
-  // actions
-
-  select(pointName) {
-    switch (pointName) {
-      case 'bar':
-        this.selectBar();
-        break;
-      default:
-        this.selectPoint(pointName);
-    } 
-  }
-
-  selectBar() {
-    this.gameState.selectBar();
-  }
-
-  selectPoint(pointNumber) {
-    this.gameState.selectPoint(pointNumber);
-  }
-
-  deselect() {
-    this.gameState.deselect();
-  }
-
-  move(fromNumber, toNumber, playerNumber) {
-    this.gameState.move(fromNumber, toNumber, playerNumber);
-  }
-
-  useDie(number) {
-    this.gameState.useDie(number);
-  }
-
-  addMoveToList(move) {
-    this.moveList.push(move);    
-  }
-
-  clearMoveList() {
-    this.moveList = [];
-  }
-
-  notify(message) {
-    this.lastAction = { kind: 'notification', data: { message: message } };
-  }
-
-  addRollToLastAction() {
-    this.lastAction = { kind: 'roll', data: {} };
-  }
-
-  addMoveToLastAction(moveList) {
-    this.lastAction = { kind: 'move', data: { moveList: moveList } };
   }
 
   // user actions
 
   touchDice(playerNumber) {
     if (exists(this.winner)) {
-      this.notify('Game is over.'); 
-    } else if (!this.playersTurn(playerNumber)) {
-      this.notify('It is not your turn.');
-    } else if (this.movePhase()) {
-      this.notify('Dice have already been rolled.');
-    } else if (this.rollPhase()) {
-      this.addRollToLastAction();
+      this._notify('Game is over.'); 
+    } else if (!this.gameState.playersTurn(playerNumber)) {
+      this._notify('It is not your turn.');
+    } else if (this.gameState.movePhase()) {
+      this._notify('Dice have already been rolled.');
+    } else if (this.gameState.rollPhase()) {
+      this._addRollToLastAction();
     }
   }
 
   touchPoint(pointNumber, playerNumber) {
     if (exists(this.winner)) {
-      this.notify('Game is over.'); 
-    } else if (!this.playersTurn(playerNumber)) {
-      this.notify('It is not your turn.');
-    } else if (this.rollPhase()) {
-      this.notify('Pieces cannot move until the dice are rolled.');
-    } else if (this.movePhase()) {
-      let selectedPoint = this.selectedPoint();
+      this._notify('Game is over.'); 
+    } else if (!this.gameState.playersTurn(playerNumber)) {
+      this._notify('It is not your turn.');
+    } else if (this.gameState.rollPhase()) {
+      this._notify('Pieces cannot move until the dice are rolled.');
+    } else if (this.gameState.movePhase()) {
+      let selectedPoint = this.gameState.selectedPoint();
       let point = this.findPoint(pointNumber);
 
       if (exists(selectedPoint)) {
@@ -212,19 +95,19 @@ class Match {
 
         if (move.valid()) {
           if (move.complete() || move.allPiecesOffBoard()) {
-            this.deselect();
-            this.move(selectedPoint.number, pointNumber, playerNumber);
-            this.useDie(move.dieNumber());
-            this.addMoveToLastAction(move.completeMoveList());
-            this.clearMoveList();
+            this.gameState.deselect();
+            this.gameState.move(selectedPoint.number, pointNumber, playerNumber);
+            this.gameState.useDie(move.dieNumber());
+            this._addMoveToLastAction(move.completeMoveList());
+            this._clearMoveList();
           } else {
-            this.deselect();
-            this.move(selectedPoint.number, pointNumber, playerNumber);
-            this.useDie(move.dieNumber());
-            this.addMoveToList(move.details());
+            this.gameState.deselect();
+            this.gameState.move(selectedPoint.number, pointNumber, playerNumber);
+            this.gameState.useDie(move.dieNumber());
+            this._addMoveToList(move.details());
           }
         } else {
-          this.deselect();
+          this.gameState.deselect();
         }
       } else {
         let move = new Move({
@@ -234,9 +117,9 @@ class Match {
         });
 
         if (move.possible()) {
-          this.select(pointNumber);
+          this.gameState.select(pointNumber);
         } else {
-          this.notify(move.error.message);
+          this._notify(move.error.message);
         }
       }
     }
@@ -244,9 +127,31 @@ class Match {
 
   touchPass(playerNumber) {
     if (this.passable(playerNumber)) {
-      this.addMoveToLastAction(this.moveList);
-      this.clearMoveList();
+      this._addMoveToLastAction(this.moveList);
+      this._clearMoveList();
     }
+  }
+
+  // private setters 
+
+  _addMoveToList(move) {
+    this.moveList.push(move);    
+  }
+
+  _clearMoveList() {
+    this.moveList = [];
+  }
+
+  _notify(message) {
+    this.lastAction = { kind: 'notification', data: { message: message } };
+  }
+
+  _addRollToLastAction() {
+    this.lastAction = { kind: 'roll', data: {} };
+  }
+
+  _addMoveToLastAction(moveList) {
+    this.lastAction = { kind: 'move', data: { moveList: moveList } };
   }
 }
 

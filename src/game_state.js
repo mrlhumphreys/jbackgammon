@@ -143,6 +143,16 @@ class GameState {
 
   // actions
 
+  select(pointName) {
+    switch (pointName) {
+      case 'bar':
+        this.selectBar();
+        break;
+      default:
+        this.selectPoint(pointName);
+    } 
+  }
+
   selectBar() {
     this.bar.select();
   }

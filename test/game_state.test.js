@@ -287,6 +287,25 @@ describe('Game State', () => {
     });
   });
 
+  describe('select', () => {
+    describe('bar', () => {
+      it('must select the bar', () => {
+        let gameState = fixtures('gameState');
+        gameState.select('bar');
+        expect(gameState.bar.selected).toBe(true);
+      });
+    });
+
+    describe('point', () => {
+      it('must select the point', () => {
+        let gameState = fixtures('gameState');
+        gameState.select(1);
+        let point = gameState.findPoint(1);
+        expect(point.selected).toBe(true);
+      });
+    });
+  }); 
+
   describe('selectBar', () => {
     it('must mark the bar as selected', () => {
       let gameState = fixtures('gameState');
