@@ -11,7 +11,7 @@ describe('Die', () => {
   describe('asJson', () => {
     it('must return the die as json', () => {
       let die = new Die({number: 1});
-      expect(die.asJson()).toEqual({ number: 1, used: false });
+      expect(die.asJson).toEqual({ number: 1, used: false });
     });
   });
 

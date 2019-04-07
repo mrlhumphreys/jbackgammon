@@ -9,9 +9,9 @@ class OffBoard {
     this.selected = exists(args.selected) ? args.selected : false
   }
 
-  asJson() {
+  get asJson() {
     return {
-      pieces: this.pieces.map(function(p) { return p.asJson() }),
+      pieces: this.pieces.map(function(p) { return p.asJson }),
       selected: this.selected
     };
   }
@@ -26,7 +26,7 @@ class OffBoard {
     return false;
   }
 
-  // actions
+  // setters 
 
   push(piece) {
     this.pieces.push(piece);

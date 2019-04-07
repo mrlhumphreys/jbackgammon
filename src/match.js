@@ -12,10 +12,10 @@ class Match {
     this.lastAction = exists(args.last_action) ? args.last_action : {};
   }
 
-  asJson() {
+  get asJson() {
     return {
       id: this.id,
-      game_state: this.gameState.asJson(),
+      game_state: this.gameState.asJson,
       players: this.players,
       winner: this.winner,
       move_list: this.moveList,
@@ -27,27 +27,27 @@ class Match {
     return this.gameState.findPoint(pointNumber);
   }
 
-  barPlayerOne() {
+  get barPlayerOne() {
     return this.gameState.bar.piecesOwnedByPlayer(1);
   }
 
-  barSelected() {
+  get barSelected() {
     return this.gameState.bar.selected;
   }
 
-  barPlayerTwo() {
+  get barPlayerTwo() {
     return this.gameState.bar.piecesOwnedByPlayer(2);
   }
 
-  offBoardPlayerOne() {
+  get offBoardPlayerOne() {
     return this.gameState.offBoard.piecesOwnedByPlayer(1);
   }
 
-  offBoardSelected() {
+  get offBoardSelected() {
     return this.gameState.offBoard.selected;
   }
 
-  offBoardPlayerTwo() {
+  get offBoardPlayerTwo() {
     return this.gameState.offBoard.piecesOwnedByPlayer(2);
   }
 
@@ -55,7 +55,7 @@ class Match {
     let playersTurn = this.gameState.playersTurn(playerNumber);
     let movePhase = this.gameState.movePhase();
     let noMoves = this.gameState.noMovesForPlayer(playerNumber);
-    let unusedDice = this.gameState.dice.unused().length() > 0;
+    let unusedDice = this.gameState.dice.unused.length > 0;
     return playersTurn && movePhase && noMoves && unusedDice;
   }
 
@@ -81,7 +81,7 @@ class Match {
     } else if (this.gameState.rollPhase()) {
       this._notify('Pieces cannot move until the dice are rolled.');
     } else if (this.gameState.movePhase()) {
-      let selectedPoint = this.gameState.selectedPoint();
+      let selectedPoint = this.gameState.selectedPoint;
       let point = this.findPoint(pointNumber);
 
       if (exists(selectedPoint)) {
@@ -94,17 +94,17 @@ class Match {
         });
 
         if (move.valid()) {
-          if (move.complete() || move.allPiecesOffBoard()) {
+          if (move.complete || move.allPiecesOffBoard) {
             this.gameState.deselect();
             this.gameState.move(selectedPoint.number, pointNumber, playerNumber);
-            this.gameState.useDie(move.dieNumber());
-            this._addMoveToLastAction(move.completeMoveList());
+            this.gameState.useDie(move.dieNumber);
+            this._addMoveToLastAction(move.completeMoveList);
             this._clearMoveList();
           } else {
             this.gameState.deselect();
             this.gameState.move(selectedPoint.number, pointNumber, playerNumber);
-            this.gameState.useDie(move.dieNumber());
-            this._addMoveToList(move.details());
+            this.gameState.useDie(move.dieNumber);
+            this._addMoveToList(move.details);
           }
         } else {
           this.gameState.deselect();

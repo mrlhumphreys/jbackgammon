@@ -13,7 +13,7 @@ describe('Point', () => {
   describe('asJson', () => {
     it('must return the point as json', () => {
       let point = new Point({ pieces: [ { owner: 1 } ], number: 1 });
-      expect(point.asJson()).toEqual({ pieces: [ { owner: 1 } ], number: 1, selected: false });
+      expect(point.asJson).toEqual({ pieces: [ { owner: 1 } ], number: 1, selected: false });
     });
   });
 
@@ -58,21 +58,21 @@ describe('Point', () => {
   describe('a point with pieces', () => {
     it('must not be empty', () => {
       let point = new Point({pieces: [{owner: 1}], number: 3});
-      expect(point.empty()).toBe(false);
+      expect(point.empty).toBe(false);
     });
   });
 
   describe('a point with no pieces', () => {
     it('must be empty', () => {
       let point = new Point({pieces: [], number: 3});
-      expect(point.empty()).toBe(true);
+      expect(point.empty).toBe(true);
     });
   });
 
   describe('a point with more than one piece', () => {
     it('must be blocked', () => {
       let point = new Point({pieces: [{owner: 1}, {owner: 2}], number: 3});
-      expect(point.blocked()).toBe(true);
+      expect(point.blocked).toBe(true);
     });
   });
 

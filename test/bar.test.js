@@ -12,7 +12,7 @@ describe('Bar', () => {
   describe('asJson', () => {
     it('must return the bar as json', () => {
       let bar = new Bar({ pieces: [ { owner: 1 } ] });
-      expect(bar.asJson()).toEqual({ pieces: [ { owner: 1 } ], selected: false });
+      expect(bar.asJson).toEqual({ pieces: [ { owner: 1 } ], selected: false });
     });
   });
 

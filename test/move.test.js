@@ -327,7 +327,7 @@ describe('Move', () => {
         });
         let move = fixtures('move', { from: from, to: to, gameState: gameState });
 
-        expect(move.dieNumber()).toEqual(1);
+        expect(move.dieNumber).toEqual(1);
       });
     });
 
@@ -347,7 +347,7 @@ describe('Move', () => {
         });
         let move = fixtures('move', { from: from, to: to, gameState: gameState });
 
-        expect(move.dieNumber()).toEqual(2);
+        expect(move.dieNumber).toEqual(2);
       });
     });
   });
@@ -358,7 +358,7 @@ describe('Move', () => {
       let to = fixtures('point', { number: 4, pieces: [ ] });
       let move = fixtures('move', { from: from, to: to });
 
-      expect(move.details()).toEqual({ from: 1, to: 4 });
+      expect(move.details).toEqual({ from: 1, to: 4 });
     });
   });
 
@@ -369,7 +369,7 @@ describe('Move', () => {
         let to = fixtures('point', { number: 4, pieces: [ ] });
         let move = fixtures('move', { from: from, to: to });
 
-        expect(move.complete()).toBe(false);
+        expect(move.complete).toBe(false);
       });
     });
 
@@ -379,7 +379,7 @@ describe('Move', () => {
         let to = null;
         let move = fixtures('move', { from: from, to: to });
   
-        expect(move.complete()).toBe(false);
+        expect(move.complete).toBe(false);
       });
     });
 
@@ -404,7 +404,7 @@ describe('Move', () => {
           gameState: gameState 
         });
 
-        expect(move.complete()).toBe(false);
+        expect(move.complete).toBe(false);
       });
     });
 
@@ -429,7 +429,7 @@ describe('Move', () => {
           gameState: gameState 
         });
 
-        expect(move.complete()).toBe(true);
+        expect(move.complete).toBe(true);
       });
     });
   });
@@ -472,7 +472,7 @@ describe('Move', () => {
           gameState: gameState 
         });
 
-        expect(move.allPiecesOffBoard()).toBe(true);
+        expect(move.allPiecesOffBoard).toBe(true);
       });
     });
 
@@ -513,7 +513,7 @@ describe('Move', () => {
           gameState: gameState 
         });
 
-        expect(move.allPiecesOffBoard()).toBe(false);
+        expect(move.allPiecesOffBoard).toBe(false);
       });
     });
   });
@@ -528,7 +528,7 @@ describe('Move', () => {
           moveList: [ { from: 1, to: 2 } ]
         });
 
-        expect(move.completeMoveList()).toEqual([
+        expect(move.completeMoveList).toEqual([
           { from: 1, to: 2 },
           { from: 23, to: 24 }
         ]);

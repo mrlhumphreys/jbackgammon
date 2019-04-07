@@ -6,8 +6,8 @@ class PointSet {
     this.points = points.map(function(p) { return new Point(p); });
   }
 
-  asJson() {
-    return this.points.map(function(p) { return p.asJson() });
+  get asJson() {
+    return this.points.map(function(p) { return p.asJson; });
   }
 
   // enumerable functions
@@ -24,11 +24,11 @@ class PointSet {
     }
   }
 
-  none() {
+  get none() {
     return this.points.length === 0;
   }
 
-  sort() {
+  get sort() {
     let sorted = this.points.sort(function(a, b) {
       if (a.number > b.number) {
         return 1;
@@ -41,11 +41,11 @@ class PointSet {
     return new PointSet(sorted);
   }
 
-  first() {
+  get first() {
     return this.points[0];
   }
 
-  last() {
+  get last() {
     return this.points.slice(-1)[0];
   }
 
@@ -56,14 +56,14 @@ class PointSet {
   // scopes
 
   destinations(from, dice, playerNumber)  {
-    let inRange = dice.unused().map((d) => { 
+    let inRange = dice.unused.map((d) => { 
       return this.destination(from, d, playerNumber); 
     }).filter(function(e) { 
       return e; 
     });
 
     let possible = inRange.filter(function(p) { 
-      return p.empty() || p.ownedBy(playerNumber) || p.enemyBlot(playerNumber);
+      return p.empty || p.ownedBy(playerNumber) || p.enemyBlot(playerNumber);
     });
 
     return new PointSet(possible);
@@ -97,9 +97,9 @@ class PointSet {
   backPointForPlayer(playerNumber) { 
     switch (playerNumber) {
       case 1:
-        return this.ownedByPlayer(playerNumber).sort().first();
+        return this.ownedByPlayer(playerNumber).sort.first;
       case 2:
-        return this.ownedByPlayer(playerNumber).sort().last();
+        return this.ownedByPlayer(playerNumber).sort.last;
       default: 
         return null;
     }
@@ -112,24 +112,22 @@ class PointSet {
   cannotBearOff(playerNumber, dice) { 
     return this.ownedByPlayer(playerNumber).every((p) => {
       if (this.backPointForPlayer(playerNumber).number === p.number) {
-        return dice.unused().filter((d) => { 
+        return dice.unused.filter((d) => { 
           return p.distanceFromOffBoard(playerNumber) <= d.number;
         }).none();
       } else {
-        return dice.unused().filter((d) => {
+        return dice.unused.filter((d) => {
           return p.distanceFromOffBoard(playerNumber) === d.number;
         }).none();
       }
     });
   }
 
-  // properties
-
-  selected() {
+  get selected() {
     return this.points.filter(function(p) { return p.selected; })[0];
   }
 
-  // modifiers
+  // setters 
 
   deselect() {
     return this.points.filter(function(p) {

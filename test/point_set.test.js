@@ -18,7 +18,7 @@ describe('PointSet', () => {
   describe('asJson', () => {
     it('must return the point set as json', () => {
       let pointSet = fixtures('pointSet'); 
-      expect(pointSet.asJson()).toEqual([
+      expect(pointSet.asJson).toEqual([
         { number: 1, selected: false, pieces: [ { owner: 1 }, { owner: 1 } ] },
         { number: 2, selected: false, pieces: [ ] },
         { number: 3, selected: false, pieces: [ ] },
@@ -73,7 +73,7 @@ describe('PointSet', () => {
 
     it('must have none points', () => {
       let emptyPointSet = new PointSet([]);
-      expect(emptyPointSet.none()).toBe(true);
+      expect(emptyPointSet.none).toBe(true);
     });
   });
 
@@ -87,7 +87,7 @@ describe('PointSet', () => {
     it('must not have none points', () => {
       let pointOne = new Point({number: 1, pieces: [{owner: 1}, {owner: 1}]});
       let pointSet = new PointSet([pointOne]);
-      expect(pointSet.none()).toBe(false);
+      expect(pointSet.none).toBe(false);
     });
   });
 
@@ -99,9 +99,9 @@ describe('PointSet', () => {
       let pointFour = new Point({number: 4, pieces: [{owner: 2}]});
 
       let unsortedPointSet = new PointSet([pointTwo, pointFour, pointOne, pointThree]);
-      let sorted = unsortedPointSet.sort();
-      expect(sorted.first().number).toEqual(1);
-      expect(sorted.last().number).toEqual(4);
+      let sorted = unsortedPointSet.sort;
+      expect(sorted.first.number).toEqual(1);
+      expect(sorted.last.number).toEqual(4);
     });
   });
 
@@ -111,7 +111,7 @@ describe('PointSet', () => {
       let pointTwo = new Point({number: 2, pieces: []});
 
       let pointSet = new PointSet([pointOne, pointTwo]);
-      expect(pointSet.first().number).toEqual(1);
+      expect(pointSet.first.number).toEqual(1);
     });
   });
 
@@ -121,7 +121,7 @@ describe('PointSet', () => {
       let pointTwo = new Point({number: 2, pieces: []});
 
       let pointSet = new PointSet([pointOne, pointTwo]);
-      expect(pointSet.last().number).toEqual(2);
+      expect(pointSet.last.number).toEqual(2);
     });
   });
 
@@ -218,7 +218,7 @@ describe('PointSet', () => {
       let pointFour = new Point({number: 4, pieces: [{owner: 2}]});
 
       let pointSet = new PointSet([pointOne, pointTwo, pointThree, pointFour]);
-      expect(pointSet.ownedByPlayer(1).first().number).toEqual(1);
+      expect(pointSet.ownedByPlayer(1).first.number).toEqual(1);
     });
   });
 
@@ -350,7 +350,7 @@ describe('PointSet', () => {
       let pointSelected = new Point({number: 5, pieces: [{owner: 1}], selected: true});
 
       let selectedPointSet = new PointSet([pointOne, pointSelected]);
-      expect(selectedPointSet.selected().number).toBe(pointSelected.number);
+      expect(selectedPointSet.selected.number).toBe(pointSelected.number);
     });
   });
 
@@ -360,7 +360,7 @@ describe('PointSet', () => {
       let pointTwo = new Point({number: 2, pieces: []});
 
       let pointSet = new PointSet([pointOne, pointTwo]);
-      expect(pointSet.selected()).toBe(undefined);
+      expect(pointSet.selected).toBe(undefined);
     });
   });
 
@@ -371,7 +371,7 @@ describe('PointSet', () => {
 
       let selectedPointSet = new PointSet([pointOne, pointSelected]);
       selectedPointSet.deselect();
-      expect(selectedPointSet.selected()).toBe(undefined);
+      expect(selectedPointSet.selected).toBe(undefined);
     });
   });
 });

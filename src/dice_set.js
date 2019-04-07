@@ -6,13 +6,13 @@ class DiceSet {
     this.dice = dice.map(function(d) { return new Die(d); });
   }
 
-  asJson() {
-    return this.dice.map(function(d) { return d.asJson() });
+  get asJson() {
+    return this.dice.map(function(d) { return d.asJson; });
   }
 
   // enumerable
 
-  length() { 
+  get length() { 
     return this.dice.length;
   }
 
@@ -34,7 +34,7 @@ class DiceSet {
 
   // queries
 
-  unused() {
+  get unused() {
     return this.filter(function(d) { return !d.used; });
   }
 

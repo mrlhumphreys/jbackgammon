@@ -9,25 +9,25 @@ class Point {
     this.selected = args.selected ? true : false;
   }
 
-  asJson() {
+  get asJson() {
     return {
       number: this.number,
-      pieces: this.pieces.map(function(p) { return p.asJson(); }),
+      pieces: this.pieces.map(function(p) { return p.asJson; }),
       selected: this.selected
     };
   }
 
   // queries
 
-  blocked() {
+  get blocked() {
     return this.pieces.length >= 2;
   }
 
-  blot() {
+  get blot() {
     return this.pieces.length === 1;
   }
 
-  empty() {
+  get empty() {
     return this.pieces.length === 0;
   }
 
@@ -40,7 +40,7 @@ class Point {
   }
 
   enemyBlot(playerNumber) { 
-    return this.blot() && this.ownedByOpponent(playerNumber);
+    return this.blot && this.ownedByOpponent(playerNumber);
   }
 
   home(playerNumber) { 
@@ -65,7 +65,7 @@ class Point {
     }
   }
 
-  owner() {
+  get owner() {
     let piece = this.pieces[0];
     if (exists(piece)) {
       return piece.owner;
@@ -74,7 +74,7 @@ class Point {
     }
   }
 
-  // actions
+  // setters 
 
   select() {
     this.selected = true;

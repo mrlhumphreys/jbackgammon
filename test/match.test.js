@@ -5,7 +5,7 @@ describe('Match', () => {
   describe('asJson', () => {
     it('must return the match serialized as json', () => {
       let match = fixtures('match');
-      expect(match.asJson()).toEqual({
+      expect(match.asJson).toEqual({
         id: 1,
         game_state: {
           current_player_number: 1,
@@ -81,7 +81,7 @@ describe('Match', () => {
         }
       });
 
-      let result = match.barPlayerOne();
+      let result = match.barPlayerOne;
 
       expect(result.length).toEqual(2);
       expect(result[0].owner).toEqual(1);
@@ -99,7 +99,7 @@ describe('Match', () => {
           }
         });
 
-        expect(match.barSelected()).toBe(true);
+        expect(match.barSelected).toBe(true);
       });
     });
 
@@ -113,7 +113,7 @@ describe('Match', () => {
           }
         });
 
-        expect(match.barSelected()).toBe(false);
+        expect(match.barSelected).toBe(false);
       });
     });
   });
@@ -132,7 +132,7 @@ describe('Match', () => {
         }
       });
 
-      let result = match.barPlayerTwo();
+      let result = match.barPlayerTwo;
 
       expect(result.length).toEqual(1);
       expect(result[0].owner).toEqual(2);
@@ -153,7 +153,7 @@ describe('Match', () => {
         }
       });
 
-      let result = match.offBoardPlayerOne();
+      let result = match.offBoardPlayerOne;
 
       expect(result.length).toEqual(2);
       expect(result[0].owner).toEqual(1);
@@ -171,7 +171,7 @@ describe('Match', () => {
           }
         });
 
-        expect(match.offBoardSelected()).toBe(true);
+        expect(match.offBoardSelected).toBe(true);
       });
     });
 
@@ -185,7 +185,7 @@ describe('Match', () => {
           }
         });
 
-        expect(match.offBoardSelected()).toBe(false);
+        expect(match.offBoardSelected).toBe(false);
       });
     });
   });
@@ -204,7 +204,7 @@ describe('Match', () => {
         }
       });
 
-      let result = match.offBoardPlayerTwo();
+      let result = match.offBoardPlayerTwo;
 
       expect(result.length).toEqual(1);
       expect(result[0].owner).toEqual(2);

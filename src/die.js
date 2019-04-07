@@ -6,12 +6,14 @@ class Die {
     this.used = exists(args.used) ? args.used : false;
   }
 
-  asJson() {
+  get asJson() {
     return {
       number: this.number,
       used: this.used
     };
   }
+
+  // setters
 
   use() {
     this.used = true;

@@ -11,7 +11,7 @@ describe('Piece', () => {
   describe('asJson', () => {
     it('must return the piece as json', () => {
       let piece = new Piece({owner: 1});
-      expect(piece.asJson()).toEqual({owner: 1});
+      expect(piece.asJson).toEqual({owner: 1});
     });
   });
 });

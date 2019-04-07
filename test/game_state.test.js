@@ -5,7 +5,7 @@ describe('Game State', () => {
   describe('asJson', () => {
     it('must serialize game state as json', () => {
       let gameState = fixtures('gameState');
-      expect(gameState.asJson()).toEqual({
+      expect(gameState.asJson).toEqual({
         current_player_number: 1,
         current_phase: 'move',
         dice: [
@@ -53,14 +53,14 @@ describe('Game State', () => {
   describe('with a point selected', () => {
     it('must be selected', () => {
       let gameState = fixtures('pointSelectedGameState');
-      expect(gameState.selectedPoint().number).toBe(1);
+      expect(gameState.selectedPoint.number).toBe(1);
     });
   });
 
   describe('without a point selected', () => {
     it('must not be selected', () => {
       let gameState = fixtures('gameState');
-      expect(gameState.selectedPoint()).toBe(null);
+      expect(gameState.selectedPoint).toBe(null);
     });
   });
 
@@ -110,7 +110,7 @@ describe('Game State', () => {
     it('must deselect the selected point', () => {
       let gameState = fixtures('pointSelectedGameState');
       gameState.deselect();
-      expect(gameState.selectedPoint()).toBe(null);
+      expect(gameState.selectedPoint).toBe(null);
     });
   });
 
@@ -131,7 +131,7 @@ describe('Game State', () => {
   describe('a game where a player has all pieces off board', () => {
     it('must have all pieces off board', () => {
       let gameState = fixtures('allPiecesOffBoardGameState');
-      expect(gameState.allPiecesOffBoard()).toBe(true);
+      expect(gameState.allPiecesOffBoard).toBe(true);
     });
   });
 
@@ -320,7 +320,7 @@ describe('Game State', () => {
         let gameState = fixtures('gameState');
         gameState.selectPoint(1);
         let point = gameState.findPoint(1);
-        expect(gameState.selectedPoint()).toEqual(point);
+        expect(gameState.selectedPoint).toEqual(point);
       });
     });
 
@@ -328,7 +328,7 @@ describe('Game State', () => {
       it('must not do anything', () => {
         let gameState = fixtures('gameState');
         gameState.selectPoint(27);
-        expect(gameState.selectedPoint()).toBe(null);
+        expect(gameState.selectedPoint).toBe(null);
       });
     });
   });
@@ -338,7 +338,7 @@ describe('Game State', () => {
       it('must deselect point', () => {
         let gameState = fixtures('pointSelectedGameState');
         gameState.deselect();
-        expect(gameState.selectedPoint()).toBe(null);
+        expect(gameState.selectedPoint).toBe(null);
       });
     });
 

@@ -13,21 +13,21 @@ class Move {
 
   possible() {
     if (this.from.constructorName === 'Bar') { 
-      if (this._noPiecesOwnedByPlayer()) {
+      if (this._noPiecesOwnedByPlayer) {
         this.error = { name: 'NoPiecesError', message: 'There are no pieces on the bar.'};
-      } else if (this._noDestinations()) {
+      } else if (this._noDestinations) {
         this.error = { name: 'BlockedError', message: 'Those pieces cannot move.'};
       } else {
         this.error = null;
       }
     } else {
-      if (this._emptyPoint()) {
+      if (this._emptyPoint) {
         this.error = { name: 'EmptyPointError', message: 'That point is empty.' };
-      } else if (this._ownedByOpponent()) {
+      } else if (this._ownedByOpponent) {
         this.error = { name: 'PointOwnershipError', message: 'That point is not yours.'};
-      } else if (this._barHasPieces()) {
+      } else if (this._barHasPieces) {
         this.error = { name: 'PiecesOnBarError', message: 'There are still pieces on the bar.'};
-      } else if (this._noDestinations() && (this._somePiecesAreNotHome() || this._cannotBearOff())) {
+      } else if (this._noDestinations && (this._somePiecesAreNotHome || this._cannotBearOff)) {
         this.error = { name: 'BlockedError', message: 'Those pieces cannot move.' };
       } else {
         this.error = null;
@@ -39,19 +39,19 @@ class Move {
 
   valid() {
     if (this.to.constructorName === 'OffBoard') {
-      if (this._somePiecesAreNotHome()) {
+      if (this._somePiecesAreNotHome) {
         this.error = { name: 'PiecesNotHomeError', message: 'Cannot bear off while pieces are not home.' };
-      } else if (this._diceRollMismatch()) {
+      } else if (this._diceRollMismatch) {
         this.error = { name: 'DiceMismatchError', message: 'That move does not match the die roll.' };
       } else {
         this.error = null;
       }
     } else {
-      if (this._diceRollMismatch()) {
+      if (this._diceRollMismatch) {
         this.error = { name: 'DiceMismatchError', message: 'That move does not match the die roll.' };
-      } else if (this._toBlocked()) {
+      } else if (this._toBlocked) {
         this.error = { name: 'OpponentBlockError', message: 'An opponent is blocking that point.'};
-      } else if (this._wrongDirection()) {
+      } else if (this._wrongDirection) {
         this.error = { name: 'WrongDirectionError', message: 'A piece cannot move backwards.'};
       } else {
         this.error = null;
@@ -61,91 +61,91 @@ class Move {
     return this.error === null;
   }
 
-  dieNumber() {
-    if (this.gameState.dice.unused().findByNumber(this._distance())) {
-      return this._distance();
+  get dieNumber() {
+    if (this.gameState.dice.unused.findByNumber(this._distance)) {
+      return this._distance;
     } else {
       return this.gameState.dice.highestUnused();
     }
   }
 
-  details() {
+  get details() {
     return { from: this.from.number, to: this.to.number };
   }
 
-  complete() {
-    return exists(this.from) && exists(this.to) && (this._numberOfMoves() === this.gameState.dice.length());
+  get complete() {
+    return exists(this.from) && exists(this.to) && (this._numberOfMoves === this.gameState.dice.length);
   }
 
-  allPiecesOffBoard() {
-    return this._numberOfMoves() === this._numberOfPiecesOnBoard();
+  get allPiecesOffBoard() {
+    return this._numberOfMoves === this._numberOfPiecesOnBoard;
   }
 
-  completeMoveList() { 
+  get completeMoveList() { 
     return this.moveList.concat([{from: this.from.number, to: this.to.number}]);
   }
 
-  _noPiecesOwnedByPlayer() {
+  get _noPiecesOwnedByPlayer() {
     return this.from.noPiecesOwnedByPlayer(this.playerNumber);
   }
 
-  _noDestinations() {
-    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none();
+  get _noDestinations() {
+    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none;
   }
 
-  _emptyPoint() {
-    return exists(this.from) && this.from.empty();
+  get _emptyPoint() {
+    return exists(this.from) && this.from.empty;
   }
 
-  _ownedByOpponent() {
+  get _ownedByOpponent() {
     return this.from.ownedByOpponent(this.playerNumber);
   }
 
-  _barHasPieces() {
+  get _barHasPieces() {
     return this.gameState.bar.pieces.some((p) => { return p.owner === this.playerNumber; });
   }
 
-  _noDestinations() {
-    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none();
+  get _noDestinations() {
+    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none;
   }
 
-  _somePiecesAreNotHome() {
+  get _somePiecesAreNotHome() {
     return this.gameState.points.somePiecesNotHome(this.playerNumber);
   }
 
-  _cannotBearOff() {
+  get _cannotBearOff() {
     let backPointNumber = this.gameState.points.backPointForPlayer(this.playerNumber).number;
 
     if (backPointNumber === this.from.number) {
-      return this.gameState.dice.unused().filter((d) => {
+      return this.gameState.dice.unused.filter((d) => {
         return this.from.distanceFromOffBoard(this.playerNumber) <= d.number;
-      }).none();
+      }).none;
     } else {
-      return this.gameState.dice.unused().filter((d) => {
+      return this.gameState.dice.unused.filter((d) => {
         return this.from.distanceFromOffBoard(this.playerNumber) === d.number;
-      }).none()
+      }).none
     }
   }
 
-  _diceRollMismatch() {
-    return this.gameState.dice.unused().none((d) => {
-      if (this._bearOff()) {
-        return d.number >= this._distance();
+  get _diceRollMismatch() {
+    return this.gameState.dice.unused.none((d) => {
+      if (this._bearOff) {
+        return d.number >= this._distance;
       } else {
-        return d.number === this._distance();
+        return d.number === this._distance;
       }
     });
   }
 
-  _bearOff() {
+  get _bearOff() {
     return this.to.constructorName === 'OffBoard';
   }
 
-  _toBlocked() { 
-    return this.to.ownedByOpponent(this.playerNumber) && this.to.blocked();
+  get _toBlocked() { 
+    return this.to.ownedByOpponent(this.playerNumber) && this.to.blocked;
   }
 
-  _wrongDirection() {
+  get _wrongDirection() {
     let vectorDistance = this.to.number - this.from.number;
     switch (this.playerNumber) {
       case 1:
@@ -157,11 +157,11 @@ class Move {
     }
   }
 
-  _distance() {
-    return Math.abs(this._toNumber() - this._fromNumber());
+  get _distance() {
+    return Math.abs(this._toNumber - this._fromNumber);
   }
 
-  _fromNumber() {
+  get _fromNumber() {
     switch (this.playerNumber) {
       case 1:
         return this.from.constructorName === 'Bar' ? 0 : this.from.number;
@@ -172,7 +172,7 @@ class Move {
     }
   }
 
-  _toNumber() {
+  get _toNumber() {
     switch (this.playerNumber) {
       case 1:
         return this.to.constructorName === 'OffBoard' ? 25 : this.to.number;
@@ -183,12 +183,12 @@ class Move {
     }
   }
 
-  _numberOfMoves() {
+  get _numberOfMoves() {
     // add one to count for the proposed move (from, to)
     return this.moveList.length + 1;
   }
 
-  _numberOfPiecesOnBoard() {
+  get _numberOfPiecesOnBoard() {
     return 15 - this.gameState.offBoard.piecesOwnedByPlayer(this.playerNumber).length;
   }
 };

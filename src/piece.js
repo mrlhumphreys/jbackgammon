@@ -3,7 +3,7 @@ class Piece {
     this.owner = args.owner
   }
 
-  asJson() {
+  get asJson() {
     return {
       owner: this.owner
     };

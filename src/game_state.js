@@ -15,21 +15,21 @@ class GameState {
     this.offBoard = new OffBoard(args.off_board);
   }
 
-  asJson() {
+  get asJson() {
     return {
       current_player_number: this.currentPlayerNumber,
       current_phase: this.currentPhase,
-      dice: this.dice.asJson(),
-      bar: this.bar.asJson(),
-      points: this.points.asJson(),
-      off_board: this.offBoard.asJson()
+      dice: this.dice.asJson,
+      bar: this.bar.asJson,
+      points: this.points.asJson,
+      off_board: this.offBoard.asJson
     }
   }
 
   // queries
 
-  selectedPoint() { 
-    let point = this.points.selected();
+  get selectedPoint() { 
+    let point = this.points.selected;
     if (point) {
       return point;
     } else if (this.bar.selected) {
@@ -52,10 +52,10 @@ class GameState {
 
   noMovesForPlayer(playerNumber) { 
     if (this.bar.hasPiecesOwnedByPlayer(playerNumber)) {
-      return this.points.destinations(this.bar, this.dice, playerNumber).none();
+      return this.points.destinations(this.bar, this.dice, playerNumber).none;
     } else {
       return this.points.ownedByPlayer(playerNumber).every((p) => {
-        let noDestinations = this.points.destinations(p, this.dice, playerNumber).none();
+        let noDestinations = this.points.destinations(p, this.dice, playerNumber).none;
         let somePiecesNotHome = this.points.somePiecesNotHome(playerNumber);
         let cannotBearOff = this.points.cannotBearOff(playerNumber, this.dice);
         return noDestinations && (somePiecesNotHome || cannotBearOff); 
@@ -63,15 +63,8 @@ class GameState {
     }
   }
 
-  allPiecesOffBoard() {
+  get allPiecesOffBoard() {
     return this.offBoard.piecesOwnedByPlayer(this.currentPlayerNumber).length === 15;
-  }
-
-  // modifiers
-
-  deselect() {
-    this.points.deselect();
-    this.bar.deselect();
   }
 
   playersTurn(playerNumber) { 
@@ -105,33 +98,33 @@ class GameState {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
     let move = new Move({from: from, to: to, moveList: moveList, playerNumber: playerNumber, gameState: this});
-    return move.complete();
+    return move.complete;
   }
 
   moveDieNumber(fromId, toId, playerNumber) {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
     let move = new Move({from: from, to: to, playerNumber: playerNumber, gameState: this});
-    return move.dieNumber();
+    return move.dieNumber;
   }
 
   moveDetails(fromId, toId) {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
     let move = new Move({from: from, to: to, gameState: this});
-    return move.details();
+    return move.details;
   }
 
   moveAllPiecesOffBoard(moveList, playerNumber) {
     let move = new Move({moveList: moveList, playerNumber: playerNumber, gameState: this});
-    return move.allPiecesOffBoard();
+    return move.allPiecesOffBoard;
   }
 
   moveCompleteMoveList(fromId, toId, moveList) {
     let from = this.findPoint(fromId);
     let to = this.findPoint(toId);
     let move = new Move({from: from, to: to, moveList: moveList});
-    return move.completeMoveList();
+    return move.completeMoveList;
   }
 
   moveErrorMessage(fromId, user) {
@@ -165,7 +158,7 @@ class GameState {
   }
 
   deselect() {
-    let point = this.selectedPoint();
+    let point = this.selectedPoint;
     if (exists(point)) {
       point.deselect();
     }
@@ -190,7 +183,7 @@ class GameState {
   }
 
   useDie(number) {
-    if (this.dice.unused().findByNumber(number)) {
+    if (this.dice.unused.findByNumber(number)) {
       this.dice.use(number);
     } else { 
       this.dice.use(this.dice.highestUnused());

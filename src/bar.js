@@ -9,9 +9,9 @@ class Bar {
     this.selected = exists(args.selected) ? args.selected : false;
   }
 
-  asJson() {
+  get asJson() {
     return {
-      pieces: this.pieces.map(function(p) { return p.asJson(); }),
+      pieces: this.pieces.map(function(p) { return p.asJson; }),
       selected: this.selected
     };
   }
@@ -30,7 +30,7 @@ class Bar {
     return !this.hasPiecesOwnedByPlayer(playerNumber);
   }
 
-  // modifiers
+  // setters
 
   select() { 
     this.selected = true;
