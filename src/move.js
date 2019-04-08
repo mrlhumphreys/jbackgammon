@@ -119,11 +119,11 @@ class Move {
     if (backPointNumber === this.from.number) {
       return this.gameState.dice.unused.filter((d) => {
         return this.from.distanceFromOffBoard(this.playerNumber) <= d.number;
-      }).none;
+      }).none();
     } else {
       return this.gameState.dice.unused.filter((d) => {
         return this.from.distanceFromOffBoard(this.playerNumber) === d.number;
-      }).none
+      }).none();
     }
   }
 

@@ -165,6 +165,52 @@ describe('Move', () => {
 
           expect(move.error).toBe(null);
         });
+
+        describe('bearing off', () => {
+          it('must not set error', () => {
+            let from = fixtures('point', { number: 6, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] });
+            let gameState = fixtures('gameState', { 
+              current_phase: 'move', 
+              current_player_number: 2,
+              dice: [ { number: 6 }, { number: 6 }, { number: 6 }, { number: 6 } ], 
+              points: [
+                { number: 1, pieces: [ ] },
+                { number: 2, pieces: [ ] },
+                { number: 3, pieces: [ { owner: 2 }, { owner: 2 } ] },
+                { number: 4, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+                { number: 5, pieces: [ { owner: 2 } ] },
+                { number: 6, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+                { number: 7, pieces: [ ] },
+                { number: 8, pieces: [ ] },
+                { number: 9, pieces: [ ] },
+                { number: 10, pieces: [ ] },
+                { number: 11, pieces: [ ] },
+                { number: 12, pieces: [ ] },
+                { number: 13, pieces: [ ] },
+                { number: 14, pieces: [ ] },
+                { number: 15, pieces: [ ] },
+                { number: 16, pieces: [ { owner: 1 }, { owner: 1 } ] },
+                { number: 17, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+                { number: 18, pieces: [ { owner: 1 }, { owner: 1 } ] },
+                { number: 19, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+                { number: 20, pieces: [ ] },
+                { number: 21, pieces: [ ] },
+                { number: 22, pieces: [ ] },
+                { number: 23, pieces: [ ] },
+                { number: 24, pieces: [ ] }
+              ],
+              off_board: {
+                pieces: [ { owner: 2 } ]
+              }
+            });
+
+            let move = fixtures('move', { from: from, playerNumber: 2, gameState: gameState });
+          
+            move.possible();
+
+            expect(move.error).toBe(null);
+          });
+        });
       });
     });
   });
