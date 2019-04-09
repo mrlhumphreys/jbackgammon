@@ -16,7 +16,7 @@ describe('Move', () => {
             current_phase: 'move', 
             dice: [ { number: 1 }, { number: 2 } ] 
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -36,7 +36,7 @@ describe('Move', () => {
               { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -56,7 +56,7 @@ describe('Move', () => {
               { number: 2, pieces: [ ] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -78,7 +78,7 @@ describe('Move', () => {
               { number: 3, pieces: [ ] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -98,7 +98,7 @@ describe('Move', () => {
               { number: 3, pieces: [ ] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -119,7 +119,7 @@ describe('Move', () => {
               { number: 3, pieces: [ ] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -139,7 +139,7 @@ describe('Move', () => {
               { number: 3, pieces: [ { owner: 2 }, { owner: 2 }] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -159,7 +159,7 @@ describe('Move', () => {
               { number: 3, pieces: [ ] }
             ]
           });
-          let move = fixtures('move', { from: from, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
           
           move.possible();
 
@@ -204,7 +204,7 @@ describe('Move', () => {
               }
             });
 
-            let move = fixtures('move', { from: from, playerNumber: 2, gameState: gameState });
+            let move = fixtures('move', { fromNumber: from.number, playerNumber: 2, gameState: gameState });
           
             move.possible();
 
@@ -229,7 +229,7 @@ describe('Move', () => {
               { number: 24, pieces: [ { owner: 1 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -248,7 +248,7 @@ describe('Move', () => {
               { number: 22, pieces: [ { owner: 1 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -267,7 +267,7 @@ describe('Move', () => {
               { number: 24, pieces: [ { owner: 1 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -288,7 +288,7 @@ describe('Move', () => {
               { number: 1, pieces: [ { owner: 1 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -308,7 +308,7 @@ describe('Move', () => {
               { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -328,7 +328,7 @@ describe('Move', () => {
               { number: 6, pieces: [ { owner: 1 } ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -348,7 +348,7 @@ describe('Move', () => {
               { number: 2, pieces: [ ] }
             ]
           });
-          let move = fixtures('move', { from: from, to: to, gameState: gameState });
+          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
           
           move.valid();
 
@@ -371,7 +371,7 @@ describe('Move', () => {
             { number: 2, pieces: [ ] }
           ]
         });
-        let move = fixtures('move', { from: from, to: to, gameState: gameState });
+        let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
 
         expect(move.dieNumber).toEqual(1);
       });
@@ -391,7 +391,7 @@ describe('Move', () => {
             { number: 4, pieces: [ ] }
           ]
         });
-        let move = fixtures('move', { from: from, to: to, gameState: gameState });
+        let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
 
         expect(move.dieNumber).toEqual(2);
       });
@@ -402,7 +402,7 @@ describe('Move', () => {
     it('returns from and to', () => {
       let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
       let to = fixtures('point', { number: 4, pieces: [ ] });
-      let move = fixtures('move', { from: from, to: to });
+      let move = fixtures('move', { fromNumber: from.number, toNumber: to.number });
 
       expect(move.details).toEqual({ from: 1, to: 4 });
     });
@@ -411,9 +411,9 @@ describe('Move', () => {
   describe('complete', () => {
     describe('without from', () => {
       it('returns false', () => {
-        let from = null;
+        let gameState = fixtures('gameState');
         let to = fixtures('point', { number: 4, pieces: [ ] });
-        let move = fixtures('move', { from: from, to: to });
+        let move = fixtures('move', { fromNumber: null, toNumber: to.number, gameState: gameState });
 
         expect(move.complete).toBe(false);
       });
@@ -421,9 +421,9 @@ describe('Move', () => {
 
     describe('without to', () => {
       it('returns false', () => {
+        let gameState = fixtures('gameState');
         let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-        let to = null;
-        let move = fixtures('move', { from: from, to: to });
+        let move = fixtures('move', { fromNumber: from.number, toNumber: null, gameState: gameState });
   
         expect(move.complete).toBe(false);
       });
@@ -444,8 +444,8 @@ describe('Move', () => {
           ]
         });
         let move = fixtures('move', { 
-          from: from, 
-          to: to, 
+          fromNumber: from.number, 
+          toNumber: to.number, 
           moveList: [],
           gameState: gameState 
         });
@@ -469,8 +469,8 @@ describe('Move', () => {
           ]
         });
         let move = fixtures('move', { 
-          from: from, 
-          to: to, 
+          fromNumber: from.number, 
+          toNumber: to.number, 
           moveList: [ { from: 3, to: 4 } ],
           gameState: gameState 
         });
@@ -511,8 +511,8 @@ describe('Move', () => {
           ]
         });
         let move = fixtures('move', { 
-          from: from, 
-          to: to, 
+          fromNumber: from.number, 
+          toNumber: to.number, 
           playerNumber: 1,
           moveList: [ { from: 23, to: 'off_board' } ],
           gameState: gameState 
@@ -552,8 +552,8 @@ describe('Move', () => {
           ]
         });
         let move = fixtures('move', { 
-          from: from, 
-          to: to, 
+          fromNumber: from.number, 
+          toNumber: to.number, 
           playerNumber: 1,
           moveList: [ ],
           gameState: gameState 
@@ -569,8 +569,8 @@ describe('Move', () => {
         let from = fixtures('point', { number: 23, pieces: [ { owner: 1 } ] });
         let to = fixtures('point', { number: 24, pieces: [ ] });
         let move = fixtures('move', { 
-          from: from, 
-          to: to, 
+          fromNumber: from.number, 
+          toNumber: to.number, 
           moveList: [ { from: 1, to: 2 } ]
         });
 

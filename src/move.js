@@ -2,17 +2,16 @@ import exists from './exists'
 
 class Move {
   constructor(args) { 
-    this.from = args.from;
-    this.to = args.to;
+    this.fromNumber = args.fromNumber;
+    this.toNumber = args.toNumber;
     this.moveList = exists(args.moveList) ? args.moveList.map(function(e) { return e; }) : [];
-    this.user = args.user;
     this.playerNumber = args.playerNumber;
     this.gameState = args.gameState;
     this.error = null;
   }
 
   possible() {
-    if (this.from.constructorName === 'Bar') { 
+    if (this.fromNumber === 'bar') { 
       if (this._noPiecesOwnedByPlayer) {
         this.error = { name: 'NoPiecesError', message: 'There are no pieces on the bar.'};
       } else if (this._noDestinations) {
@@ -38,7 +37,7 @@ class Move {
   }
 
   valid() {
-    if (this.to.constructorName === 'OffBoard') {
+    if (this.toNumber === 'off_board') {
       if (this._somePiecesAreNotHome) {
         this.error = { name: 'PiecesNotHomeError', message: 'Cannot bear off while pieces are not home.' };
       } else if (this._diceRollMismatch) {
@@ -70,11 +69,11 @@ class Move {
   }
 
   get details() {
-    return { from: this.from.number, to: this.to.number };
+    return { from: this.fromNumber, to: this.toNumber };
   }
 
   get complete() {
-    return exists(this.from) && exists(this.to) && (this._numberOfMoves === this.gameState.dice.length);
+    return exists(this._from) && exists(this._to) && (this._numberOfMoves === this.gameState.dice.length);
   }
 
   get allPiecesOffBoard() {
@@ -82,23 +81,31 @@ class Move {
   }
 
   get completeMoveList() { 
-    return this.moveList.concat([{from: this.from.number, to: this.to.number}]);
+    return this.moveList.concat([{from: this.fromNumber, to: this.toNumber}]);
+  }
+
+  get _from() {
+    return this.gameState.findPoint(this.fromNumber);
+  }
+
+  get _to() {
+    return this.gameState.findPoint(this.toNumber);
   }
 
   get _noPiecesOwnedByPlayer() {
-    return this.from.noPiecesOwnedByPlayer(this.playerNumber);
+    return this._from.noPiecesOwnedByPlayer(this.playerNumber);
   }
 
   get _noDestinations() {
-    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none;
+    return this.gameState.points.destinations(this._from, this.gameState.dice, this.playerNumber).none;
   }
 
   get _emptyPoint() {
-    return exists(this.from) && this.from.empty;
+    return exists(this._from) && this._from.empty;
   }
 
   get _ownedByOpponent() {
-    return this.from.ownedByOpponent(this.playerNumber);
+    return this._from.ownedByOpponent(this.playerNumber);
   }
 
   get _barHasPieces() {
@@ -106,7 +113,7 @@ class Move {
   }
 
   get _noDestinations() {
-    return this.gameState.points.destinations(this.from, this.gameState.dice, this.playerNumber).none;
+    return this.gameState.points.destinations(this._from, this.gameState.dice, this.playerNumber).none;
   }
 
   get _somePiecesAreNotHome() {
@@ -116,13 +123,13 @@ class Move {
   get _cannotBearOff() {
     let backPointNumber = this.gameState.points.backPointForPlayer(this.playerNumber).number;
 
-    if (backPointNumber === this.from.number) {
+    if (backPointNumber === this._from.number) {
       return this.gameState.dice.unused.filter((d) => {
-        return this.from.distanceFromOffBoard(this.playerNumber) <= d.number;
+        return this._from.distanceFromOffBoard(this.playerNumber) <= d.number;
       }).none();
     } else {
       return this.gameState.dice.unused.filter((d) => {
-        return this.from.distanceFromOffBoard(this.playerNumber) === d.number;
+        return this._from.distanceFromOffBoard(this.playerNumber) === d.number;
       }).none();
     }
   }
@@ -138,15 +145,15 @@ class Move {
   }
 
   get _bearOff() {
-    return this.to.constructorName === 'OffBoard';
+    return this.toNumber === 'OffBoard';
   }
 
   get _toBlocked() { 
-    return this.to.ownedByOpponent(this.playerNumber) && this.to.blocked;
+    return this._to.ownedByOpponent(this.playerNumber) && this._to.blocked;
   }
 
   get _wrongDirection() {
-    let vectorDistance = this.to.number - this.from.number;
+    let vectorDistance = this._toInt - this._fromInt;
     switch (this.playerNumber) {
       case 1:
         return (vectorDistance < 0);
@@ -158,26 +165,27 @@ class Move {
   }
 
   get _distance() {
-    return Math.abs(this._toNumber - this._fromNumber);
+    return Math.abs(this._toInt - this._fromInt);
   }
 
-  get _fromNumber() {
+  get _fromInt() {
     switch (this.playerNumber) {
       case 1:
-        return this.from.constructorName === 'Bar' ? 0 : this.from.number;
+        return this.fromNumber === 'bar' ? 0 : this.fromNumber;
       case 2:
-        return this.from.constructorName === 'Bar' ? 25 : this.from.number;
+        return this.fromNumber === 'bar' ? 25 : this.fromNumber;
       default: 
         return null;
     }
   }
 
-  get _toNumber() {
+  get _toInt() {
     switch (this.playerNumber) {
       case 1:
-        return this.to.constructorName === 'OffBoard' ? 25 : this.to.number;
+        return this.toNumber === 'off_board' ? 25 : this.toNumber;
       case 2:
-        return this.to.constructorName === 'OffBoard' ? 0 : this.to.number;
+        return this.toNumber === 'off_board' ? 0 : this.toNumber;
+o
       default: 
         return null;
     }

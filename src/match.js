@@ -86,8 +86,8 @@ class Match {
 
       if (exists(selectedPoint)) {
         let move = new Move({
-          from: selectedPoint, 
-          to: point, 
+          fromNumber: selectedPoint.number, 
+          toNumber: point.number, 
           moveList: this.moveList, 
           playerNumber: playerNumber,
           gameState: this.gameState
@@ -111,7 +111,7 @@ class Match {
         }
       } else {
         let move = new Move({
-          from: point, 
+          fromNumber: point.number, 
           playerNumber: playerNumber,
           gameState: this.gameState
         });
