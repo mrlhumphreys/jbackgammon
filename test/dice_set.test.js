@@ -84,4 +84,33 @@ describe('DiceSet', () => {
       expect(diceSet.highestUnused()).toBe(2);
     });
   });
+
+  describe('equalTo', () => {
+    it('must return the dice with the matching number', () => {
+      let diceSet = new DiceSet([{ number: 3 }, { number: 2, }]);
+      let die = diceSet.equalTo(2).findByNumber(2); 
+      expect(die).not.toBe(undefined);
+    });
+  });
+
+  describe('greaterThanOrEqualTo', () => {
+    it('must return the dice with the matching number', () => {
+      let diceSet = new DiceSet([{ number: 3 }, { number: 2, }]);
+      let die = diceSet.greaterThanOrEqualTo(2).findByNumber(2); 
+      expect(die).not.toBe(undefined);
+    });
+
+    it('must return the dice greater than the matching number', () => {
+      let diceSet = new DiceSet([{ number: 3 }, { number: 2, }]);
+      let die = diceSet.greaterThanOrEqualTo(2).findByNumber(3); 
+      expect(die).not.toBe(undefined);
+    });
+
+    it('must not return dice less than matching the number', () => {
+      let diceSet = new DiceSet([{ number: 3 }, { number: 2, }]);
+      let die = diceSet.greaterThanOrEqualTo(3).findByNumber(2); 
+      expect(die).toBe(undefined);
+    });
+
+  });
 });

@@ -111,14 +111,11 @@ class PointSet {
 
   cannotBearOff(playerNumber, dice) { 
     return this.ownedByPlayer(playerNumber).every((p) => {
+      let distance = p.distanceFromOffBoard(playerNumber);
       if (this.backPointForPlayer(playerNumber).number === p.number) {
-        return dice.unused.filter((d) => { 
-          return p.distanceFromOffBoard(playerNumber) <= d.number;
-        }).none();
+        return dice.unused.greaterThanOrEqualTo(distance).none();
       } else {
-        return dice.unused.filter((d) => {
-          return p.distanceFromOffBoard(playerNumber) === d.number;
-        }).none();
+        return dice.unused.equalTo(distance).none();
       }
     });
   }

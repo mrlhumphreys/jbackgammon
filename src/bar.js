@@ -1,26 +1,13 @@
-import exists from './exists'
-import Piece from './piece'
+import ExtraPoint from './extra_point'
 
-class Bar {
+class Bar extends ExtraPoint {
   constructor(args) { 
+    super(args);
     this.constructorName = 'Bar';
     this.number = 'bar';
-    this.pieces = args.pieces.map(function(p) { return new Piece(p); });
-    this.selected = exists(args.selected) ? args.selected : false;
-  }
-
-  get asJson() {
-    return {
-      pieces: this.pieces.map(function(p) { return p.asJson; }),
-      selected: this.selected
-    };
   }
 
   // queries
-
-  piecesOwnedByPlayer(playerNumber) { 
-    return this.pieces.filter(function(p) { return p.owner === playerNumber });
-  }
 
   hasPiecesOwnedByPlayer(playerNumber) { 
     return this.pieces.some(function(p) { return p.owner === playerNumber });
@@ -48,10 +35,6 @@ class Bar {
       this.pieces.splice(pieceIndex, 1);
     }
     return piece;
-  }
-
-  push(piece) {
-    this.pieces.push(piece);
   }
 };
 

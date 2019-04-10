@@ -9,23 +9,6 @@ describe('Bar', () => {
     });
   });
 
-  describe('asJson', () => {
-    it('must return the bar as json', () => {
-      let bar = new Bar({ pieces: [ { owner: 1 } ] });
-      expect(bar.asJson).toEqual({ pieces: [ { owner: 1 } ], selected: false });
-    });
-  });
-
-  describe('piecesOwnedBy', () => {
-    it('must return all pieces owned by the player', () => {
-      let bar = new Bar({pieces: [{owner: 1}, {owner: 2}]});
-      let pieces = bar.piecesOwnedByPlayer(1);
-
-      expect(pieces.length).toEqual(1);
-      expect(pieces[0].owner).toEqual(1);
-    });
-  });
-
   describe('a bar with only pieces owned by a player', () => {
     it('must have pieces owned by that player', () => {
       let bar = new Bar({pieces: [{owner: 1}]});
@@ -81,15 +64,6 @@ describe('Bar', () => {
         let piece = bar.pop(1);
         expect(piece).toBe(undefined); 
       });
-    });
-  });
-
-  describe('push', () => {
-    it('must push the piece onto it', () => {
-      let bar = new Bar({pieces: []});
-      let piece = new Piece({owner: 1}); 
-      bar.push(piece);
-      expect(bar.pieces.length).toEqual(1);
     });
   });
 });

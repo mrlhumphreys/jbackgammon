@@ -79,49 +79,6 @@ class GameState {
     return this.currentPhase === 'move';
   }
 
-  // move functions
-
-  movePossible(fromNumber, playerNumber) {
-    let move = new Move({fromNumber: fromNumber, playerNumber: playerNumber, gameState: this});
-    return move.possible();
-  }
-
-  moveValid(fromNumber, toNumber, moveList, playerNumber) {
-    let move = new Move({fromNumber: fromNumber, toNumber: toNumber, moveList: moveList, playerNumber: playerNumber, gameState: this}); 
-    return move.valid();
-  }
-
-  moveComplete(fromNumber, toNumber, moveList, playerNumber) {
-    let move = new Move({fromNumber: fromNumber, toNumber: toNumber, moveList: moveList, playerNumber: playerNumber, gameState: this});
-    return move.complete;
-  }
-
-  moveDieNumber(fromNumber, toNumber, playerNumber) {
-    let move = new Move({fromNumber: fromNumber, toNumber: toNumber, playerNumber: playerNumber, gameState: this});
-    return move.dieNumber;
-  }
-
-  moveDetails(fromNumber, toNumber) {
-    let move = new Move({fromNumber: fromNumber, toNumber: toNumber, gameState: this});
-    return move.details;
-  }
-
-  moveAllPiecesOffBoard(moveList, playerNumber) {
-    let move = new Move({moveList: moveList, playerNumber: playerNumber, gameState: this});
-    return move.allPiecesOffBoard;
-  }
-
-  moveCompleteMoveList(fromNumber, toNumber, moveList) {
-    let move = new Move({fromNumber: fromNumber, toNumber: toNumber, moveList: moveList, gameState: this});
-    return move.completeMoveList;
-  }
-
-  moveErrorMessage(fromNumber, user) {
-    let move = new Move({fromNumber: fromNumber, user: user, gameState: this});
-    move.possible();
-    return move.error.message;
-  }
-
   // actions
 
   select(pointName) {

@@ -96,10 +96,6 @@ class Move {
     return this._from.noPiecesOwnedByPlayer(this.playerNumber);
   }
 
-  get _noDestinations() {
-    return this.gameState.points.destinations(this._from, this.gameState.dice, this.playerNumber).none;
-  }
-
   get _emptyPoint() {
     return exists(this._from) && this._from.empty;
   }
@@ -122,15 +118,11 @@ class Move {
 
   get _cannotBearOff() {
     let backPointNumber = this.gameState.points.backPointForPlayer(this.playerNumber).number;
-
+    let distance = this._from.distanceFromOffBoard(this.playerNumber);
     if (backPointNumber === this._from.number) {
-      return this.gameState.dice.unused.filter((d) => {
-        return this._from.distanceFromOffBoard(this.playerNumber) <= d.number;
-      }).none();
+      return this.gameState.dice.unused.greaterThanOrEqualTo(distance).none();
     } else {
-      return this.gameState.dice.unused.filter((d) => {
-        return this._from.distanceFromOffBoard(this.playerNumber) === d.number;
-      }).none();
+      return this.gameState.dice.unused.equalTo(distance).none();
     }
   }
 

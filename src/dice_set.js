@@ -46,6 +46,14 @@ class DiceSet {
     return Math.max.apply(null, this.dice.map(function(d) { return !d.used && d.number; }));
   }
 
+  equalTo(number) {
+    return this.filter(function(d) { return d.number === number; });
+  } 
+
+  greaterThanOrEqualTo(number) {
+    return this.filter(function(d) { return d.number >= number; });
+  }
+
   // actions
 
   use(number) { 
