@@ -10,7 +10,7 @@ class Match {
     this.winner = args.winner;
     this.moveList = exists(args.move_list) ? args.move_list : [];
     this.lastAction = exists(args.last_action) ? args.last_action : {};
-    this.notification = exists(args.notification) ? args.notification : null;
+    this.notification = exists(args.notification) ? args.notification : this._defaultMessage;
   }
 
   get asJson() {
@@ -131,6 +131,28 @@ class Match {
     if (this.passable(playerNumber)) {
       this._addMoveToLastAction(this.moveList);
       this._clearMoveList();
+    }
+  }
+
+  // private getters
+
+  get _turnMessage() {
+    let currentPlayerIndex = this.gameState.currentPlayerNumber - 1;
+    let currentPlayerName = this.players[currentPlayerIndex].name;
+    return `${currentPlayerName} to move`;
+  }
+
+  get _winnerMessage() {
+    let winnerIndex = this.winner - 1;
+    let winnerName = this.players[winnerIndex].name;
+    return `${winnerName} wins`;
+  }
+
+  get _defaultMessage() {
+    if (exists(this.winner)) {
+      return this._winnerMessage;
+    } else {
+      return this._turnMessage;
     }
   }
 

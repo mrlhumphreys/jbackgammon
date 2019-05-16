@@ -2,6 +2,22 @@ import fixtures from './fixtures'
 import Match from '../src/match'
 
 describe('Match', () => {
+  describe('initialize', () => {
+    describe('with no winner', () => {
+      it('sets the notification to a players turn message', () => {
+        let match = fixtures('match');
+        expect(match.notification).toEqual('aaa to move');
+      });
+    });
+
+    describe('with winner', () => {
+      it('sets the notification to winner message', () => {
+        let match = fixtures('match', { winner: 2 });
+        expect(match.notification).toEqual('bbb wins');
+      });
+    });
+  });
+
   describe('asJson', () => {
     it('must return the match serialized as json', () => {
       let match = fixtures('match');
@@ -56,7 +72,7 @@ describe('Match', () => {
         winner: null,
         move_list: [],
         last_action: {},
-        notification: null
+        notification: "aaa to move" 
       });
     });
   });
