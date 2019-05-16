@@ -10,6 +10,7 @@ class Match {
     this.winner = args.winner;
     this.moveList = exists(args.move_list) ? args.move_list : [];
     this.lastAction = exists(args.last_action) ? args.last_action : {};
+    this.notification = exists(args.notification) ? args.notification : null;
   }
 
   get asJson() {
@@ -19,7 +20,8 @@ class Match {
       players: this.players,
       winner: this.winner,
       move_list: this.moveList,
-      last_action: this.lastAction
+      last_action: this.lastAction,
+      notification: this.notification
     };
   }
 
@@ -143,7 +145,7 @@ class Match {
   }
 
   _notify(message) {
-    this.lastAction = { kind: 'notification', data: { message: message } };
+    this.notification = message;
   }
 
   _addRollToLastAction() {

@@ -55,7 +55,8 @@ describe('Match', () => {
         ],
         winner: null,
         move_list: [],
-        last_action: {}
+        last_action: {},
+        notification: null
       });
     });
   });
@@ -271,7 +272,7 @@ describe('Match', () => {
       it('adds a notification', () => {
         let match = fixtures('rollMatch', { winner: 1 });
         match.touchDice(1);
-        expect(match.lastAction.data.message).toEqual('Game is over.');
+        expect(match.notification).toEqual('Game is over.');
       });
     });
 
@@ -279,7 +280,7 @@ describe('Match', () => {
       it('adds a notification', () => {
         let match = fixtures('rollMatch', { game_state: { current_player_number: 2 } });
         match.touchDice(1);
-        expect(match.lastAction.data.message).toEqual('It is not your turn.');
+        expect(match.notification).toEqual('It is not your turn.');
       });
     });
 
@@ -287,7 +288,7 @@ describe('Match', () => {
       it('adds a notification', () => {
         let match = fixtures('moveMatch');
         match.touchDice(1);
-        expect(match.lastAction.data.message).toEqual('Dice have already been rolled.');
+        expect(match.notification).toEqual('Dice have already been rolled.');
       });
     });
 
@@ -305,7 +306,7 @@ describe('Match', () => {
       it('adds a notification', () => {
         let match = fixtures('rollMatch', { winner: 1 });
         match.touchPoint(1, 1);
-        expect(match.lastAction.data.message).toEqual('Game is over.');
+        expect(match.notification).toEqual('Game is over.');
       });
     });
 
@@ -313,7 +314,7 @@ describe('Match', () => {
       it('adds a notification', () => {
         let match = fixtures('moveMatch', { game_state: { current_player_number: 2 }});
         match.touchPoint(1, 1);
-        expect(match.lastAction.data.message).toEqual('It is not your turn.');
+        expect(match.notification).toEqual('It is not your turn.');
       });
     });
 
@@ -321,7 +322,7 @@ describe('Match', () => {
       it('adds a notification', () => {
         let match = fixtures('rollMatch');
         match.touchPoint(1, 1);
-        expect(match.lastAction.data.message).toEqual('Pieces cannot move until the dice are rolled.');
+        expect(match.notification).toEqual('Pieces cannot move until the dice are rolled.');
 
       });
     });
@@ -423,7 +424,7 @@ describe('Match', () => {
           it('adds a notification', () => {
             let match = fixtures('noMovesMatch');
             match.touchPoint(1, 1);
-            expect(match.lastAction.data.message).toEqual('Those pieces cannot move.');
+            expect(match.notification).toEqual('Those pieces cannot move.');
           });
         });
       });
