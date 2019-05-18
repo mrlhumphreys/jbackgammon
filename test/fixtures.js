@@ -723,15 +723,32 @@ const fixtureDefinitions = {
 const deepMerge = function(aObject, bObject) {
   let cObject = {};
 
-  let keys = [...new Set([...Object.keys(aObject), ...Object.keys(bObject)])];
+  let aObjectKeys = [];
+  let bObjectKeys = [];
+
+  if (exists(aObject)) {
+    aObjectKeys = Object.keys(aObject);
+  }
+
+  if (exists(bObject)) {
+    bObjectKeys = Object.keys(bObject);
+  }
+
+  let keys = [...new Set([...aObjectKeys, ...bObjectKeys])];
 
   keys.forEach(function(k) {
     let aValue = undefined;
     let bValue = undefined;
-    let cValue = undefined;
 
-    aValue = aObject[k];
-    bValue = bObject[k];
+    if (exists(aObject)) {
+      aValue = aObject[k];
+    }
+
+    if (exists(bObject)) {
+      bValue = bObject[k];
+    }
+
+    let cValue = undefined;
 
     if (exists(bValue)) {
       if (bValue.constructor === Object) {

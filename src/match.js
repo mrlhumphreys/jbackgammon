@@ -64,6 +64,8 @@ class Match {
   // user actions
 
   touchDice(playerNumber) {
+    this._clearLastAction();
+
     if (exists(this.winner)) {
       this._notify('Game is over.'); 
     } else if (!this.gameState.playersTurn(playerNumber)) {
@@ -76,6 +78,8 @@ class Match {
   }
 
   touchPoint(pointNumber, playerNumber) {
+    this._clearLastAction();
+
     if (exists(this.winner)) {
       this._notify('Game is over.'); 
     } else if (!this.gameState.playersTurn(playerNumber)) {
@@ -176,6 +180,10 @@ class Match {
 
   _addMoveToLastAction(moveList) {
     this.lastAction = { kind: 'move', data: { moveList: moveList } };
+  }
+
+  _clearLastAction() {
+    this.lastAction = null;
   }
 }
 

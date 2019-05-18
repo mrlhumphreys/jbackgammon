@@ -284,6 +284,14 @@ describe('Match', () => {
   });
 
   describe('touchDice', () => {
+    describe('with a last action', () => {
+      it('clears last action', () => {
+        let match = fixtures('rollMatch', { last_action: { kind: 'misc', data: { a: 1 } } });
+        match.touchDice(1);
+        expect(match.lastAction).toEqual({kind: 'roll', data: {}});
+      });
+    });
+
     describe('with a winner', () => {
       it('adds a notification', () => {
         let match = fixtures('rollMatch', { winner: 1 });
@@ -318,6 +326,14 @@ describe('Match', () => {
   });
 
   describe('touchPoint', () => {
+    describe('with a last action', () => {
+      it('clears last action', () => {
+        let match = fixtures('moveMatch', { last_action: { kind: 'misc', data: { a: 1 } } });
+        match.touchPoint(1, 1);
+        expect(match.lastAction).toBe(null);
+      });
+    });
+
     describe('with a winner', () => {
       it('adds a notification', () => {
         let match = fixtures('rollMatch', { winner: 1 });
@@ -466,7 +482,7 @@ describe('Match', () => {
       it('does not add move to last action', () => {
         let match = fixtures('selectedMatch');
         match.touchPoint(2, 1);
-        expect(match.lastAction).toEqual({});
+        expect(match.lastAction).toEqual(null);
       });
 
       it('does not clear move list', () => {
