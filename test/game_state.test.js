@@ -362,4 +362,22 @@ describe('Game State', () => {
       });
     });
   });
+
+  describe('passTurn', () => {
+    describe('when current turn is player 1', () => {
+      it('passes the turn to player 2', () => {
+        let gameState = fixtures('gameState', { current_player_number: 1});
+        gameState.passTurn();
+        expect(gameState.currentPlayerNumber).toEqual(2);
+      });
+    });
+
+    describe('when current turn is player 2', () => {
+      it('passes the turn to player 1', () => {
+        let gameState = fixtures('gameState', { current_player_number: 2});
+        gameState.passTurn();
+        expect(gameState.currentPlayerNumber).toEqual(1);
+      });
+    });
+  });
 });

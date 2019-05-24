@@ -396,6 +396,12 @@ describe('Match', () => {
           });
 
           describe('with move complete', () => {
+            it('passes the turn', () => {
+              let match = fixtures('completedMoveMatch');
+              match.touchPoint(3, 1);
+              expect(match.gameState.currentPlayerNumber).toEqual(2);
+            });
+
             it('adds move to the last action', () => {
               let match = fixtures('completedMoveMatch');
               match.touchPoint(3, 1);
@@ -465,6 +471,12 @@ describe('Match', () => {
 
   describe('touchPass', () => {
     describe('when passable', () => {
+      it('passes the turn', () => {
+        let match = fixtures('singleMoveMatch');
+        match.touchPass(1);
+        expect(match.gameState.currentPlayerNumber).toEqual(2);
+      });
+
       it('adds move to last action', () => {
         let match = fixtures('singleMoveMatch');
         match.touchPass(1);

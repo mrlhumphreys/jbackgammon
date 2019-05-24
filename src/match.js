@@ -104,6 +104,7 @@ class Match {
             this.gameState.deselect();
             this.gameState.move(selectedPoint.number, pointNumber, playerNumber);
             this.gameState.useDie(move.dieNumber);
+            this.gameState.passTurn(); 
             this._addMoveToLastAction(move.completeMoveList);
             this._clearMoveList();
           } else {
@@ -133,6 +134,7 @@ class Match {
 
   touchPass(playerNumber) {
     if (this.passable(playerNumber)) {
+      this.gameState.passTurn(); 
       this._addMoveToLastAction(this.moveList);
       this._clearMoveList();
     }
