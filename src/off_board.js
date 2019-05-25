@@ -12,6 +12,10 @@ class OffBoard extends ExtraPoint {
   enemyBlot(playerNumber) {
     return false;
   }
+
+  hasAllOfPlayersPieces(playerNumber) {
+    return (this.piecesOwnedByPlayer(playerNumber).length == 15);
+  }
 };
 
 export default OffBoard

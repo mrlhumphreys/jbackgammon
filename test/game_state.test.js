@@ -81,6 +81,61 @@ describe('Game State', () => {
     });
   });
 
+  describe('rollPhase', () => {
+    describe('when phase is roll', () => {
+      it('returns true', () => {
+        let gameState = new fixtures('gameState', { current_phase: 'roll' });
+        expect(gameState.rollPhase).toBe(true);
+      });
+    });
+
+    describe('when phase is move', () => {
+      it('returns false', () => {
+        let gameState = new fixtures('gameState', { current_phase: 'move' });
+        expect(gameState.rollPhase).toBe(false);
+      });
+    });
+  });
+
+  describe('movePhase', () => {
+    describe('when phase is move', () => {
+      it('returns true', () => {
+        let gameState = new fixtures('gameState', { current_phase: 'move' });
+        expect(gameState.movePhase).toBe(true);
+      });
+    });
+
+    describe('when phase is roll', () => {
+      it('returns false', () => {
+        let gameState = new fixtures('gameState', { current_phase: 'roll' });
+        expect(gameState.movePhase).toBe(false);
+      });
+    });
+  });
+
+  describe('winner', () => {
+    describe('with all of player ones pieces off board', () => {
+      it('returns one', () => {
+        let gameState = new fixtures('playerOneWinsGameState');
+        expect(gameState.winner).toEqual(1);
+      });
+    });
+
+    describe('with all of player twos pieces off board', () => {
+      it('returns two', () => {
+        let gameState = new fixtures('playerTwoWinsGameState');
+        expect(gameState.winner).toEqual(2);
+      });
+    });
+
+    describe('with no player with all pieces off the board', () => {
+      it('returns null', () => {
+        let gameState = new fixtures('gameState');
+        expect(gameState.winner).toBe(null);
+      });
+    });
+  });
+
   describe('move', () => {
     it('must remove a piece from the from and put it on to', () => {
       let gameState = new fixtures('gameState');

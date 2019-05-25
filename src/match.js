@@ -55,7 +55,7 @@ class Match {
 
   passable(playerNumber) { 
     let playersTurn = this.gameState.playersTurn(playerNumber);
-    let movePhase = this.gameState.movePhase();
+    let movePhase = this.gameState.movePhase;
     let noMoves = this.gameState.noMovesForPlayer(playerNumber);
     let unusedDice = this.gameState.dice.unused.length > 0;
     return playersTurn && movePhase && noMoves && unusedDice;
@@ -70,9 +70,9 @@ class Match {
       this._notify('Game is over.'); 
     } else if (!this.gameState.playersTurn(playerNumber)) {
       this._notify('It is not your turn.');
-    } else if (this.gameState.movePhase()) {
+    } else if (this.gameState.movePhase) {
       this._notify('Dice have already been rolled.');
-    } else if (this.gameState.rollPhase()) {
+    } else if (this.gameState.rollPhase) {
       this._addRollToLastAction();
     }
   }
@@ -84,9 +84,9 @@ class Match {
       this._notify('Game is over.'); 
     } else if (!this.gameState.playersTurn(playerNumber)) {
       this._notify('It is not your turn.');
-    } else if (this.gameState.rollPhase()) {
+    } else if (this.gameState.rollPhase) {
       this._notify('Pieces cannot move until the dice are rolled.');
-    } else if (this.gameState.movePhase()) {
+    } else if (this.gameState.movePhase) {
       let selectedPoint = this.gameState.selectedPoint;
       let point = this.findPoint(pointNumber);
 

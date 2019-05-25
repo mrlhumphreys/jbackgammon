@@ -15,4 +15,57 @@ describe('OffBoard', () => {
       expect(offBoard.enemyBlot(1)).toBe(false);
     });
   });
+
+  describe('hasAllOfPlayersPieces', () => {
+    describe('with 15 pieces', () => {
+      it('must return true', () => {
+        let offBoard = new OffBoard({
+          pieces: [
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 }
+          ]
+        });
+
+        expect(offBoard.hasAllOfPlayersPieces(1)).toBe(true);
+      });
+    });
+
+    describe('with less than 15 pieces', () => {
+      it('must return false', () => {
+        let offBoard = new OffBoard({
+          pieces: [
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 }
+          ]
+        });
+
+        expect(offBoard.hasAllOfPlayersPieces(1)).toBe(false);
+      });
+    });
+  });
 });

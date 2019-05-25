@@ -71,12 +71,22 @@ class GameState {
     return this.currentPlayerNumber === playerNumber;
   }
 
-  rollPhase() {
+  get rollPhase() {
     return this.currentPhase === 'roll';
   }
 
-  movePhase() {
+  get movePhase() {
     return this.currentPhase === 'move';
+  }
+
+  get winner() {
+    if (this.offBoard.hasAllOfPlayersPieces(1)) {
+      return 1;
+    } else if (this.offBoard.hasAllOfPlayersPieces(2)) {
+      return 2;
+    } else {
+      return null; 
+    }
   }
 
   // actions
