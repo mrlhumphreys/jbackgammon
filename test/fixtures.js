@@ -425,6 +425,71 @@ const fixtureDefinitions = {
       winner: null
     } 
   },
+  winnerMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": null },
+          { "number": null }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [] }
+        ],
+        "off_board": { 
+          "pieces": [
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 }   
+          ] 
+        }
+      },
+      players: [
+        { number: 1, name: 'aaa' },
+        { number: 2, name: 'bbb' }
+      ],
+      winner: null
+    }
+  },
   rollMatch: {
     klass: Match,
     args: {

@@ -149,13 +149,13 @@ class Match {
   }
 
   get _winnerMessage() {
-    let winnerIndex = this.winner - 1;
+    let winnerIndex = this.gameState.winner - 1;
     let winnerName = this.players[winnerIndex].name;
     return `${winnerName} wins`;
   }
 
   get _defaultMessage() {
-    if (exists(this.winner)) {
+    if (exists(this.gameState.winner)) {
       return this._winnerMessage;
     } else {
       return this._turnMessage;

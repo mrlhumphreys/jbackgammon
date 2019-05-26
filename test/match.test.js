@@ -12,7 +12,7 @@ describe('Match', () => {
 
     describe('with winner', () => {
       it('sets the notification to winner message', () => {
-        let match = fixtures('match', { winner: 2 });
+        let match = fixtures('winnerMatch');
         expect(match.notification).toEqual('bbb wins');
       });
     });
