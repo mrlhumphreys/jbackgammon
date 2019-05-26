@@ -177,7 +177,6 @@ class Move {
         return this.toNumber === 'off_board' ? 25 : this.toNumber;
       case 2:
         return this.toNumber === 'off_board' ? 0 : this.toNumber;
-o
       default: 
         return null;
     }
