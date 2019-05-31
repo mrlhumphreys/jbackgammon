@@ -137,7 +137,7 @@ class Move {
   }
 
   get _bearOff() {
-    return this.toNumber === 'OffBoard';
+    return this.toNumber === 'off_board';
   }
 
   get _toBlocked() { 
