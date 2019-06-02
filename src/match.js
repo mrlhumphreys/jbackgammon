@@ -165,7 +165,7 @@ class Match {
   }
 
   get _defaultMessage() {
-    if (exists(this.gameState.winner)) {
+    if (exists(this.winner)) {
       return this._winnerMessage;
     } else {
       return this._turnMessage;
