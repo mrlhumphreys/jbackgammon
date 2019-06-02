@@ -66,13 +66,35 @@ describe('Match', () => {
           } 
         },
         players: [
-          { name: 'aaa', number: 1 },
-          { name: 'bbb', number: 2 }
+          { name: 'aaa', player_number: 1, resigned: false },
+          { name: 'bbb', player_number: 2, resigned: false }
         ],
-        winner: null,
         move_list: [],
         last_action: {},
         notification: "aaa to move" 
+      });
+    });
+  });
+
+  describe('winner', () => {
+    describe('with someone winning on the board', () => {
+      it('must return the player number of the winner', () => {
+        let match = fixtures('winningRollMatch');
+        expect(match.winner).toEqual(2);
+      });
+    });
+
+    describe('with no one winning on the board', () => {
+      it('must return null', () => {
+        let match = fixtures('match');
+        expect(match.winner).toBe(null);
+      });
+    });
+
+    describe('with someone resigning', () => {
+      it('must return the number of the player who did not resign', () => {
+        let match = fixtures('resignedMatch');
+        expect(match.winner).toEqual(2);
       });
     });
   });
@@ -294,7 +316,7 @@ describe('Match', () => {
 
     describe('with a winner', () => {
       it('adds a notification', () => {
-        let match = fixtures('rollMatch', { winner: 1 });
+        let match = fixtures('winningRollMatch');
         match.touchDice(1);
         expect(match.notification).toEqual('Game is over.');
       });
@@ -336,7 +358,7 @@ describe('Match', () => {
 
     describe('with a winner', () => {
       it('adds a notification', () => {
-        let match = fixtures('rollMatch', { winner: 1 });
+        let match = fixtures('winningRollMatch');
         match.touchPoint(1, 1);
         expect(match.notification).toEqual('Game is over.');
       });

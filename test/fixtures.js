@@ -6,11 +6,20 @@ import Point from '../src/point'
 import PointSet from '../src/point_set'
 import GameState from '../src/game_state'
 import Match from '../src/match'
+import Player from '../src/player'
 
 const fixtureDefinitions = {
   bar: {
     klass: Bar,
     args: { pieces: [] } 
+  },
+  player: {
+    klass: Player,
+    args: {
+      player_number: 1,
+      name: 'aaa',
+      resigned: false
+    }
   },
   gameState: {
     klass: GameState,
@@ -419,8 +428,55 @@ const fixtureDefinitions = {
         "off_board": { "pieces": [] }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
+      ],
+      winner: null
+    } 
+  },
+  resignedMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": null },
+          { "number": null }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      players: [
+        { player_number: 1, name: 'aaa', resigned: true },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     } 
@@ -484,8 +540,8 @@ const fixtureDefinitions = {
         }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
@@ -531,10 +587,74 @@ const fixtureDefinitions = {
         "off_board": { "pieces": [] }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
+    }
+  },
+  winningRollMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "roll",
+        "dice": [
+          { "number": null },
+          { "number": null }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [] }
+        ],
+        "off_board": { 
+          "pieces": [
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 },   
+            { owner: 2 }   
+          ] 
+        }
+      },
+      players: [
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
+      ],
     }
   },
   moveMatch: {
@@ -578,8 +698,8 @@ const fixtureDefinitions = {
         "off_board": { "pieces": [] }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
@@ -625,8 +745,8 @@ const fixtureDefinitions = {
         "off_board": { "pieces": [] }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
@@ -675,8 +795,8 @@ const fixtureDefinitions = {
         { from: 1, to: 2 }
       ],
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
@@ -739,8 +859,8 @@ const fixtureDefinitions = {
         }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
@@ -786,8 +906,8 @@ const fixtureDefinitions = {
         "off_board": { "pieces": [] }
       },
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
@@ -836,8 +956,8 @@ const fixtureDefinitions = {
         { from: 4, to: 6 }
       ],
       players: [
-        { number: 1, name: 'aaa' },
-        { number: 2, name: 'bbb' }
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
       ],
       winner: null
     }
