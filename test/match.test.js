@@ -70,7 +70,7 @@ describe('Match', () => {
           { name: 'bbb', player_number: 2, resigned: false }
         ],
         move_list: [],
-        last_action: {},
+        last_action: null,
         notification: "aaa to move" 
       });
     });
