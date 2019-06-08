@@ -33,34 +33,6 @@ class Match {
     }
   }
 
-  findPoint(pointNumber) {
-    return this.gameState.findPoint(pointNumber);
-  }
-
-  get barPlayerOne() {
-    return this.gameState.bar.piecesOwnedByPlayer(1);
-  }
-
-  get barSelected() {
-    return this.gameState.bar.selected;
-  }
-
-  get barPlayerTwo() {
-    return this.gameState.bar.piecesOwnedByPlayer(2);
-  }
-
-  get offBoardPlayerOne() {
-    return this.gameState.offBoard.piecesOwnedByPlayer(1);
-  }
-
-  get offBoardSelected() {
-    return this.gameState.offBoard.selected;
-  }
-
-  get offBoardPlayerTwo() {
-    return this.gameState.offBoard.piecesOwnedByPlayer(2);
-  }
-
   passable(playerNumber) { 
     let playersTurn = this.gameState.playersTurn(playerNumber);
     let movePhase = this.gameState.movePhase;
@@ -96,7 +68,7 @@ class Match {
       this._notify('Pieces cannot move until the dice are rolled.');
     } else if (this.gameState.movePhase) {
       let selectedPoint = this.gameState.selectedPoint;
-      let point = this.findPoint(pointNumber);
+      let point = this.gameState.findPoint(pointNumber);
 
       if (exists(selectedPoint)) {
         let move = new Move({

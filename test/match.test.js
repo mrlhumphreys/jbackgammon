@@ -99,157 +99,6 @@ describe('Match', () => {
     });
   });
 
-  describe('findPoint', () => {
-    it('should return the point specified', () => {
-      let match = fixtures('match');
-      expect(match.findPoint(2).number).toEqual(2);
-    });
-  });
-
-  describe('barPlayerOne', () => {
-    it('should return the pieces on the bar owned by player one', () => {
-      let match = fixtures('match', {
-        game_state: {
-          bar: {
-            pieces: [
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 2 }
-            ]
-          } 
-        }
-      });
-
-      let result = match.barPlayerOne;
-
-      expect(result.length).toEqual(2);
-      expect(result[0].owner).toEqual(1);
-    });
-  });
-
-  describe('barSelected', () => {
-    describe('when bar is selected', () => {
-      it('should return true', () => {
-        let match = fixtures('match', {
-          game_state: {
-            bar: {
-              selected: true
-            }
-          }
-        });
-
-        expect(match.barSelected).toBe(true);
-      });
-    });
-
-    describe('when bar is not selected', () => {
-      it('should return false', () => {
-        let match = fixtures('match', {
-          game_state: {
-            bar: {
-              selected: false
-            }
-          }
-        });
-
-        expect(match.barSelected).toBe(false);
-      });
-    });
-  });
-
-  describe('barPlayerTwo', () => {
-    it('should return the pieces on the bar owned by player one', () => {
-      let match = fixtures('match', {
-        game_state: {
-          bar: {
-            pieces: [
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 2 }
-            ]
-          } 
-        }
-      });
-
-      let result = match.barPlayerTwo;
-
-      expect(result.length).toEqual(1);
-      expect(result[0].owner).toEqual(2);
-    });
-  });
-
-  describe('offBoardPlayerOne', () => {
-    it('should return the pieces off board owned by player one', () => {
-      let match = fixtures('match', {
-        game_state: {
-          off_board: {
-            pieces: [
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 2 }
-            ]
-          } 
-        }
-      });
-
-      let result = match.offBoardPlayerOne;
-
-      expect(result.length).toEqual(2);
-      expect(result[0].owner).toEqual(1);
-    });
-  });
-
-  describe('offBoardSelected', () => {
-    describe('when off board is selected', () => {
-      it('should return true', () => {
-        let match = fixtures('match', {
-          game_state: {
-            off_board: {
-              selected: true
-            }
-          }
-        });
-
-        expect(match.offBoardSelected).toBe(true);
-      });
-    });
-
-    describe('when off board is not selected', () => {
-      it('should return false', () => {
-        let match = fixtures('match', {
-          game_state: {
-            off_board: {
-              selected: false 
-            }
-          }
-        });
-
-        expect(match.offBoardSelected).toBe(false);
-      });
-    });
-  });
-
-  describe('offBoardPlayerTwo', () => {
-    it('should return the pieces off board owned by player two', () => {
-      let match = fixtures('match', {
-        game_state: {
-          off_board: {
-            pieces: [
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 2 }
-            ]
-          } 
-        }
-      });
-
-      let result = match.offBoardPlayerTwo;
-
-      expect(result.length).toEqual(1);
-      expect(result[0].owner).toEqual(2);
-    });
-  });
-
   describe('passable', () => {
     describe('move phase and no moves and unused dice', () => {
       it('must return true', () => {
@@ -388,7 +237,7 @@ describe('Match', () => {
             it('deselects point', () => {
               let match = fixtures('selectedMatch');
               match.touchPoint(2, 1);
-              let point = match.findPoint(1);
+              let point = match.gameState.findPoint(1);
               expect(point.selected).toBe(false);
             });
 
@@ -399,8 +248,8 @@ describe('Match', () => {
 
               match.touchPoint(toId, 1);
 
-              let from = match.findPoint(fromId);
-              let to = match.findPoint(toId);
+              let from = match.gameState.findPoint(fromId);
+              let to = match.gameState.findPoint(toId);
               
               expect(from.pieces.length).toEqual(1); 
               expect(to.pieces.length).toEqual(1); 
@@ -464,7 +313,7 @@ describe('Match', () => {
           it('deselects the point', () => {
             let match = fixtures('selectedMatch');
             match.touchPoint(6, 1);
-            let point = match.findPoint(1);
+            let point = match.gameState.findPoint(1);
             expect(point.selected).toBe(false);
           });
         });
@@ -475,7 +324,7 @@ describe('Match', () => {
           it('selects the point', () => {
             let match = fixtures('moveMatch');
             match.touchPoint(1, 1);
-            let point = match.findPoint(1);
+            let point = match.gameState.findPoint(1);
             expect(point.selected).toBe(true);
           });
         });
