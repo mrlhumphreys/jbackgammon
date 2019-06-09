@@ -6,20 +6,11 @@ import Point from '../src/point'
 import PointSet from '../src/point_set'
 import GameState from '../src/game_state'
 import Match from '../src/match'
-import Player from '../src/player'
 
 const fixtureDefinitions = {
   bar: {
     klass: Bar,
     args: { pieces: [] } 
-  },
-  player: {
-    klass: Player,
-    args: {
-      player_number: 1,
-      name: 'aaa',
-      resigned: false
-    }
   },
   gameState: {
     klass: GameState,

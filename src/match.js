@@ -2,7 +2,6 @@ import { buildPlayers, buildLastAction, buildNotification, winner, asJson } from
 import exists from './exists'
 import GameState from './game_state'
 import Move from './move'
-import Player from './player'
 
 class Match {
   constructor(args) { 
