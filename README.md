@@ -54,42 +54,44 @@ Initialize a new match object:
   });
 ```
 
-Initialize a Move object
+Serialize match
 
 ```javascript
-  // from: Point
-  // to: Point
-  // moveList: Array with keys: from, to
-  // user: User
-  // gameState: gameState
-  let move = new Move({
-    from: from, 
-    to: to, 
-    moveList: moveList, 
-    user: user, 
-    gameState: gameState
-  });
+  match.asJson();
 ```
 
-Check if Move Possible
+See if player can pass
 
 ```javascript
-  // returns true if that piece can move.
-  move.possible(); 
+  playerNumber = 1;
+  match.passable(playerNumber); 
 ```
 
-Check if Move Valid
+Roll Dice
 
 ```javascript
-  // returns true if that piece can move to that point.
-  move.valid(); 
+  playerNumber = 1;
+  match.touchDice(playerNumber);
 ```
 
-Check if Move Complete
+Make a move
 
 ```javascript
-  // returns true if there are no other pieces that can still move.
-  move.complete(); 
+  match.touchPoint(4); // select point 4
+  match.touchPoint(6); // select point 6
+```
+
+Pass turn
+
+```javascript
+  playerNumber = 1;
+  match.touchPass(playerNumber);
+```
+
+Get winner
+
+```javascript
+  match.winner;
 ```
 
 ## Development
