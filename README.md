@@ -57,7 +57,7 @@ Initialize a new match object:
 Serialize match
 
 ```javascript
-  match.asJson();
+  match.asJson;
 ```
 
 See if player can pass
@@ -77,8 +77,8 @@ Roll Dice
 Make a move
 
 ```javascript
-  match.touchPoint(4); // select point 4
-  match.touchPoint(6); // select point 6
+  match.touchPoint(4, 1); // select point 4 for player 1
+  match.touchPoint(6, 1); // select point 6 for player 1
 ```
 
 Pass turn
