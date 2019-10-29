@@ -363,14 +363,14 @@ describe('Match', () => {
 
     describe('when not passable', () => {
       it('does not add move to last action', () => {
-        let match = fixtures('selectedMatch');
-        match.touchPoint(2, 1);
+        let match = fixtures('completedMoveMatch');
+        match.touchPass(1);
         expect(match.lastAction).toEqual(null);
       });
 
       it('does not clear move list', () => {
-        let match = fixtures('selectedMatch');
-        match.touchPoint(2, 1);
+        let match = fixtures('completedMoveMatch');
+        match.touchPass(1);
         expect(match.moveList).toEqual([ { from: 1, to: 2 } ]);
       });
     });

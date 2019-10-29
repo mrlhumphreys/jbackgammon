@@ -6,399 +6,386 @@ import Point from '../src/point'
 import GameState from '../src/game_state'
 
 describe('Move', () => {
-  describe('possible', () => {
-    describe('from bar', () => {
-      describe('with no pieces on the bar', () => {
-        it('must set an error', () => {
-          let from = fixtures('bar', { pieces: [] });
-          let gameState = fixtures('gameState', { 
-            bar: { pieces: [] }, 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ] 
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error.name).toEqual('NoPiecesError');
+  describe('result', () => {
+    describe('with winner', () => {
+      it('returns a game over result', () => {
+        let match = fixtures('winnerMatch');
+        let move = new Move({ 
+          touchedPointNumber: 1, 
+          playerNumber: 1,
+          match: match 
         });
-      });
+         
+        let result = move.result;
 
-      describe('with nowhere to move', () => {
-        it('must set an error', () => {
-          let from = fixtures('bar', { pieces: [ { owner: 1 } ] });
-          let gameState = fixtures('gameState', { 
-            bar: { pieces: [ { owner: 1 } ] }, 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 2 }, { owner: 2 } ] },
-              { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error.name).toEqual('BlockedError');
-        });
-      });
-
-      describe('somewhere to move', () => {
-        it('must not set an error', () => {
-          let from = fixtures('bar', { pieces: [ { owner: 1 } ] });
-          let gameState = fixtures('gameState', { 
-            bar: { pieces: [ { owner: 1 } ] }, 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ ] },
-              { number: 2, pieces: [ ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error).toBe(null);
-        });
+        expect(result.name).toEqual('GameOver');
+        expect(result.message).toEqual('Game is over.');
       });
     });
 
-    describe('from point', () => {
-      describe('with no pieces on the point', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ ] },
-              { number: 2, pieces: [ ] },
-              { number: 3, pieces: [ ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error.name).toEqual('EmptyPointError');
+    describe('when not players turn', () => {
+      it('returns a not players turn result', () => {
+        let match = fixtures('moveMatch');
+        let move = new Move({ 
+          touchedPointNumber: 1, 
+          playerNumber: 2,
+          match: match 
         });
+         
+        let result = move.result;
+
+        expect(result.name).toEqual('NotPlayersTurn');
+        expect(result.message).toEqual('It is not your turn.');
       });
+    });
 
-      describe('with a point owned by the other player', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 2 } ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 2 } ] },
-              { number: 2, pieces: [ ] },
-              { number: 3, pieces: [ ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error.name).toEqual('PointOwnershipError');
+    describe('when roll phase', () => {
+      it('returns a roll phase result', () => {
+        let match = fixtures('rollMatch');
+        let move = new Move({ 
+          touchedPointNumber: 1, 
+          playerNumber: 1,
+          match: match 
         });
+         
+        let result = move.result;
+
+        expect(result.name).toEqual('RollPhase');
+        expect(result.message).toEqual('Pieces cannot move until the dice are rolled.');
       });
+    });
 
-      describe('with pieces still on the bar', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-          let gameState = fixtures('gameState', { 
-            bar: { pieces: [ { owner: 1 } ] },
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 1 } ] },
-              { number: 2, pieces: [ ] },
-              { number: 3, pieces: [ ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
+    describe('when no piece selected', () => {
+      describe('from bar', () => {
+        describe('with no pieces owned by player', () => {
+          it('must return a no pieces result', () => {
+            let match = fixtures('moveMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'bar', 
+              playerNumber: 1,
+              match: match 
+            });
           
-          move.possible();
+            let result = move.result;
 
-          expect(move.error.name).toEqual('PiecesOnBarError');
-        });
-      });
-
-      describe('with nowhere to move', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 1 } ] },
-              { number: 2, pieces: [ { owner: 2 }, { owner: 2 }] },
-              { number: 3, pieces: [ { owner: 2 }, { owner: 2 }] }
-            ]
+            expect(result.name).toEqual('NoPieces');
+            expect(result.message).toEqual('There are no pieces on the bar.');
           });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error.name).toEqual('BlockedError');
-        });
-      });
-
-      describe('with somehwere to move', () => {
-        it('must not set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 1 } ] },
-              { number: 2, pieces: [ ] },
-              { number: 3, pieces: [ ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, gameState: gameState });
-          
-          move.possible();
-
-          expect(move.error).toBe(null);
         });
 
-        describe('bearing off', () => {
-          it('must not set error', () => {
-            let from = fixtures('point', { number: 6, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] });
-            let gameState = fixtures('gameState', { 
-              current_phase: 'move', 
-              current_player_number: 2,
-              dice: [ { number: 6 }, { number: 6 }, { number: 6 }, { number: 6 } ], 
-              points: [
-                { number: 1, pieces: [ ] },
-                { number: 2, pieces: [ ] },
-                { number: 3, pieces: [ { owner: 2 }, { owner: 2 } ] },
-                { number: 4, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
-                { number: 5, pieces: [ { owner: 2 } ] },
-                { number: 6, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
-                { number: 7, pieces: [ ] },
-                { number: 8, pieces: [ ] },
-                { number: 9, pieces: [ ] },
-                { number: 10, pieces: [ ] },
-                { number: 11, pieces: [ ] },
-                { number: 12, pieces: [ ] },
-                { number: 13, pieces: [ ] },
-                { number: 14, pieces: [ ] },
-                { number: 15, pieces: [ ] },
-                { number: 16, pieces: [ { owner: 1 }, { owner: 1 } ] },
-                { number: 17, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
-                { number: 18, pieces: [ { owner: 1 }, { owner: 1 } ] },
-                { number: 19, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
-                { number: 20, pieces: [ ] },
-                { number: 21, pieces: [ ] },
-                { number: 22, pieces: [ ] },
-                { number: 23, pieces: [ ] },
-                { number: 24, pieces: [ ] }
-              ],
-              off_board: {
-                pieces: [ { owner: 2 } ]
-              }
+        describe('with no destinations', () => {
+          it('must return a blocked result', () => {
+            let match = fixtures('noMovesFromBarMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'bar', 
+              playerNumber: 1,
+              match: match 
             });
 
-            let move = fixtures('move', { fromNumber: from.number, playerNumber: 2, gameState: gameState });
-          
-            move.possible();
+            let result = move.result;
 
-            expect(move.error).toBe(null);
+            expect(result.name).toEqual('Blocked');
+            expect(result.message).toEqual('Those pieces cannot move.');
           });
+        });
+
+        describe('with possible moves', () => {
+          it('must return a move possible result', () => {
+            let match = fixtures('moveFromBarMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'bar', 
+              playerNumber: 1,
+              match: match 
+            });
+
+            let result = move.result;
+ 
+            expect(result.name).toEqual('MovePossible');
+            expect(result.message).toEqual('');
+          });
+        });
+      });
+
+      describe('from point', () => {
+        describe('with no pieces', () => {
+          it('must return an empty point result', () => {
+            let match = fixtures('moveMatch');
+            let move = new Move({ 
+              touchedPointNumber: 2, 
+              playerNumber: 1,
+              match: match 
+            });
+
+            let result = move.result;
+
+            expect(result.name).toEqual('EmptyPoint');
+            expect(result.message).toEqual('That point is empty.');
+          });
+        });
+
+        describe('owned by opponent', () => {
+          it('must return a point ownership mismatch result', () => {
+            let match = fixtures('moveMatch');
+            let move = new Move({ 
+              touchedPointNumber: 6, 
+              playerNumber: 1,
+              match: match 
+            });
           
+            let result = move.result;
+
+            expect(result.name).toEqual('PointOwnershipMismatch');
+            expect(result.message).toEqual('That point is not yours.');
+          });
+        });
+
+        describe('with pieces still on the bar', () => {
+          it('must return a pieces on bar result', () => {
+            let match = fixtures('moveFromBarMatch');
+            let move = new Move({ 
+              touchedPointNumber: 9, 
+              playerNumber: 1,
+              match: match 
+            });
+
+            let result = move.result;
+
+            expect(result.name).toEqual('PiecesOnBar');
+            expect(result.message).toEqual('There are still pieces on the bar.');
+          });
+        });
+
+        describe('with no destinations', () => {
+          describe('and some pieces are not home', () => {
+            it('must return a blocked result', () => {
+              let match = fixtures('noMovesMatch');
+              let move = new Move({ 
+                touchedPointNumber: 1, 
+                playerNumber: 1,
+                match: match 
+              });
+
+              let result = move.result;
+
+              expect(result.name).toEqual('Blocked');
+              expect(result.message).toEqual('Those pieces cannot move.');
+            });
+          });
+
+          describe('and all pieces are home', () => {
+            describe('and can bear off', () => {
+              it('must return a move possible result', () => {
+                let match = fixtures('bearingOffMatch');
+                let move = new Move({ 
+                  touchedPointNumber: 6, 
+                  playerNumber: 2, 
+                  match: match 
+                });
+
+                let result = move.result;
+
+                expect(result.name).toEqual('MovePossible');
+                expect(result.message).toEqual('');
+              });
+            });
+
+            describe('and cannot bear off', () => {
+              it('must return a blocked result', () => {
+                let match = fixtures('bearingOffDiceMismatchMatch');
+                let move = new Move({ 
+                  touchedPointNumber: 5, 
+                  playerNumber: 2, 
+                  match: match 
+                });
+
+                let result = move.result;
+
+                expect(result.name).toEqual('Blocked');
+                expect(result.message).toEqual('Those pieces cannot move.');
+              });
+            });
+          });
+        });
+
+        describe('with no problems', () => {
+          it('must return a move possible result', () => {
+            let match = fixtures('moveMatch');
+            let move = new Move({ 
+              touchedPointNumber: 1, 
+              playerNumber: 1,
+              match: match 
+            });
+            let result = move.result;
+
+            expect(result.name).toEqual('MovePossible');
+            expect(result.message).toEqual('');
+          });
         });
       });
     });
-  });
 
-  describe('valid', () => {
-    describe('to Offboard', () => {
-      describe('with some pieces are not home', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 24, pieces: [ { owner: 1 } ] });
-          let to = fixtures('offBoard', { pieces: [] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 18, pieces: [ { owner: 1 } ] },
-              { number: 24, pieces: [ { owner: 1 } ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
+    describe('when piece selected', () => {
+      describe('and to is off board', () => {
+        describe('and move is complete', () => {
+          it('must return a move complete result', () => {
+            let match = fixtures('bearingOffCompletedMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'off_board', 
+              playerNumber: 2,
+              match: match,
+            });
           
-          move.valid();
+            let result = move.result;
 
-          expect(move.error.name).toEqual('PiecesNotHomeError');
+            expect(result.name).toEqual('MoveComplete');
+            expect(result.message).toEqual('');
+          });
+        });
+
+        describe('and move is incomplete and all pieces off board', () => {
+          it('must return all pieces off board result', () => {
+            let match = fixtures('bearingOffOnlyOnePieceMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'off_board', 
+              playerNumber: 2,
+              match: match 
+            });
+          
+            let result = move.result;
+
+            expect(result.name).toEqual('MoveComplete');
+            expect(result.message).toEqual('');
+          }); 
+        });
+
+        describe('and move is incomplete and not all pieces are off board', () => {
+          it('must return a move incomplete result', () => {
+            let match = fixtures('bearingOffIncompleteMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'off_board', 
+              playerNumber: 2,
+              match: match 
+            });
+          
+            let result = move.result;
+
+            expect(result.name).toEqual('MoveIncomplete');
+            expect(result.message).toEqual('');
+          });
+        });
+        
+        describe('and some pieces are not home', () => {
+          it('must return a pieces not home result', () => {
+            let match = fixtures('piecesNotHomeSelectedMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'off_board', 
+              playerNumber: 1,
+              match: match 
+            });
+
+            let result = move.result;
+
+            expect(result.name).toEqual('PiecesNotHome');
+            expect(result.message).toEqual('Cannot bear off while pieces are not home.');
+          });
+        });
+
+        describe('and dice mismatch moves', () => {
+          it('must return a dice mismatch result', () => {
+            let match = fixtures('diceMismatchSelectedMatch');
+            let move = new Move({ 
+              touchedPointNumber: 'off_board', 
+              playerNumber: 1,
+              match: match 
+            });
+          
+            let result = move.result;
+
+            expect(result.name).toEqual('DiceMismatch');
+            expect(result.message).toEqual('That move does not match the die roll.');
+          });
         });
       });
 
-      describe('with dice not matching moves', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 22, pieces: [ { owner: 1 } ] });
-          let to = fixtures('offBoard', { pieces: [] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 22, pieces: [ { owner: 1 } ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
+      describe('and to is point', () => {
+        describe('and move is complete', () => {
+          it('must return a move complete result', () => {
+            let match = fixtures('completedMoveMatch');
+            let move = new Move({ 
+              touchedPointNumber: 3, 
+              playerNumber: 1,
+              match: match 
+            });
           
-          move.valid();
+            let result = move.result;
 
-          expect(move.error.name).toEqual('DiceMismatchError');
+            expect(result.name).toEqual('MoveComplete');
+            expect(result.message).toEqual('');
+          });
         });
-      });
 
-      describe('with nothing wrong', () => {
-        it('must not set an error', () => {
-          let from = fixtures('point', { number: 24, pieces: [ { owner: 1 } ] });
-          let to = fixtures('offBoard', { pieces: [] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 24, pieces: [ { owner: 1 } ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
+        describe('and move is incomplete', () => {
+          it('must return a move incomplete result', () => {
+            let match = fixtures('incompleteMoveMatch');
+            let move = new Move({ 
+              touchedPointNumber: 2, 
+              playerNumber: 1,
+              match: match
+            });
           
-          move.valid();
+            let result = move.result;
 
-          expect(move.error).toBe(null);
+            expect(result.name).toEqual('MoveIncomplete');
+            expect(result.message).toEqual('');
+          });
         });
-      });
 
-      describe('with multi dice', () => {
-        it('should be valid with multi dice', () => {
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            current_player_number: 1,
-            dice: [ { number: 5, used: true }, { number: 5, used: true }, { number: 5, used: true }, { number: 5, used: false } ], 
-            points: [
-              { number: 1, pieces: [ ] },
-              { number: 2, pieces: [ ] },
-              { number: 3, pieces: [ ] },
-              { number: 4, pieces: [ { owner: 2 } ] },
-              { number: 5, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
-              { number: 6, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
-              { number: 7, pieces: [ ] },
-              { number: 8, pieces: [ ] },
-              { number: 9, pieces: [ ] },
-              { number: 10, pieces: [ ] },
-              { number: 11, pieces: [ ] },
-              { number: 12, pieces: [ ] },
-              { number: 13, pieces: [ ] },
-              { number: 14, pieces: [ ] },
-              { number: 15, pieces: [ ] },
-              { number: 16, pieces: [ ] },
-              { number: 17, pieces: [ ] },
-              { number: 18, pieces: [ ] },
-              { number: 19, pieces: [ ] },
-              { number: 20, pieces: [ ] },
-              { number: 21, pieces: [ { owner: 1 } ] },
-              { number: 22, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
-              { number: 23, pieces: [ ] },
-              { number: 24, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] }
-            ],
-            off_board: {
-              pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 2 }, { owner: 2 } ]
-            }
-          });
-
-          let move = fixtures('move', { fromNumber: 21, toNumber: 'off_board', gameState: gameState });
+        describe('and dice mismatch moves', () => {
+          it('must return a dice mismatch result', () => {
+            let match = fixtures('selectedMatch');
+            let move = new Move({ 
+              touchedPointNumber: 4, 
+              playerNumber: 1,
+              match: match 
+            });
           
-          move.valid();
+            let result = move.result;
 
-          expect(move.error).toBe(null);
+            expect(result.name).toEqual('DiceMismatch');
+            expect(result.message).toEqual('That move does not match the die roll.');
+          });
         });
-      });
-    });
 
-    describe('to point', () => {
-      describe('with dice not matching moves', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-          let to = fixtures('point', { number: 4, pieces: [] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 1 } ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
+        describe('and to is blocked', () => {
+          it('must return a blocked result', () => {
+            let match = fixtures('blockedSelectedMatch');
+            let move = new Move({ 
+              touchedPointNumber: 13, 
+              playerNumber: 1,
+              match: match 
+            });
           
-          move.valid();
+            let result = move.result;
 
-          expect(move.error.name).toEqual('DiceMismatchError');
+            expect(result.name).toEqual('OpponentBlock');
+            expect(result.message).toEqual('An opponent is blocking that point.');
+          });
         });
-      });
 
-      describe('with to blocked', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-          let to = fixtures('point', { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 1 } ] },
-              { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
+        describe('and is in wrong direction', () => {
+          it('must return a wrong direction result', () => {
+            let match = fixtures('blockedSelectedMatch');
+            let move = new Move({ 
+              touchedPointNumber: 11, 
+              playerNumber: 1,
+              match: match 
+            });
           
-          move.valid();
+            let result = move.result;
 
-          expect(move.error.name).toEqual('OpponentBlockError');
-        });
-      });
-
-      describe('moving the wrong direction', () => {
-        it('must set an error', () => {
-          let from = fixtures('point', { number: 6, pieces: [ { owner: 1 } ] });
-          let to = fixtures('point', { number: 5, pieces: [ ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 5, pieces: [ ] },
-              { number: 6, pieces: [ { owner: 1 } ] }
-            ]
+            expect(result.name).toEqual('WrongDirection');
+            expect(result.message).toEqual('A piece cannot move backwards.');
           });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
-          
-          move.valid();
-
-          expect(move.error.name).toEqual('WrongDirectionError');
-        });
-      });
-
-      describe('with nothing wrong', () => {
-        it('must not set an error', () => {
-          let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-          let to = fixtures('point', { number: 2, pieces: [ ] });
-          let gameState = fixtures('gameState', { 
-            current_phase: 'move', 
-            dice: [ { number: 1 }, { number: 2 } ], 
-            points: [
-              { number: 1, pieces: [ { owner: 1 } ] },
-              { number: 2, pieces: [ ] }
-            ]
-          });
-          let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
-          
-          move.valid();
-
-          expect(move.error).toBe(null);
         });
       });
     });
@@ -407,17 +394,12 @@ describe('Move', () => {
   describe('dieNumber', () => {
     describe('with dice matching distance', () => {
       it('returns the distance', () => {
-        let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-        let to = fixtures('point', { number: 2, pieces: [ ] });
-        let gameState = fixtures('gameState', { 
-          current_phase: 'move', 
-          dice: [ { number: 1 }, { number: 2 } ], 
-          points: [
-            { number: 1, pieces: [ { owner: 1 } ] },
-            { number: 2, pieces: [ ] }
-          ]
+        let match = fixtures('selectedMatch');
+        let move = new Move({ 
+          touchedPointNumber: 2, 
+          playerNumber: 1,
+          match: match 
         });
-        let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
 
         expect(move.dieNumber).toEqual(1);
       });
@@ -425,19 +407,12 @@ describe('Move', () => {
 
     describe('with dice not matching distance', () => {
       it('returns the highest unused die number', () => {
-        let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-        let to = fixtures('point', { number: 4, pieces: [ ] });
-        let gameState = fixtures('gameState', { 
-          current_phase: 'move', 
-          dice: [ { number: 2 }, { number: 3, used: true } ], 
-          points: [
-            { number: 1, pieces: [ { owner: 1 } ] },
-            { number: 2, pieces: [ ] },
-            { number: 3, pieces: [ ] },
-            { number: 4, pieces: [ ] }
-          ]
+        let match = fixtures('usedDiceMatch');
+        let move = new Move({ 
+          touchedPointNumber: 4, 
+          playerNumber: 1,
+          match: match 
         });
-        let move = fixtures('move', { fromNumber: from.number, toNumber: to.number, gameState: gameState });
 
         expect(move.dieNumber).toEqual(2);
       });
@@ -446,9 +421,12 @@ describe('Move', () => {
 
   describe('details', () => {
     it('returns from and to', () => {
-      let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-      let to = fixtures('point', { number: 4, pieces: [ ] });
-      let move = fixtures('move', { fromNumber: from.number, toNumber: to.number });
+      let match = fixtures('selectedMatch');
+      let move = new Move({ 
+        touchedPointNumber: 4,
+        playerNumber: 1,
+        match: match
+      });
 
       expect(move.details).toEqual({ from: 1, to: 4 });
     });
@@ -457,9 +435,12 @@ describe('Move', () => {
   describe('complete', () => {
     describe('without from', () => {
       it('returns false', () => {
-        let gameState = fixtures('gameState');
-        let to = fixtures('point', { number: 4, pieces: [ ] });
-        let move = fixtures('move', { fromNumber: null, toNumber: to.number, gameState: gameState });
+        let match = fixtures('match');
+        let move = new Move({ 
+          touchedPointNumber: 4, 
+          playerNumber: 1,
+          match: match 
+        });
 
         expect(move.complete).toBe(false);
       });
@@ -467,9 +448,11 @@ describe('Move', () => {
 
     describe('without to', () => {
       it('returns false', () => {
-        let gameState = fixtures('gameState');
-        let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-        let move = fixtures('move', { fromNumber: from.number, toNumber: null, gameState: gameState });
+        let match = fixtures('selectedMatch');
+        let move = new Move({ 
+          touchedPointNumber: null, 
+          match: match 
+        });
   
         expect(move.complete).toBe(false);
       });
@@ -477,23 +460,11 @@ describe('Move', () => {
 
     describe('number of moves does not match number of dice', () => {
       it('returns false', () => {
-        let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-        let to = fixtures('point', { number: 2, pieces: [ ] });
-        let gameState = fixtures('gameState', { 
-          current_phase: 'move', 
-          dice: [ { number: 1 }, { number: 1 } ], 
-          points: [
-            { number: 1, pieces: [ { owner: 1 } ] },
-            { number: 2, pieces: [ ] },
-            { number: 3, pieces: [ { owner: 1 } ] },
-            { number: 4, pieces: [ ] }
-          ]
-        });
-        let move = fixtures('move', { 
-          fromNumber: from.number, 
-          toNumber: to.number, 
-          moveList: [],
-          gameState: gameState 
+        let match = fixtures('selectedMatch');
+        let move = new Move({ 
+          touchedPointNumber: 2, 
+          playerNumber: 1,
+          match: match 
         });
 
         expect(move.complete).toBe(false);
@@ -502,23 +473,11 @@ describe('Move', () => {
 
     describe('number of moves match number of dice', () => {
       it('returns true', () => {
-        let from = fixtures('point', { number: 1, pieces: [ { owner: 1 } ] });
-        let to = fixtures('point', { number: 2, pieces: [ ] });
-        let gameState = fixtures('gameState', { 
-          current_phase: 'move', 
-          dice: [ { number: 1 }, { number: 1 } ], 
-          points: [
-            { number: 1, pieces: [ { owner: 1 } ] },
-            { number: 2, pieces: [ ] },
-            { number: 3, pieces: [ { owner: 1 } ] },
-            { number: 4, pieces: [ ] }
-          ]
-        });
-        let move = fixtures('move', { 
-          fromNumber: from.number, 
-          toNumber: to.number, 
-          moveList: [ { from: 3, to: 4 } ],
-          gameState: gameState 
+        let match = fixtures('completedMoveMatch');
+        let move = new Move({ 
+          touchedPointNumber: 3, 
+          playerNumber: 1,
+          match: match 
         });
 
         expect(move.complete).toBe(true);
@@ -529,39 +488,11 @@ describe('Move', () => {
   describe('allPiecesOffBoard', () => {
     describe('number of moves matches number of pieces on board', () => {
       it('returns true', () => {
-        let from = fixtures('point', { number: 24, pieces: [ { owner: 1 } ] });
-        let to = fixtures('offBoard', { pieces: [ ] });
-        let gameState = fixtures('gameState', { 
-          current_phase: 'move', 
-          dice: [ { number: 1 }, { number: 2, used: true } ], 
-          off_board: {
-            pieces: [
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 }
-            ]
-          },
-          points: [
-            { number: 23, pieces: [ { owner: 1 } ] },
-            { number: 24, pieces: [ { owner: 1 } ] }
-          ]
-        });
-        let move = fixtures('move', { 
-          fromNumber: from.number, 
-          toNumber: to.number, 
+        let match = fixtures('allPiecesOffBoardMatch');
+        let move = new Move({ 
+          touchedPointNumber: 'off_board', 
           playerNumber: 1,
-          moveList: [ { from: 23, to: 'off_board' } ],
-          gameState: gameState 
+          match: match 
         });
 
         expect(move.allPiecesOffBoard).toBe(true);
@@ -570,39 +501,11 @@ describe('Move', () => {
 
     describe('number of moves does not match number of pieces on board', () => {
       it('returns false', () => {
-        let from = fixtures('point', { number: 24, pieces: [ { owner: 1 } ] });
-        let to = fixtures('offBoard', { pieces: [ ] });
-        let gameState = fixtures('gameState', { 
-          current_phase: 'move', 
-          dice: [ { number: 1 }, { number: 2, used: true } ], 
-          off_board: {
-            pieces: [
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 },
-              { owner: 1 }
-            ]
-          },
-          points: [
-            { number: 23, pieces: [ { owner: 1 } ] },
-            { number: 24, pieces: [ { owner: 1 } ] }
-          ]
-        });
-        let move = fixtures('move', { 
-          fromNumber: from.number, 
-          toNumber: to.number, 
+        let match = fixtures('almostAllPiecesOffBoardMatch');
+        let move = new Move({ 
+          touchedPointNumber: 'off_board', 
           playerNumber: 1,
-          moveList: [ ],
-          gameState: gameState 
+          match: match 
         });
 
         expect(move.allPiecesOffBoard).toBe(false);
@@ -612,18 +515,17 @@ describe('Move', () => {
 
   describe('completeMoveList', () => {
     it('returns the list with the proposed move', () => {
-        let from = fixtures('point', { number: 23, pieces: [ { owner: 1 } ] });
-        let to = fixtures('point', { number: 24, pieces: [ ] });
-        let move = fixtures('move', { 
-          fromNumber: from.number, 
-          toNumber: to.number, 
-          moveList: [ { from: 1, to: 2 } ]
-        });
+      let match = fixtures('completedMoveMatch');
+      let move = new Move({ 
+        touchedPointNumber: 3, 
+        playerNumber: 1,
+        match: match
+      });
 
-        expect(move.completeMoveList).toEqual([
-          { from: 1, to: 2 },
-          { from: 23, to: 24 }
-        ]);
+      expect(move.completeMoveList).toEqual([
+        { from: 1, to: 2 },
+        { from: 1, to: 3 }
+      ]);
     });
   });
 });

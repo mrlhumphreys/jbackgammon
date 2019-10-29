@@ -2,78 +2,88 @@ import exists from './exists'
 
 class Move {
   constructor(args) { 
-    this.fromNumber = args.fromNumber;
-    this.toNumber = args.toNumber;
-    this.moveList = exists(args.moveList) ? args.moveList.map(function(e) { return e; }) : [];
+    this.touchedPointNumber = args.touchedPointNumber;
     this.playerNumber = args.playerNumber;
-    this.gameState = args.gameState;
-    this.error = null;
+    this.match = args.match;
   }
 
-  possible() {
-    if (this.fromNumber === 'bar') { 
-      if (this._noPiecesOwnedByPlayer) {
-        this.error = { name: 'NoPiecesError', message: 'There are no pieces on the bar.'};
-      } else if (this._noDestinations) {
-        this.error = { name: 'BlockedError', message: 'Those pieces cannot move.'};
-      } else {
-        this.error = null;
-      }
-    } else {
-      if (this._emptyPoint) {
-        this.error = { name: 'EmptyPointError', message: 'That point is empty.' };
-      } else if (this._ownedByOpponent) {
-        this.error = { name: 'PointOwnershipError', message: 'That point is not yours.'};
-      } else if (this._barHasPieces) {
-        this.error = { name: 'PiecesOnBarError', message: 'There are still pieces on the bar.'};
-      } else if (this._noDestinations && (this._somePiecesAreNotHome || this._cannotBearOff)) {
-        this.error = { name: 'BlockedError', message: 'Those pieces cannot move.' };
-      } else {
-        this.error = null;
-      }
+  get result() {
+    if (exists(this.match.winner)) {
+      return { name: 'GameOver', message: 'Game is over.' };
+    }
+    
+    if (!this.match.gameState.playersTurn(this.playerNumber)) {
+      return { name: 'NotPlayersTurn', message: 'It is not your turn.' };
     }
 
-    return this.error === null;
-  }
-
-  valid() {
-    if (this.toNumber === 'off_board') {
-      if (this._somePiecesAreNotHome) {
-        this.error = { name: 'PiecesNotHomeError', message: 'Cannot bear off while pieces are not home.' };
-      } else if (this._diceRollMismatch) {
-        this.error = { name: 'DiceMismatchError', message: 'That move does not match the die roll.' };
-      } else {
-        this.error = null;
-      }
-    } else {
-      if (this._diceRollMismatch) {
-        this.error = { name: 'DiceMismatchError', message: 'That move does not match the die roll.' };
-      } else if (this._toBlocked) {
-        this.error = { name: 'OpponentBlockError', message: 'An opponent is blocking that point.'};
-      } else if (this._wrongDirection) {
-        this.error = { name: 'WrongDirectionError', message: 'A piece cannot move backwards.'};
-      } else {
-        this.error = null;
-      }
+    if (this.match.gameState.rollPhase) {
+      return { name: 'RollPhase', message: 'Pieces cannot move until the dice are rolled.' };
     }
 
-    return this.error === null;
+    if (exists(this.match.gameState.selectedPoint)) {
+      if (this.touchedPointNumber === 'off_board') {
+        if (this._somePiecesAreNotHome) {
+          return { name: 'PiecesNotHome', message: 'Cannot bear off while pieces are not home.' };
+        } else if (this._diceRollMismatch) {
+          return { name: 'DiceMismatch', message: 'That move does not match the die roll.' };
+        } else if (this.complete || this.allPiecesOffBoard) {
+
+          return { name: 'MoveComplete', message: '' };
+        } else {
+          return { name: 'MoveIncomplete', message: '' };
+        }
+      } else {
+        if (this._diceRollMismatch) {
+          return { name: 'DiceMismatch', message: 'That move does not match the die roll.' };
+        } else if (this._toBlocked) {
+          return { name: 'OpponentBlock', message: 'An opponent is blocking that point.'};
+        } else if (this._wrongDirection) {
+          return { name: 'WrongDirection', message: 'A piece cannot move backwards.'};
+        } else if (this.complete) {
+          return { name: 'MoveComplete', message: '' };
+        } else {
+          return { name: 'MoveIncomplete', message: '' };
+        }
+      }
+    } else {
+      if (this.touchedPointNumber === 'bar') { 
+        if (this._noPiecesOwnedByPlayer) {
+          return { name: 'NoPieces', message: 'There are no pieces on the bar.' };
+        } else if (this._noDestinations) {
+          return { name: 'Blocked', message: 'Those pieces cannot move.' };
+        } else {
+          return { name: 'MovePossible', message: '' };
+        }
+      } else {
+        if (this._emptyPoint) {
+          return { name: 'EmptyPoint', message: 'That point is empty.' };
+        } else if (this._ownedByOpponent) {
+          return { name: 'PointOwnershipMismatch', message: 'That point is not yours.' };
+        } else if (this._barHasPieces) {
+          return { name: 'PiecesOnBar', message: 'There are still pieces on the bar.' };
+        } else if (this._noDestinations && (this._somePiecesAreNotHome || this._cannotBearOff)) {
+          return { name: 'Blocked', message: 'Those pieces cannot move.' };  
+        } else { 
+          return { name: 'MovePossible', message: '' };
+        }
+      }
+    }
   }
 
   get dieNumber() {
-    if (this.gameState.dice.unused.findByNumber(this._distance)) {
+    if (this.match.gameState.dice.unused.findByNumber(this._distance)) {
       return this._distance;
     } else {
-      return this.gameState.dice.highestUnused();
+      return this.match.gameState.dice.highestUnused();
     }
   }
 
   get details() {
-    return { from: this.fromNumber, to: this.toNumber };
+    return { from: this._selectedPoint.number, to: this.touchedPointNumber };
   }
 
   get complete() {
-    return exists(this._from) && exists(this._to) && (this._numberOfMoves === this.gameState.dice.length);
+    return exists(this._selectedPoint) && exists(this._touchedPoint) && (this._numberOfMoves === this.match.gameState.dice.length);
   }
 
   get allPiecesOffBoard() {
@@ -81,53 +91,57 @@ class Move {
   }
 
   get completeMoveList() { 
-    return this.moveList.concat([{from: this.fromNumber, to: this.toNumber}]);
+    return this.match.moveList.concat([{from: this._selectedPoint.number, to: this.touchedPointNumber}]);
   }
 
-  get _from() {
-    return this.gameState.findPoint(this.fromNumber);
+  get _selectedPoint() {
+    return this.match.gameState.selectedPoint;
+  }
+
+  get _touchedPoint() {
+    return this.match.gameState.findPoint(this.touchedPointNumber);
   }
 
   get _to() {
-    return this.gameState.findPoint(this.toNumber);
+    return this.match.gameState.findPoint(this.touchedPointNumber);
   }
 
   get _noPiecesOwnedByPlayer() {
-    return this._from.noPiecesOwnedByPlayer(this.playerNumber);
+    return this._touchedPoint.noPiecesOwnedByPlayer(this.playerNumber);
   }
 
   get _emptyPoint() {
-    return exists(this._from) && this._from.empty;
+    return exists(this._touchedPoint) && this._touchedPoint.empty;
   }
 
   get _ownedByOpponent() {
-    return this._from.ownedByOpponent(this.playerNumber);
+    return this._touchedPoint.ownedByOpponent(this.playerNumber);
   }
 
   get _barHasPieces() {
-    return this.gameState.bar.pieces.some((p) => { return p.owner === this.playerNumber; });
+    return this.match.gameState.bar.pieces.some((p) => { return p.owner === this.playerNumber; });
   }
 
   get _noDestinations() {
-    return this.gameState.points.destinations(this._from, this.gameState.dice, this.playerNumber).none;
+    return this.match.gameState.points.destinations(this._touchedPoint, this.match.gameState.dice, this.playerNumber).none;
   }
 
   get _somePiecesAreNotHome() {
-    return this.gameState.points.somePiecesNotHome(this.playerNumber);
+    return this.match.gameState.points.somePiecesNotHome(this.playerNumber);
   }
 
   get _cannotBearOff() {
-    let backPointNumber = this.gameState.points.backPointForPlayer(this.playerNumber).number;
-    let distance = this._from.distanceFromOffBoard(this.playerNumber);
-    if (backPointNumber === this._from.number) {
-      return this.gameState.dice.unused.greaterThanOrEqualTo(distance).none();
+    let backPointNumber = this.match.gameState.points.backPointForPlayer(this.playerNumber).number;
+    let distance = this._touchedPoint.distanceFromOffBoard(this.playerNumber);
+    if (backPointNumber === this.touchedPointNumber) {
+      return this.match.gameState.dice.unused.greaterThanOrEqualTo(distance).none();
     } else {
-      return this.gameState.dice.unused.equalTo(distance).none();
+      return this.match.gameState.dice.unused.equalTo(distance).none();
     }
   }
 
   get _diceRollMismatch() {
-    return this.gameState.dice.unused.none((d) => {
+    return this.match.gameState.dice.unused.none((d) => {
       if (this._bearOff) {
         return d.number >= this._distance;
       } else {
@@ -137,11 +151,11 @@ class Move {
   }
 
   get _bearOff() {
-    return this.toNumber === 'off_board';
+    return this.touchedPointNumber === 'off_board';
   }
 
   get _toBlocked() { 
-    return this._to.ownedByOpponent(this.playerNumber) && this._to.blocked;
+    return this._touchedPoint.ownedByOpponent(this.playerNumber) && this._touchedPoint.blocked;
   }
 
   get _wrongDirection() {
@@ -163,9 +177,9 @@ class Move {
   get _fromInt() {
     switch (this.playerNumber) {
       case 1:
-        return this.fromNumber === 'bar' ? 0 : this.fromNumber;
+        return this._selectedPoint.number === 'bar' ? 0 : this._selectedPoint.number;
       case 2:
-        return this.fromNumber === 'bar' ? 25 : this.fromNumber;
+        return this._selectedPoint.number === 'bar' ? 25 : this._selectedPoint.number;
       default: 
         return null;
     }
@@ -174,9 +188,9 @@ class Move {
   get _toInt() {
     switch (this.playerNumber) {
       case 1:
-        return this.toNumber === 'off_board' ? 25 : this.toNumber;
+        return this.touchedPointNumber === 'off_board' ? 25 : this.touchedPointNumber;
       case 2:
-        return this.toNumber === 'off_board' ? 0 : this.toNumber;
+        return this.touchedPointNumber === 'off_board' ? 0 : this.touchedPointNumber;
       default: 
         return null;
     }
@@ -184,11 +198,11 @@ class Move {
 
   get _numberOfMoves() {
     // add one to count for the proposed move (from, to)
-    return this.moveList.length + 1;
+    return this.match.moveList.length + 1;
   }
 
   get _numberOfPiecesOnBoard() {
-    return 15 - this.gameState.offBoard.piecesOwnedByPlayer(this.playerNumber).length;
+    return 15 - this.match.gameState.offBoard.piecesOwnedByPlayer(this.playerNumber).length;
   }
 };
 
