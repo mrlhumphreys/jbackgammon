@@ -1,4 +1,4 @@
-import exists from './exists'
+import { exists } from './utils'
 import Point from './point'
 
 class PointSet {

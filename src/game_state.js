@@ -1,4 +1,4 @@
-import exists from './exists'
+import { exists } from './utils'
 import DiceSet from './dice_set'
 import Bar from './bar'
 import PointSet from './point_set'

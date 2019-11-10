@@ -1,7 +1,9 @@
 import { buildPlayers, buildLastAction, buildNotification, winner, asJson } from '@mrlhumphreys/jboardgame'
-import exists from './exists'
+import { exists } from './utils'
 import GameState from './game_state'
 import Move from './move'
+import Roll from './roll'
+import Pass from './pass'
 
 class Match {
   constructor(args) { 
@@ -26,11 +28,12 @@ class Match {
   }
 
   passable(playerNumber) { 
-    let playersTurn = this.gameState.playersTurn(playerNumber);
-    let movePhase = this.gameState.movePhase;
-    let noMoves = this.gameState.noMovesForPlayer(playerNumber);
-    let unusedDice = this.gameState.dice.unused.length > 0;
-    return playersTurn && movePhase && noMoves && unusedDice;
+    let result = new Pass({
+      playerNumber: playerNumber,
+      match: this
+    }).result;
+
+    return result.name === 'PassValid';
   }
 
   // user actions
@@ -38,14 +41,19 @@ class Match {
   touchDice(playerNumber) {
     this._clearLastAction();
 
-    if (exists(this.winner)) {
-      this._notify('Game is over.'); 
-    } else if (!this.gameState.playersTurn(playerNumber)) {
-      this._notify('It is not your turn.');
-    } else if (this.gameState.movePhase) {
-      this._notify('Dice have already been rolled.');
-    } else if (this.gameState.rollPhase) {
-      this._addRollToLastAction();
+    let roll = new Roll({
+      playerNumber: playerNumber,
+      match: this
+    });
+
+    let result = roll.result;
+
+    switch (result.name) {
+      case 'RollValid':
+        this._addRollToLastAction();
+        break;
+      default:
+        this._notify(result.message); 
     }
   }
 
@@ -86,10 +94,21 @@ class Match {
   }
 
   touchPass(playerNumber) {
-    if (this.passable(playerNumber)) {
-      this.gameState.passTurn(); 
-      this._addMoveToLastAction(this.moveList);
-      this._clearMoveList();
+    let pass = new Pass({
+      playerNumber: playerNumber,
+      match: this 
+    });
+
+    let result = pass.result;
+
+    switch (result.name) {
+      case 'PassValid':
+        this.gameState.passTurn(); 
+        this._addMoveToLastAction(this.moveList);
+        this._clearMoveList();
+        break;
+      default:
+        this._notify(result.message);
     }
   }
 

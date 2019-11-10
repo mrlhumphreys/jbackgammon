@@ -1,5 +1,5 @@
+import { exists } from './utils'
 import Piece from './piece'
-import exists from './exists'
 
 class Point {
   constructor(args) { 

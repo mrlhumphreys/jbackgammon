@@ -1,4 +1,4 @@
-import exists from './exists'
+import { exists } from './utils'
 
 class Move {
   constructor(args) { 
@@ -21,51 +21,58 @@ class Move {
     }
 
     if (exists(this.match.gameState.selectedPoint)) {
-      if (this.touchedPointNumber === 'off_board') {
-        if (this._somePiecesAreNotHome) {
-          return { name: 'PiecesNotHome', message: 'Cannot bear off while pieces are not home.' };
-        } else if (this._diceRollMismatch) {
-          return { name: 'DiceMismatch', message: 'That move does not match the die roll.' };
-        } else if (this.complete || this.allPiecesOffBoard) {
+      return this._selectedResult;
+    } else {
+      return this._unselectedResult;
+    }
+  }
 
-          return { name: 'MoveComplete', message: '' };
-        } else {
-          return { name: 'MoveIncomplete', message: '' };
-        }
+  get _selectedResult() {
+    if (this.touchedPointNumber === 'off_board') {
+      if (this._somePiecesAreNotHome) {
+        return { name: 'PiecesNotHome', message: 'Cannot bear off while pieces are not home.' };
+      } else if (this._diceRollMismatch) {
+        return { name: 'DiceMismatch', message: 'That move does not match the die roll.' };
+      } else if (this._complete || this._allPiecesOffBoard) {
+        return { name: 'MoveComplete', message: '' };
       } else {
-        if (this._diceRollMismatch) {
-          return { name: 'DiceMismatch', message: 'That move does not match the die roll.' };
-        } else if (this._toBlocked) {
-          return { name: 'OpponentBlock', message: 'An opponent is blocking that point.'};
-        } else if (this._wrongDirection) {
-          return { name: 'WrongDirection', message: 'A piece cannot move backwards.'};
-        } else if (this.complete) {
-          return { name: 'MoveComplete', message: '' };
-        } else {
-          return { name: 'MoveIncomplete', message: '' };
-        }
+        return { name: 'MoveIncomplete', message: '' };
       }
     } else {
-      if (this.touchedPointNumber === 'bar') { 
-        if (this._noPiecesOwnedByPlayer) {
-          return { name: 'NoPieces', message: 'There are no pieces on the bar.' };
-        } else if (this._noDestinations) {
-          return { name: 'Blocked', message: 'Those pieces cannot move.' };
-        } else {
-          return { name: 'MovePossible', message: '' };
-        }
+      if (this._diceRollMismatch) {
+        return { name: 'DiceMismatch', message: 'That move does not match the die roll.' };
+      } else if (this._toBlocked) {
+        return { name: 'OpponentBlock', message: 'An opponent is blocking that point.'};
+      } else if (this._wrongDirection) {
+        return { name: 'WrongDirection', message: 'A piece cannot move backwards.'};
+      } else if (this._complete) {
+        return { name: 'MoveComplete', message: '' };
       } else {
-        if (this._emptyPoint) {
-          return { name: 'EmptyPoint', message: 'That point is empty.' };
-        } else if (this._ownedByOpponent) {
-          return { name: 'PointOwnershipMismatch', message: 'That point is not yours.' };
-        } else if (this._barHasPieces) {
-          return { name: 'PiecesOnBar', message: 'There are still pieces on the bar.' };
-        } else if (this._noDestinations && (this._somePiecesAreNotHome || this._cannotBearOff)) {
-          return { name: 'Blocked', message: 'Those pieces cannot move.' };  
-        } else { 
-          return { name: 'MovePossible', message: '' };
-        }
+        return { name: 'MoveIncomplete', message: '' };
+      }
+    }
+  }
+
+  get _unselectedResult() {
+    if (this.touchedPointNumber === 'bar') { 
+      if (this._noPiecesOwnedByPlayer) {
+        return { name: 'NoPieces', message: 'There are no pieces on the bar.' };
+      } else if (this._noDestinations) {
+        return { name: 'Blocked', message: 'Those pieces cannot move.' };
+      } else {
+        return { name: 'MovePossible', message: '' };
+      }
+    } else {
+      if (this._emptyPoint) {
+        return { name: 'EmptyPoint', message: 'That point is empty.' };
+      } else if (this._ownedByOpponent) {
+        return { name: 'PointOwnershipMismatch', message: 'That point is not yours.' };
+      } else if (this._barHasPieces) {
+        return { name: 'PiecesOnBar', message: 'There are still pieces on the bar.' };
+      } else if (this._noDestinations && (this._somePiecesAreNotHome || this._cannotBearOff)) {
+        return { name: 'Blocked', message: 'Those pieces cannot move.' };  
+      } else { 
+        return { name: 'MovePossible', message: '' };
       }
     }
   }
@@ -82,11 +89,11 @@ class Move {
     return { from: this._selectedPoint.number, to: this.touchedPointNumber };
   }
 
-  get complete() {
+  get _complete() {
     return exists(this._selectedPoint) && exists(this._touchedPoint) && (this._numberOfMoves === this.match.gameState.dice.length);
   }
 
-  get allPiecesOffBoard() {
+  get _allPiecesOffBoard() {
     return this._numberOfMoves === this._numberOfPiecesOnBoard;
   }
 

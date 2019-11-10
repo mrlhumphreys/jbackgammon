@@ -1,4 +1,4 @@
-import exists from '../src/exists'
+import { exists } from '../src/utils'
 
 describe("exists", () => {
   describe("with null", () => {

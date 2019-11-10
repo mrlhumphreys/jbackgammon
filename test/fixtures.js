@@ -1,4 +1,4 @@
-import exists from '../src/exists'
+import { exists } from '../src/utils'
 import Move from '../src/move'
 import Bar from '../src/bar'
 import OffBoard from '../src/off_board'
@@ -1239,6 +1239,117 @@ const fixtureDefinitions = {
           { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
         ],
         "off_board": { "pieces": [] }
+      },
+      players: [
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
+      ],
+      winner: null
+    }
+  },
+  allDiceUsedMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: true },
+          { "number": 2, used: true }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [ { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 } ] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, ] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [ { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1 }, { "owner": 1} ] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { "pieces": [] }
+      },
+      players: [
+        { player_number: 1, name: 'aaa', resigned: false },
+        { player_number: 2, name: 'bbb', resigned: false }
+      ],
+      winner: null
+    }
+  },
+  passableMatch: {
+    klass: Match,
+    args: {
+      id: 1,
+      game_state: { 
+        "current_player_number": 1,
+        "current_phase": "move",
+        "dice": [
+          { "number": 1, used: true },
+          { "number": 2, used: false }
+        ],
+        "bar": { "pieces": [] },
+        "points": [
+          { "number": 1, "pieces": [] },
+          { "number": 2, "pieces": [] },
+          { "number": 3, "pieces": [] },
+          { "number": 4, "pieces": [ { owner: 1 } ] },
+          { "number": 5, "pieces": [] },
+          { "number": 6, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 7, "pieces": [] },
+          { "number": 8, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 9, "pieces": [] },
+          { "number": 10, "pieces": [] },
+          { "number": 11, "pieces": [] },
+          { "number": 12, "pieces": [] },
+          { "number": 13, "pieces": [ { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 }, { "owner": 2 } ] },
+          { "number": 14, "pieces": [] },
+          { "number": 15, "pieces": [] },
+          { "number": 16, "pieces": [] },
+          { "number": 17, "pieces": [] },
+          { "number": 18, "pieces": [] },
+          { "number": 19, "pieces": [] },
+          { "number": 20, "pieces": [] },
+          { "number": 21, "pieces": [] },
+          { "number": 22, "pieces": [] },
+          { "number": 23, "pieces": [] },
+          { "number": 24, "pieces": [ { "owner": 2 }, { "owner": 2 } ] }
+        ],
+        "off_board": { 
+          "pieces": [ 
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 },
+            { owner: 1 }
+          ] 
+        }
       },
       players: [
         { player_number: 1, name: 'aaa', resigned: false },
