@@ -83,9 +83,11 @@ class Match {
         this.gameState.useDie(move.dieNumber);
         this._addMoveToList(move.details);
         this.gameState.deselect();
+        this._notify(result.message);
         break;
       case 'MovePossible': 
         this.gameState.select(pointNumber);
+        this._notify(result.message);
         break;
       default: 
         this.gameState.deselect();

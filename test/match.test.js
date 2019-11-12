@@ -327,6 +327,12 @@ describe('Match', () => {
             let point = match.gameState.findPoint(1);
             expect(point.selected).toBe(true);
           });
+
+          it('clears the notification message', () => {
+            let match = fixtures('moveMatch');
+            match.touchPoint(1, 1);
+            expect(match.notification).toEqual('');
+          });
         });
 
         describe('with move not possible', () => {
