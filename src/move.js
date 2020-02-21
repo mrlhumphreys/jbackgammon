@@ -1,12 +1,29 @@
 import { exists } from './utils'
 
+/** A move */
 class Move {
+  /**
+   * Create a move.
+   * @param {number} args - The properties of a move.
+   * @param {number} args.touchedPointNumber - The number of the touched point.
+   * @param {Match} args.match - The match the move is being played.
+   */
   constructor(args) { 
+    /** @member {number} */
     this.touchedPointNumber = args.touchedPointNumber;
+
+    /** @member {number} */
     this.playerNumber = args.playerNumber;
+
+    /** @member {Match} */
     this.match = args.match;
   }
 
+  /**
+   * The result of the move.
+   * Returns an object with name and message properties.
+   * @return {Object}
+   */
   get result() {
     if (exists(this.match.winner)) {
       return { name: 'GameOver', message: 'Game is over.' };
@@ -77,6 +94,10 @@ class Move {
     }
   }
 
+  /**
+   * The number of the die based on the move.
+   * @return {number}
+   */
   get dieNumber() {
     if (this.match.gameState.dice.unused.findByNumber(this._distance)) {
       return this._distance;
@@ -85,6 +106,11 @@ class Move {
     }
   }
 
+  /** 
+   * The details of the move.
+   * Returns an object with from and to point numbers.
+   * @return {Object}
+   */
   get details() {
     return { from: this._selectedPoint.number, to: this.touchedPointNumber };
   }

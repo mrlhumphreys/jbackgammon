@@ -5,16 +5,42 @@ import PointSet from './point_set'
 import OffBoard from './off_board'
 import Move from './move'
 
+/** The Backgammon game state */
 class GameState {
+  /**
+   * Create a game state.
+   * @param {Object} args - The properties of the game state.
+   * @param {number} args.current_player_number - The player who's turn it is.
+   * @param {string} args.current_phase - What phase of the turn it is. (i.e. roll or move)
+   * @param {Object[]} args.dice - The dice on the board.
+   * @param {Object} args.bar - The bar where captured pieces go to.
+   * @param {Object[]} args.points - The points where pieces are placed on.
+   * @param {Object} args.off_board - Where pieces end up after they reach the end.
+   */
   constructor(args) { 
+    /** @member {number} */
     this.currentPlayerNumber = args.current_player_number;
+
+    /** @member {string} */
     this.currentPhase = args.current_phase;
+
+    /** @member {DiceSet} */
     this.dice = new DiceSet(args.dice);
+
+    /** @member {Bar} */
     this.bar = new Bar(args.bar);
+
+    /** @member {PointSet} */
     this.points = new PointSet(args.points);
+
+    /** @member {OffBoard} */
     this.offBoard = new OffBoard(args.off_board);
   }
 
+  /**
+   * The game state serialized as simple objects.
+   * @return {Object}
+   */
   get asJson() {
     return {
       current_player_number: this.currentPlayerNumber,
@@ -28,6 +54,11 @@ class GameState {
 
   // queries
 
+  /**
+   * The currently selected point or bar.
+   * Returns null if nothing selected.
+   * @return {(Point|Bar|null)}
+   */
   get selectedPoint() { 
     let point = this.points.selected;
     if (point) {
@@ -39,6 +70,11 @@ class GameState {
     }
   }
 
+  /**
+   * Find point matching point identifier.
+   * Returns null if nothing selected.
+   * @return {(Point|Bar|null)}
+   */
   findPoint(number) { 
     switch (number) {
       case 'bar':
@@ -50,6 +86,11 @@ class GameState {
     }
   }
 
+  /**
+   * Does the player have no moves left?
+   * @param {number} playerNumber - The number of the player.
+   * @return {boolean}
+   */
   noMovesForPlayer(playerNumber) { 
     if (this.bar.hasPiecesOwnedByPlayer(playerNumber)) {
       return this.points.destinations(this.bar, this.dice, playerNumber).none;
@@ -63,22 +104,44 @@ class GameState {
     }
   }
 
+  /**
+   * Are all pieces off the board for the current player?
+   * @return {boolean}
+   */
   get allPiecesOffBoard() {
     return this.offBoard.piecesOwnedByPlayer(this.currentPlayerNumber).length === 15;
   }
 
+  /**
+   * Is it the player's turn?
+   * @param {number} playerNumber - The number of the player.
+   * @return {boolean}
+   */
   playersTurn(playerNumber) { 
     return this.currentPlayerNumber === playerNumber;
   }
 
+  /**
+   * Is it the roll phase?
+   * @return {boolean}
+   */
   get rollPhase() {
     return this.currentPhase === 'roll';
   }
 
+  /**
+   * Is it the move phase?
+   * @return {boolean}
+   */
   get movePhase() {
     return this.currentPhase === 'move';
   }
 
+  /**
+   * Which player is the winner?
+   * Returns null if no winner.
+   * @return {(number|null)}
+   */
   get winner() {
     if (this.offBoard.hasAllOfPlayersPieces(1)) {
       return 1;
@@ -91,66 +154,111 @@ class GameState {
 
   // actions
 
+  /**
+   * Select the point by the identifier.
+   * Returns false if no point found.
+   * @param {(string|number)} pointName - The unique identifier of the point.
+   * @return {boolean} 
+   */
   select(pointName) {
     switch (pointName) {
       case 'bar':
-        this.selectBar();
+        return this.selectBar();
         break;
       default:
-        this.selectPoint(pointName);
+        return this.selectPoint(pointName);
     } 
   }
 
+  /**
+   * Select the bar.
+   * @return {boolean}
+   */
   selectBar() {
-    this.bar.select();
+    return this.bar.select();
   }
 
+  /**
+   * Select the point specified by the number.
+   * Return false if the point can't be found.
+   * @param {number} pointNumber - The identifier of the point.
+   * @return {boolean}
+   */
   selectPoint(pointNumber) {
     let point = this.findPoint(pointNumber); 
     if (exists(point)) {
-      point.select();
+      return point.select();
+    } else {
+      return false;
     }
   }
 
+  /**
+   * Deselect the selected point and bar.
+   * @return {boolean}
+   */
   deselect() {
     let point = this.selectedPoint;
     if (exists(point)) {
       point.deselect();
     }
     this.bar.deselect();
+    return true;
   }
 
+  /**
+   * Move a piece from one point to another. 
+   * @param {number} fromNumber - The identifier of the from point.
+   * @param {number} toNumber - The identifier of the to point.
+   * @param {number} playerNumber - The number of the to player.
+   * @return {boolean}
+   */
   move(fromNumber, toNumber, playerNumber) {
     let from = this.findPoint(fromNumber);
     let to = this.findPoint(toNumber);
 
-    let blot = undefined;
-    if ((toNumber !== 'off_board') && to.enemyBlot(playerNumber)) {
-      blot = to.pop(); 
-    } 
+    if (from !== null && to !== null) {
+      let blot = undefined;
+      if ((toNumber !== 'off_board') && to.enemyBlot(playerNumber)) {
+        blot = to.pop(); 
+      } 
 
-    let movingPiece = from.pop(playerNumber);
-    to.push(movingPiece);
+      let movingPiece = from.pop(playerNumber);
+      to.push(movingPiece);
 
-    if (exists(blot)) {
-      this.bar.push(blot);
+      if (exists(blot)) {
+        this.bar.push(blot);
+      }
+      return true;
+    } else {
+      return false;
     }
   }
 
+  /**
+   * Mark a die as used, matching the number.
+   * @param {number} number - The number of the die
+   * @return {boolean}
+   */
   useDie(number) {
     if (this.dice.unused.findByNumber(number)) {
-      this.dice.use(number);
+      return this.dice.use(number);
     } else { 
-      this.dice.use(this.dice.highestUnused());
+      return this.dice.use(this.dice.highestUnused());
     }
   }
 
+  /**
+   * Pass the turn to the other player.
+   * @return {boolean}
+   */
   passTurn() {
     if (this.currentPlayerNumber == 1) {
       this.currentPlayerNumber = 2;
     } else {
       this.currentPlayerNumber = 1;
     }
+    return true;
   }
 };
 
