@@ -93,6 +93,7 @@ class Match {
         this.gameState.roll();
         this.gameState.stepPhase();
         this._addRollToLastAction();
+        this._notify(result.message);
         return true;
         break;
       default:

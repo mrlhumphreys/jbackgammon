@@ -59,7 +59,7 @@ describe('Roll', () => {
         let result = roll.result;
 
         expect(result.name).toEqual('RollValid');
-        expect(result.message).toEqual('');
+        expect(result.message).toEqual('Dice have been rolled.');
       });
     });
   });

@@ -34,7 +34,7 @@ class Roll {
       return { name: 'MovePhase', message: 'Dice have already been rolled.' };
     }
 
-    return { name: 'RollValid', message: '' };
+    return { name: 'RollValid', message: 'Dice have been rolled.' };
   }
 }
 
