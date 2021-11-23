@@ -127,11 +127,11 @@ class DiceSet {
    */
   roll() {
     this.dice.forEach(function(d) { d.roll(); });
-    if (this.dice[0].number === this.dice[0].number) {
+    if (this.dice[0].number === this.dice[1].number) {
       let dupDice = this.dice.map(function(d) { 
         return new Die({id: d.id + 2, number: d.number}); 
       });
-      this.dice.concat(dupDice);
+      this.dice = this.dice.concat(dupDice);
     }
     return true;
   }
