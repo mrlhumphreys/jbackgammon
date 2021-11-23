@@ -42,6 +42,15 @@ class Die {
     this.used = true;
     return true;
   }
+  
+  /**
+   * Roll the die.
+   * @return {boolean}
+   */
+  roll() {
+    this.number = Math.ceil(Math.random()*6); 
+    return true;
+  }
 };
 
 export default Die

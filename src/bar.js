@@ -25,7 +25,7 @@ class Bar extends ExtraPoint {
    * @return {boolean} The result.
    */
   hasPiecesOwnedByPlayer(playerNumber) { 
-    return this.pieces.some(function(p) { return p.owner === playerNumber });
+    return this.pieces.some(function(p) { return p.playerNumber === playerNumber });
   }
 
   /**
@@ -63,8 +63,8 @@ class Bar extends ExtraPoint {
    * @return {Piece} The popped piece.
    */
   pop(playerNumber) {
-    let piece = this.pieces.find(function(p) { return p.owner === playerNumber; });
-    let pieceIndex = this.pieces.findIndex(function(p) { return p.owner === playerNumber; });
+    let piece = this.pieces.find(function(p) { return p.playerNumber === playerNumber; });
+    let pieceIndex = this.pieces.findIndex(function(p) { return p.playerNumber === playerNumber; });
 
     if (pieceIndex !== -1) {
       this.pieces.splice(pieceIndex, 1);

@@ -12,8 +12,8 @@ describe('Point', () => {
 
   describe('asJson', () => {
     it('must return the point as json', () => {
-      let point = new Point({ pieces: [ { owner: 1 } ], number: 1 });
-      expect(point.asJson).toEqual({ pieces: [ { owner: 1 } ], number: 1, selected: false });
+      let point = new Point({ pieces: [ { player_number: 1 } ], number: 1 });
+      expect(point.asJson).toEqual({ pieces: [ { player_number: 1 } ], number: 1, selected: false });
     });
   });
 
@@ -57,7 +57,7 @@ describe('Point', () => {
 
   describe('a point with pieces', () => {
     it('must not be empty', () => {
-      let point = new Point({pieces: [{owner: 1}], number: 3});
+      let point = new Point({pieces: [{player_number: 1}], number: 3});
       expect(point.empty).toBe(false);
     });
   });
@@ -71,44 +71,44 @@ describe('Point', () => {
 
   describe('a point with more than one piece', () => {
     it('must be blocked', () => {
-      let point = new Point({pieces: [{owner: 1}, {owner: 2}], number: 3});
+      let point = new Point({pieces: [{player_number: 1}, {player_number: 2}], number: 3});
       expect(point.blocked).toBe(true);
     });
   });
 
   describe('a point with player pieces', () => {
     it('must be owned by the player', () => {
-      let point = new Point({pieces: [{owner: 1}], number: 3});
+      let point = new Point({pieces: [{player_number: 1}], number: 3});
       expect(point.ownedBy(1)).toBe(true);
     });
 
     it('must not be owned by the oppoent', () => {
-      let point = new Point({pieces: [{owner: 1}], number: 3});
+      let point = new Point({pieces: [{player_number: 1}], number: 3});
       expect(point.ownedByOpponent(1)).toBe(false);
     });
   });
 
   describe('a point with opponent pieces', () => {
     it('must be owned by the opponent', () => {
-      let point = new Point({pieces: [{owner: 2}], number: 3});
+      let point = new Point({pieces: [{player_number: 2}], number: 3});
       expect(point.ownedByOpponent(1)).toBe(true);
     });
 
     it('must not be owned by the player', () => {
-      let point = new Point({pieces: [{owner: 2}], number: 3});
+      let point = new Point({pieces: [{player_number: 2}], number: 3});
       expect(point.ownedBy(1)).toBe(false);
     });
 
     describe('with one piece', () => {
       it('must be an enemy blot', () => {
-        let point = new Point({pieces: [{owner: 2}], number: 3});
+        let point = new Point({pieces: [{player_number: 2}], number: 3});
         expect(point.enemyBlot(1)).toBe(true);
       });
     });
 
     describe('with more than one piece', () => {
       it('must not be an enemy blot', () => {
-        let point = new Point({pieces: [{owner: 2}, {owner: 2}], number: 3});
+        let point = new Point({pieces: [{player_number: 2}, {player_number: 2}], number: 3});
         expect(point.enemyBlot(1)).toBe(false);
       });
     });
@@ -132,22 +132,22 @@ describe('Point', () => {
 
   describe('pop', () => {
     it('must remove a piece', () => {
-      let point = new Point({number: 1, pieces: [{owner: 1}, {owner: 1}]});
+      let point = new Point({number: 1, pieces: [{player_number: 1}, {player_number: 1}]});
       point.pop(); 
       expect(point.pieces.length).toEqual(1);
     });
 
     it('must return a piece', () => {
-      let point = new Point({number: 1, pieces: [{owner: 1}, {owner: 1}]});
+      let point = new Point({number: 1, pieces: [{player_number: 1}, {player_number: 1}]});
       let piece = point.pop();
-      expect(piece.owner).toEqual(1);
+      expect(piece.playerNumber).toEqual(1);
     });
   });
 
   describe('push', () => {
     it('must add a piece', () => {
-      let point = new Point({number: 1, pieces: [{owner: 1}]});
-      let piece = new Piece({owner: 1});
+      let point = new Point({number: 1, pieces: [{player_number: 1}]});
+      let piece = new Piece({player_number: 1});
       point.push(piece);
       expect(point.pieces.length).toEqual(2);
     });

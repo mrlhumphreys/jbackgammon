@@ -236,6 +236,14 @@ class GameState {
   }
 
   /**
+   * Roll the dice
+   */
+  roll() {
+    this.dice.roll();
+    return true;
+  }
+
+  /**
    * Mark a die as used, matching the number.
    * @param {number} number - The number of the die
    * @return {boolean}
@@ -257,6 +265,19 @@ class GameState {
       this.currentPlayerNumber = 2;
     } else {
       this.currentPlayerNumber = 1;
+    }
+    return true;
+  }
+
+  /**
+   * Step to the next phase.
+   * @return {boolean}
+   */
+  stepPhase() {
+    if (this.currentPhase == 'roll') {
+      this.currentPhase = 'move';
+    } else {
+      this.currentPhase = 'roll';
     }
     return true;
   }

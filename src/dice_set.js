@@ -120,6 +120,21 @@ class DiceSet {
     this.dice.filter(function(d) { return !d.used && (d.number === number); })[0].use();
     return true;
   }
+
+  /**
+   * Roll the dice.
+   * @return {boolean}
+   */
+  roll() {
+    this.dice.forEach(function(d) { d.roll(); });
+    if (this.dice[0].number === this.dice[0].number) {
+      let dupDice = this.dice.map(function(d) { 
+        return new Die({id: d.id + 2, number: d.number}); 
+      });
+      this.dice.concat(dupDice);
+    }
+    return true;
+  }
 };
 
 export default DiceSet

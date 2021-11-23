@@ -35,30 +35,30 @@ describe('Match', () => {
             selected: false 
           },
           points: [
-            { number: 1, selected: false, pieces: [ { owner: 1 }, { owner: 1 } ] },
+            { number: 1, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 } ] },
             { number: 2, selected: false, pieces: [] },
             { number: 3, selected: false, pieces: [] },
             { number: 4, selected: false, pieces: [] },
             { number: 5, selected: false, pieces: [] },
-            { number: 6, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+            { number: 6, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 } ] },
             { number: 7, selected: false, pieces: [] },
-            { number: 8, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+            { number: 8, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 }, { player_number: 2 } ] },
             { number: 9, selected: false, pieces: [] },
             { number: 10, selected: false, pieces: [] },
             { number: 11, selected: false, pieces: [] },
-            { number: 12, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
-            { number: 13, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+            { number: 12, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 } ] },
+            { number: 13, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 } ] },
             { number: 14, selected: false, pieces: [] },
             { number: 15, selected: false, pieces: [] },
             { number: 16, selected: false, pieces: [] },
-            { number: 17, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+            { number: 17, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 }, { player_number: 1 } ] },
             { number: 18, selected: false, pieces: [ ] },
-            { number: 19, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+            { number: 19, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 } ] },
             { number: 20, selected: false, pieces: [] },
             { number: 21, selected: false, pieces: [] },
             { number: 22, selected: false, pieces: [] },
             { number: 23, selected: false, pieces: [] },
-            { number: 24, selected: false, pieces: [ { owner: 2 }, { owner: 2 } ] },
+            { number: 24, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 } ] },
           ],
           off_board: {
             pieces: [],
@@ -106,13 +106,13 @@ describe('Match', () => {
           game_state: {
             bar: {
               pieces: [
-                { owner: 1 },
-                { owner: 1 }
+                { player_number: 1 },
+                { player_number: 1 }
               ]
             },
             points: [
-              { number: 1, pieces: [ { owner: 2 }, { owner: 2 } ] },
-              { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] }
+              { number: 1, pieces: [ { player_number: 2 }, { player_number: 2 } ] },
+              { number: 2, pieces: [ { player_number: 2 }, { player_number: 2 } ] }
             ]
           }
         });
@@ -127,8 +127,8 @@ describe('Match', () => {
           game_state: {
             bar: {
               pieces: [
-                { owner: 1 },
-                { owner: 1 }
+                { player_number: 1 },
+                { player_number: 1 }
               ]
             },
             dice: [
@@ -136,8 +136,8 @@ describe('Match', () => {
               { number: 2, used: true }
             ],
             points: [
-              { number: 1, pieces: [ { owner: 2 }, { owner: 2 } ] },
-              { number: 2, pieces: [ { owner: 2 }, { owner: 2 } ] }
+              { number: 1, pieces: [ { player_number: 2 }, { player_number: 2 } ] },
+              { number: 2, pieces: [ { player_number: 2 }, { player_number: 2 } ] }
             ]
           }
         });
@@ -192,6 +192,18 @@ describe('Match', () => {
         let match = fixtures('rollMatch');
         match.touchDice(1);
         expect(match.lastAction.kind).toEqual('roll');
+      });
+
+      it('rolls the dice', function() {
+        let match = fixtures('rollMatch');
+        match.touchDice(1);
+        expect(match.gameState.dice.dice[0].number).not.toBe(null);
+      });
+
+      it('steps to the move phase', function() {
+        let match = fixtures('rollMatch');
+        match.touchDice(1);
+        expect(match.gameState.currentPhase).toEqual('move');
       });
     });
   });

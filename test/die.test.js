@@ -23,4 +23,13 @@ describe('Die', () => {
       expect(die.used).toBe(true);
     });
   });
+
+  describe('roll', () => {
+    it('must set the number of the die', () => {
+      let die = new Die({number: null});
+      die.roll(); 
+      expect(die.number).toBeGreaterThanOrEqual(1);
+      expect(die.number).toBeLessThanOrEqual(6);
+    });
+  });
 });

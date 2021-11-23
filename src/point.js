@@ -68,7 +68,7 @@ class Point {
    * @return {boolean}
    */
   ownedBy(playerNumber) {
-    return this.pieces.some(function(p) { return p.owner === playerNumber; });
+    return this.pieces.some(function(p) { return p.playerNumber === playerNumber; });
   }
 
   /**
@@ -77,7 +77,7 @@ class Point {
    * @return {boolean}
    */
   ownedByOpponent(playerNumber) {
-    return this.pieces.some(function(p) { return p.owner != playerNumber; });
+    return this.pieces.some(function(p) { return p.playerNumber != playerNumber; });
   }
 
   /**
@@ -122,14 +122,14 @@ class Point {
   }
 
   /**
-   * The owner of the point.
+   * The player number of the point.
    * Returns null if the point is empty.
    * @return {(number|null)}
    */
-  get owner() {
+  get playerNumber() {
     let piece = this.pieces[0];
     if (exists(piece)) {
-      return piece.owner;
+      return piece.playerNumber;
     } else {
       return null;
     }

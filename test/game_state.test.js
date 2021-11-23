@@ -17,30 +17,30 @@ describe('Game State', () => {
           selected: false 
         },
         points: [
-          { number: 1, selected: false, pieces: [ { owner: 1 }, { owner: 1 } ] },
+          { number: 1, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 } ] },
           { number: 2, selected: false, pieces: [] },
           { number: 3, selected: false, pieces: [] },
           { number: 4, selected: false, pieces: [] },
           { number: 5, selected: false, pieces: [] },
-          { number: 6, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { number: 6, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 } ] },
           { number: 7, selected: false, pieces: [] },
-          { number: 8, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { number: 8, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 }, { player_number: 2 } ] },
           { number: 9, selected: false, pieces: [] },
           { number: 10, selected: false, pieces: [] },
           { number: 11, selected: false, pieces: [] },
-          { number: 12, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
-          { number: 13, selected: false, pieces: [ { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 }, { owner: 2 } ] },
+          { number: 12, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 } ] },
+          { number: 13, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 }, { player_number: 2 } ] },
           { number: 14, selected: false, pieces: [] },
           { number: 15, selected: false, pieces: [] },
           { number: 16, selected: false, pieces: [] },
-          { number: 17, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+          { number: 17, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 }, { player_number: 1 } ] },
           { number: 18, selected: false, pieces: [ ] },
-          { number: 19, selected: false, pieces: [ { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 }, { owner: 1 } ] },
+          { number: 19, selected: false, pieces: [ { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 }, { player_number: 1 } ] },
           { number: 20, selected: false, pieces: [] },
           { number: 21, selected: false, pieces: [] },
           { number: 22, selected: false, pieces: [] },
           { number: 23, selected: false, pieces: [] },
-          { number: 24, selected: false, pieces: [ { owner: 2 }, { owner: 2 } ] },
+          { number: 24, selected: false, pieces: [ { player_number: 2 }, { player_number: 2 } ] },
         ],
         off_board: {
           pieces: [],
@@ -161,6 +161,14 @@ describe('Game State', () => {
     });
   });
 
+  describe('roll', () => {
+    it('must roll the dice', () => {
+      let gameState = fixtures('gameState');
+      gameState.roll();
+      expect(gameState.dice.dice[0].number).not.toBe(null);
+    });
+  });
+
   describe('deselect', () => {
     it('must deselect the selected point', () => {
       let gameState = fixtures('pointSelectedGameState');
@@ -268,7 +276,7 @@ describe('Game State', () => {
             { number: 2 }
           ],
           points: [
-            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
+            { number: 1, pieces: [ {player_number: 1}, {player_number: 1} ] },
             { number: 2, pieces: [ ] },
             { number: 3, pieces: [ ] }
           ]
@@ -292,14 +300,14 @@ describe('Game State', () => {
         let gameState = fixtures('gameState', {
           current_phase: 'move',
           bar: {
-            pieces: [{owner: 1}]
+            pieces: [{player_number: 1}]
           },
           dice: [
             { number: 1 },
             { number: 2 }
           ],
           points: [
-            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
+            { number: 1, pieces: [ {player_number: 1}, {player_number: 1} ] },
             { number: 2, pieces: [ ] },
             { number: 3, pieces: [ ] }
           ]
@@ -329,7 +337,7 @@ describe('Game State', () => {
           points: [
             { number: 22, pieces: [ ] },
             { number: 23, pieces: [ ] },
-            { number: 24, pieces: [ {owner: 1}, {owner: 1} ] }
+            { number: 24, pieces: [ {player_number: 1}, {player_number: 1} ] }
           ]
         });
         let fromId = 24;
@@ -355,8 +363,8 @@ describe('Game State', () => {
             { number: 2 }
           ],
           points: [
-            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
-            { number: 2, pieces: [ {owner: 2} ] },
+            { number: 1, pieces: [ {player_number: 1}, {player_number: 1} ] },
+            { number: 2, pieces: [ {player_number: 2} ] },
             { number: 3, pieces: [ ] }
           ]
         });
@@ -381,8 +389,8 @@ describe('Game State', () => {
             { number: 2 }
           ],
           points: [
-            { number: 1, pieces: [ {owner: 1}, {owner: 1} ] },
-            { number: 2, pieces: [ {owner: 2} ] },
+            { number: 1, pieces: [ {player_number: 1}, {player_number: 1} ] },
+            { number: 2, pieces: [ {player_number: 2} ] },
             { number: 3, pieces: [ ] }
           ]
         });
@@ -432,6 +440,24 @@ describe('Game State', () => {
         let gameState = fixtures('gameState', { current_player_number: 2});
         gameState.passTurn();
         expect(gameState.currentPlayerNumber).toEqual(1);
+      });
+    });
+  });
+
+  describe('stepPhase', () => {
+    describe('when current phase is roll', () => {
+      it('steps to the move phase', () => {
+        let gameState = fixtures('gameState', { current_phase: 'roll'});
+        gameState.stepPhase();
+        expect(gameState.currentPhase).toEqual('move');
+      });
+    });
+
+    describe('when current phase is move', () => {
+      it('steps to the roll phase', () => {
+        let gameState = fixtures('gameState', { current_phase: 'move'});
+        gameState.stepPhase();
+        expect(gameState.currentPhase).toEqual('roll');
       });
     });
   });

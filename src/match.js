@@ -90,6 +90,8 @@ class Match {
 
     switch (result.name) {
       case 'RollValid':
+        this.gameState.roll();
+        this.gameState.stepPhase();
         this._addRollToLastAction();
         return true;
         break;

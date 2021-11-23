@@ -11,12 +11,12 @@ describe('Bar', () => {
 
   describe('a bar with only pieces owned by a player', () => {
     it('must have pieces owned by that player', () => {
-      let bar = new Bar({pieces: [{owner: 1}]});
+      let bar = new Bar({pieces: [{player_number: 1}]});
       expect(bar.hasPiecesOwnedByPlayer(1)).toBe(true);
     });
 
     it('must not have pieces owned by another player', () => {
-      let bar = new Bar({pieces: [{owner: 1}]});
+      let bar = new Bar({pieces: [{player_number: 1}]});
       expect(bar.noPiecesOwnedByPlayer(2)).toBe(true);
     });
   });
@@ -40,27 +40,27 @@ describe('Bar', () => {
   describe('pop', () => {
     describe('with a piece owned by the player', () => {
       it('must remove the piece owned by that player from it', () => {
-        let bar = new Bar({pieces: [{owner: 1}, {owner: 2}]});
+        let bar = new Bar({pieces: [{player_number: 1}, {player_number: 2}]});
         bar.pop(1);
-        expect(bar.pieces.length).toEqual(1); 
+        expect(bar.pieces.length).toEqual(1);
       });
 
       it('must return the piece', () => {
-        let bar = new Bar({pieces: [{owner: 1}, {owner: 2}]});
+        let bar = new Bar({pieces: [{player_number: 1}, {player_number: 2}]});
         let piece = bar.pop(1);
-        expect(piece.owner).toEqual(1); 
+        expect(piece.playerNumber).toEqual(1); 
       });
     });
 
     describe('with no pieces owned by the player', () => {
       it('must not modify the pieces', () => {
-        let bar = new Bar({pieces: [{owner: 2}]});
+        let bar = new Bar({pieces: [{player_number: 2}]});
         bar.pop(1);
         expect(bar.pieces.length).toEqual(1); 
       });
 
       it('must return undefined', () => {
-        let bar = new Bar({pieces: [{owner: 2}]});
+        let bar = new Bar({pieces: [{player_number: 2}]});
         let piece = bar.pop(1);
         expect(piece).toBe(undefined); 
       });

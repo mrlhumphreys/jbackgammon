@@ -78,6 +78,15 @@ describe('DiceSet', () => {
     });
   });
 
+  describe('roll', () => {
+    describe('it rolls each of the dice', () => {
+      let diceSet = new DiceSet([{ "number": null, "used": false },{ "number": null, "used": false }]);
+      diceSet.roll();
+      expect(diceSet.dice[0].number).not.toBe(null);
+      expect(diceSet.dice[1].number).not.toBe(null);
+    });
+  });
+
   describe('highestUnusued', () => {
     it('must find the unused die with the highest number', () => {
       let diceSet = new DiceSet([{ "number": 3, "used": true },{ "number": 2, "used": false }]);
@@ -111,6 +120,5 @@ describe('DiceSet', () => {
       let die = diceSet.greaterThanOrEqualTo(3).findByNumber(2); 
       expect(die).toBe(undefined);
     });
-
   });
 });

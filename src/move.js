@@ -152,7 +152,7 @@ class Move {
   }
 
   get _barHasPieces() {
-    return this.match.gameState.bar.pieces.some((p) => { return p.owner === this.playerNumber; });
+    return this.match.gameState.bar.pieces.some((p) => { return p.playerNumber === this.playerNumber; });
   }
 
   get _noDestinations() {

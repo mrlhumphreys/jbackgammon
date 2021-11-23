@@ -41,7 +41,7 @@ Initialize a new match object:
         pieces: []
       }
       points: [
-        { number: 1, pieces: [ { owner: 1 }, { owner: 1 } ] },
+        { number: 1, pieces: [ { player_number: 1 }, { player_number: 1 } ] },
         { number: 2, pieces: [ ] },
         ...
       ]

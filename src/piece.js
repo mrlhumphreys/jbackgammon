@@ -4,14 +4,14 @@ class Piece {
    * Create a piece.
    * @param {Object} args - The properties of the piece.
    * @param {number} args.id - The unique identifier of the piece.
-   * @param {number} args.owner - The owner of the piece. 
+   * @param {number} args.player_number - The player number of the piece. 
    */
   constructor(args) {
     /** @member {number} */
     this.id = args.id
 
     /** @member {number} */
-    this.owner = args.owner
+    this.playerNumber = args.player_number
   }
 
   /**
@@ -21,7 +21,7 @@ class Piece {
   get asJson() {
     return {
       id: this.id,
-      owner: this.owner
+      player_number: this.playerNumber
     };
   }
 };

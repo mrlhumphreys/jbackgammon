@@ -32,7 +32,7 @@ class ExtraPoint {
    * @return {Piece[]}
    */
   piecesOwnedByPlayer(playerNumber) { 
-    return this.pieces.filter(function(p) { return p.owner === playerNumber });
+    return this.pieces.filter(function(p) { return p.playerNumber === playerNumber });
   }
 
   // setters

@@ -21,21 +21,21 @@ describe('OffBoard', () => {
       it('must return true', () => {
         let offBoard = new OffBoard({
           pieces: [
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 }
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 }
           ]
         });
 
@@ -47,20 +47,20 @@ describe('OffBoard', () => {
       it('must return false', () => {
         let offBoard = new OffBoard({
           pieces: [
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 },
-            { owner: 1 }
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 },
+            { player_number: 1 }
           ]
         });
 
