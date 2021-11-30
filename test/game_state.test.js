@@ -461,4 +461,14 @@ describe('Game State', () => {
       });
     });
   });
+
+  describe('clearDice', () => {
+    it('clears the dice', () => {
+        let gameState = fixtures('gameState', { current_phase: 'move'});
+        gameState.clearDice();
+        expect(gameState.dice.dice.length).toEqual(2);
+        expect(gameState.dice.dice[0].number).toBe(null);
+        expect(gameState.dice.dice[1].number).toBe(null);
+    });
+  });
 });

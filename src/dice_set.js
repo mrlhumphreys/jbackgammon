@@ -135,6 +135,18 @@ class DiceSet {
     }
     return true;
   }
+
+  /**
+   * Clear the dice.
+   * @return {boolean}
+   */
+  clear() {
+    this.dice = [
+      new Die({id: 1, number: null, used: false}),
+      new Die({id: 2, number: null, used: false})
+    ];
+    return true;
+  }
 };
 
 export default DiceSet

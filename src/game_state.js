@@ -281,6 +281,15 @@ class GameState {
     }
     return true;
   }
+
+  /**
+   * clear dice in preparation of next turn.
+   * @return {boolean}
+   */
+  clearDice() {
+    this.dice.clear();
+    return true;
+  }
 };
 
 export default GameState

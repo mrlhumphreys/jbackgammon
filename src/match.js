@@ -124,6 +124,8 @@ class Match {
       case 'MoveComplete':
         this.gameState.move(selectedPoint.number, pointNumber, playerNumber);
         this.gameState.useDie(move.dieNumber);
+        this.gameState.clearDice();
+        this.gameState.stepPhase();
         this.gameState.passTurn(); 
         this._addMoveToLastAction(move.completeMoveList);
         this._clearMoveList();

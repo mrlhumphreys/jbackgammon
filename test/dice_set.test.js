@@ -121,4 +121,14 @@ describe('DiceSet', () => {
       expect(die).toBe(undefined);
     });
   });
+
+  describe('clear', () => {
+    it('sets the dice to the default state', () => {
+      let diceSet = new DiceSet([{ id: 1, number: 1 }, { id: 2, number: 1, }, { id: 3, number: 1 }, { id: 4, number: 1 }]);
+      diceSet.clear();
+      expect(diceSet.dice.length).toEqual(2);
+      expect(diceSet.dice[0].number).toBe(null);
+      expect(diceSet.dice[1].number).toBe(null);
+    });
+  });
 });

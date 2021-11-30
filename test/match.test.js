@@ -279,6 +279,19 @@ describe('Match', () => {
           });
 
           describe('with move complete', () => {
+            it('clears the dice', () => {
+              let match = fixtures('completedMoveMatch');
+              match.touchPoint(3, 1);
+              expect(match.gameState.dice.dice[0].number).toBe(null);
+              expect(match.gameState.dice.dice[1].number).toBe(null);
+            });
+
+            it('steps the phase', () => {
+              let match = fixtures('completedMoveMatch');
+              match.touchPoint(3, 1);
+              expect(match.gameState.currentPhase).toEqual('roll');
+            });
+
             it('passes the turn', () => {
               let match = fixtures('completedMoveMatch');
               match.touchPoint(3, 1);
