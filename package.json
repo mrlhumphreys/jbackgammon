@@ -2,7 +2,7 @@
   "name": "@mrlhumphreys/jbackgammon",
   "author": "Mark Humphreys <mark@mrlhumphreys.com> (https://github.com/mrlhumphreys)",
   "description": "Backgammon game state and move validation",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "main": "lib/index.js",
   "keywords": [
     "Backgammon",

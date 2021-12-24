@@ -168,6 +168,8 @@ class Match {
     switch (result.name) {
       case 'PassValid':
         this.gameState.passTurn(); 
+        this.gameState.stepPhase();
+        this.gameState.clearDice();
         this._addMoveToLastAction(this.moveList);
         this._clearMoveList();
         return true;

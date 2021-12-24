@@ -379,6 +379,21 @@ describe('Match', () => {
         expect(match.gameState.currentPlayerNumber).toEqual(2);
       });
 
+      it('steps the phase', () => {
+        let match = fixtures('singleMoveMatch');
+        match.touchPass(1);
+        expect(match.gameState.currentPhase).toEqual('roll');
+      });
+
+      it('clears the dice', () => {
+        let match = fixtures('singleMoveMatch');
+        match.touchPass(1);
+        expect(match.gameState.dice.dice[0].number).toBe(null);
+        expect(match.gameState.dice.dice[0].used).toBe(false);
+        expect(match.gameState.dice.dice[1].number).toBe(null);
+        expect(match.gameState.dice.dice[1].used).toBe(false);
+      });
+
       it('adds move to last action', () => {
         let match = fixtures('singleMoveMatch');
         match.touchPass(1);
