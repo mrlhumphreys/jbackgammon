@@ -79,11 +79,17 @@ describe('DiceSet', () => {
   });
 
   describe('roll', () => {
-    describe('it rolls each of the dice', () => {
+    it('rolls each of the dice', () => {
       let diceSet = new DiceSet([{ "number": null, "used": false },{ "number": null, "used": false }]);
       diceSet.roll();
       expect(diceSet.dice[0].number).not.toBe(null);
       expect(diceSet.dice[1].number).not.toBe(null);
+    });
+
+    it('does not roll doubles when passed false to allowDoubles', () => {
+      let diceSet = new DiceSet([{ "number": null, "used": false },{ "number": null, "used": false }]);
+      diceSet.roll(false);
+      expect(diceSet.dice[0].number).not.toEqual(diceSet.dice[1].number);
     });
   });
 

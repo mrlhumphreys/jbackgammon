@@ -125,13 +125,18 @@ class DiceSet {
    * Roll the dice.
    * @return {boolean}
    */
-  roll() {
+  roll(allowDoubles=true) {
     this.dice.forEach(function(d) { d.roll(); });
     if (this.dice[0].number === this.dice[1].number) {
-      let dupDice = this.dice.map(function(d) { 
-        return new Die({id: d.id + 2, number: d.number}); 
-      });
-      this.dice = this.dice.concat(dupDice);
+      if (allowDoubles) { 
+        let dupDice = this.dice.map(function(d) { 
+          return new Die({id: d.id + 2, number: d.number}); 
+        });
+        this.dice = this.dice.concat(dupDice);
+      } else {
+        // roll until we don't have doubles
+        this.roll(allowDoubles);
+      }
     }
     return true;
   }

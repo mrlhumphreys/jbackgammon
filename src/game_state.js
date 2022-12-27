@@ -24,6 +24,9 @@ class GameState {
     /** @member {string} */
     this.currentPhase = args.current_phase;
 
+    /** @member {bool} */
+    this.firstTurn = args.first_turn;
+
     /** @member {DiceSet} */
     this.dice = new DiceSet(args.dice);
 
@@ -45,6 +48,7 @@ class GameState {
     return {
       current_player_number: this.currentPlayerNumber,
       current_phase: this.currentPhase,
+      first_turn: this.firstTurn,
       dice: this.dice.asJson,
       bar: this.bar.asJson,
       points: this.points.asJson,
@@ -239,7 +243,8 @@ class GameState {
    * Roll the dice
    */
   roll() {
-    this.dice.roll();
+    this.dice.roll(!this.firstTurn);
+
     return true;
   }
 
